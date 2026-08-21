@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google – Google Groceries</title>
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png">
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #6c5ce7;      /* Moon purple */
+      --primary-dark: #5f3dc4;
+      --accent: #fd79a8;       /* Soft pink */
+      --bg: #0a0a1a;
+      --card-bg: rgba(20,20,40,0.85);
+      --text: #e6e6ff;
+      --text-muted: #9fb5c7;
+      --border: rgba(255,255,255,0.12);
+      --shadow: 0 12px 32px rgba(0,0,0,0.35);
+      --radius: 20px;
+      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="light"] {
+      --bg: #f8f9ff;
+      --card-bg: rgba(255,255,255,0.9);
+      --text: #2d1b69;
+      --text-muted: #64748b;
+      --border: rgba(0,0,0,0.1);
+      --shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x:hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+    .container { max-width: 1360px; margin:auto; padding:0 1rem; }
+
+    /* Header – Parallax */
+    header {
+      position: relative; z-index:1000;
+      background: linear-gradient(135deg, #1a1a2e, #0f0f1f);
+      color: white; padding:1rem 0;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .header-inner {
+      display:flex; justify-content:space-between; align-items:center; gap: 16px;
+      position: relative;
+      min-height: 64px;
+    }
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      padding-right: 120px;
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: block;
+      background: transparent;
+    }
+    .brand-copy {
+      min-width: 0;
+    }
+    .logo {
+      display: block;
+      font-size:2.2rem; font-weight:800; letter-spacing:-1px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      white-space: nowrap;
+      line-height: 1.05;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tagline {
+      font-size:0.9rem;
+      opacity:0.8;
+      margin-top: 0.18rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header-actions { display:flex; gap:1rem; align-items:center; }
+    .theme-toggle, #cart-toggle {
+      background:rgba(255,255,255,0.15); border:none; color:white;
+      width:44px; height:44px; border-radius:50%; cursor:pointer;
+      font-size:1.3rem; transition:var(--transition);
+      backdrop-filter:blur(8px);
+    }
+    .theme-toggle:hover, #cart-toggle:hover {
+      background:rgba(255,255,255,0.25); transform:scale(1.12);
+    }
+
+    /* Controls */
+    .controls { margin:2.5rem 0; display:flex; flex-direction:column; gap:1.2rem; }
+    .search-wrapper { position:relative; }
+    #search-input {
+      width:100%; padding:1rem 1rem 1rem 3.2rem; font-size:1rem;
+      border:1px solid var(--border); border-radius:var(--radius);
+      background:var(--card-bg); backdrop-filter:blur(12px);
+      color:var(--text); transition:var(--transition);
+    }
+    #search-input:focus {
+      outline:none; border-color:var(--primary);
+      box-shadow:0 0 0 4px rgba(108,92,231,0.25);
+    }
+    .search-icon {
+      position:absolute; left:1rem; top:50%; transform:translateY(-50%);
+      color:#aaa; pointer-events:none;
+    }
+
+    .categories {
+      display:flex; flex-wrap:wrap; gap:.8rem;
+    }
+    .cat-btn {
+      padding:.65rem 1.4rem; border-radius:50px; border:none;
+      background:var(--card-bg); color:var(--text);
+      font-weight:600; cursor:pointer; transition:var(--transition);
+      backdrop-filter:blur(8px); box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    }
+    .cat-btn.active {
+      background:var(--primary); color:white;
+      transform:translateY(-3px);
+      box-shadow:0 6px 16px rgba(108,92,231,0.4);
+    }
+    .cat-btn:hover:not(.active) {
+      background:rgba(108,92,231,0.15); transform:translateY(-2px);
+    }
+
+    /* Products */
+    .products {
+      display:grid; gap:2rem;
+      grid-template-columns:repeat(auto-fill, minmax(270px,1fr));
+      margin:2rem 0;
+    }
+    .card {
+      background:var(--card-bg); border-radius:var(--radius);
+      overflow:hidden; cursor:pointer;
+      box-shadow:var(--shadow); transition:var(--transition);
+      backdrop-filter:blur(14px);
+      opacity:0; transform:translateY(40px);
+    }
+    .card:hover {
+      transform:translateY(-10px) scale(1.03);
+      box-shadow:0 20px 45px rgba(0,0,0,0.25);
+    }
+    .card img {
+      width:100%; height:190px; object-fit:cover;
+      transition:transform 0.5s ease;
+    }
+    .card:hover img { transform:scale(1.1); }
+    .card-body { padding:1.3rem; }
+    .card-title {
+      font-size:1.15rem; font-weight:700; margin-bottom:.4rem;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .price {
+      font-size:1.35rem; color:var(--primary); font-weight:800;
+    }
+    .add-btn {
+      margin-top:1rem; background:var(--primary); color:white;
+      border:none; padding:.75rem; border-radius:14px;
+      width:100%; font-weight:600; cursor:pointer;
+      transition:var(--transition); position:relative; overflow:hidden;
+    }
+    .add-btn:hover { background:var(--primary-dark); transform:translateY(-2px); }
+    .add-btn:active { transform:scale(0.97); }
+
+    /* Cart Sidebar */
+    .cart {
+      position:fixed; right:-420px; top:0; width:400px; height:100vh;
+      background:var(--card-bg); backdrop-filter:blur(16px);
+      box-shadow:-10px 0 40px rgba(0,0,0,0.3); z-index:1100;
+      padding:1.8rem; overflow-y:auto;
+      transition:right 0.55s cubic-bezier(0.22,0.61,0.36,1);
+    }
+    .cart.open { right:0; }
+    .cart-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:1.5rem; padding-bottom:1rem;
+      border-bottom:1px solid var(--border);
+    }
+    .cart-header h2 { font-size:1.6rem; font-weight:700; }
+    .close-cart { background:none; border:none; font-size:1.9rem; cursor:pointer; color:#bbb; }
+
+    .cart-item {
+      display:flex; align-items:center; gap:1.2rem; padding:1rem 0;
+      border-bottom:1px solid var(--border); opacity:0; transform:translateX(60px);
+    }
+    .cart-item img { width:75px; height:75px; object-fit:cover; border-radius:14px; }
+    .cart-item .info { flex:1; }
+    .cart-item .info div:first-child { font-weight:600; }
+    .qty-controls {
+      display:flex; align-items:center; gap:.6rem; background:rgba(255,255,255,0.08);
+      padding:.35rem .5rem; border-radius:50px;
+    }
+    .qty-btn {
+      width:34px; height:34px; border:none; border-radius:50%;
+      background:rgba(255,255,255,0.15); color:white;
+      font-weight:bold; cursor:pointer; transition:var(--transition);
+    }
+    .qty-btn:hover { background:var(--primary); }
+
+    .cart-total {
+      margin-top:1.8rem; font-size:1.4rem; font-weight:700; text-align:right;
+      padding:1rem 0; border-top:2px dashed var(--border);
+    }
+    .checkout-btn {
+      margin-top:1.2rem; background:var(--accent); color:white;
+      border:none; padding:1rem; border-radius:var(--radius);
+      width:100%; font-weight:700; font-size:1.15rem; cursor:pointer;
+      transition:var(--transition);
+    }
+    .checkout-btn:hover {
+      background:#e84373; transform:translateY(-3px);
+      box-shadow:0 12px 24px rgba(253,121,168,0.35);
+    }
+
+    /* Modal */
+    .modal {
+      display:none; position:fixed; inset:0; background:rgba(8,12,18,0.88);
+      justify-content:center; align-items:center; z-index:1200;
+      backdrop-filter:blur(10px);
+      overflow-y: auto;
+      padding: 22px 0;
+    }
+    .modal.open { display:flex; }
+    .modal-content {
+      position: relative;
+      background: linear-gradient(104deg,#19303f 68%, #2fded7 100%);
+      padding: 2rem 1.5rem 1.5rem;
+      border-radius: 12px;
+      max-width:500px; width:min(500px, 94vw); text-align:left;
+      box-shadow:0 8px 44px rgba(69,232,221,0.23), 0 0 77px rgba(36,251,187,0.20);
+      transform:scale(0.65); opacity:0;
+      max-height: calc(100vh - 44px);
+      overflow-y: auto;
+    }
+    .modal-content h3 {
+      margin-bottom: 0.35rem;
+      color: #fff;
+      font-size: 1.55rem;
+      text-align: left;
+    }
+    .payment-subtitle {
+      margin-bottom: 1.1rem;
+      color: #b8d8df;
+      font-weight: 600;
+    }
+    .payment-error {
+      display: none;
+      margin-bottom: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      background: rgba(232, 67, 115, 0.14);
+      color: var(--accent);
+      font-weight: 700;
+      text-align: left;
+    }
+    #grocery-payment-form {
+      border-radius: 10px;
+    }
+    .payment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    .payment-field.full { grid-column: 1 / -1; }
+    .payment-field label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.86rem;
+      color: #d8f4f2;
+      font-weight: 700;
+    }
+    .payment-field input,
+    .payment-field textarea,
+    .payment-panel input,
+    .payment-panel select {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 0.72rem 0.8rem;
+      background: rgba(7,15,23,0.55);
+      color: #fff;
+      font: inherit;
+      outline: none;
+      box-sizing: border-box;
+    }
+    .payment-field input::placeholder,
+    .payment-field textarea::placeholder,
+    .payment-panel input::placeholder {
+      color: #8fa9b2;
+    }
+    .payment-field input:focus,
+    .payment-field textarea:focus,
+    .payment-panel input:focus,
+    .payment-panel select:focus {
+      border-color: #54fde7;
+      box-shadow: 0 0 0 3px rgba(84,253,231,0.16);
+    }
+    .payment-field textarea {
+      min-height: 76px;
+      resize: vertical;
+    }
+    .payment-total {
+      margin: 0.2rem 0 1rem;
+      padding: 0.9rem 1rem;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.26);
+      color: #4dd784;
+      font-size: 1.12rem;
+      font-weight: 800;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55rem;
+      margin-bottom: 1rem;
+    }
+    .payment-tab {
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.18);
+      color: #d8f4f2;
+      border-radius: 8px;
+      padding: 0.75rem 0.45rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .payment-tab.active,
+    .payment-tab:hover {
+      border-color: #54fde7;
+      background: linear-gradient(135deg, #19bfa9, #4dd784);
+      color: #071018;
+      box-shadow: 0 8px 20px rgba(84,253,231,0.22);
+    }
+    .payment-panel {
+      display: none;
+      text-align: left;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      background: rgba(12,18,27,0.72);
+    }
+    .payment-panel.active { display: block; }
+    .payment-panel p {
+      margin-bottom: 0.8rem;
+      color: #aac8d0;
+      font-weight: 600;
+    }
+    .payment-panel-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin-bottom: 0.8rem;
+    }
+    .upi-box {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .upi-box img {
+      width: 118px;
+      height: 118px;
+      object-fit: contain;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: #fff;
+    }
+    .upi-box strong {
+      color: #fff;
+      word-break: break-word;
+    }
+    .pay-now-btn,
+    #close-modal {
+      background: linear-gradient(135deg, #21d4aa, #4dd784);
+      color: #061017;
+      border: none;
+      border-radius: 8px;
+      padding: 0.85rem 1.4rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .pay-now-btn {
+      width: 100%;
+    }
+    #close-modal {
+      margin-top: 0.35rem;
+      width: 100%;
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.16);
+    }
+    .pay-now-btn:hover,
+    #close-modal:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(84,253,231,0.24);
+    }
+    #payment-success {
+      display: none;
+      text-align: center;
+      padding: 1.2rem 0 0.4rem;
+    }
+    #payment-success h3 {
+      text-align: center;
+      color: #4dd784;
+    }
+    #payment-success p {
+      color: #d8f4f2;
+    }
+
+    /* Modal receipt buttons */
+    .modal-receipt-actions {
+      margin-top: 1.7rem;
+      display: flex;
+      gap: 1.1rem;
+      justify-content: center;
+    }
+    .modal-receipt-actions button {
+      padding: .7rem 1.2rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+    .modal-receipt-actions button:hover {
+      background: rgba(84,253,231,0.22);
+    }
+
+    /* Toast */
+    .toast {
+      position:fixed; bottom:2.5rem; left:50%; transform:translateX(-50%);
+      background:var(--primary); color:white; padding:.9rem 1.8rem;
+      border-radius:50px; font-weight:600; z-index:1300;
+      opacity:0; pointer-events:none; transition:all 0.4s ease;
+    }
+    .toast.show { opacity:1; transform:translateX(-50%) translateY(-12px); }
+
+    @media (max-width:768px) {
+      .cart { width:100%; right:-100%; }
+      .categories { justify-content:center; }
+      .header-inner {
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+      .brand-block {
+        padding-right: 0;
+        max-width: calc(100% - 110px);
+      }
+      .logo {
+        font-size: 1.7rem;
+      }
+      .tagline {
+        font-size: 0.8rem;
+      }
+      .header-actions {
+        position: static !important;
+        margin-left: auto;
+      }
+      .payment-grid,
+      .payment-panel-row,
+      .upi-box {
+        grid-template-columns: 1fr;
+      }
+      .payment-methods {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+header {
+  position: sticky !important;
+  top: 0 !important;
+  background: #fff !important;
+  color: #0f172a !important;
+  padding: 0 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08) !important;
+  backdrop-filter: none !important;
+}
+.header-inner {
+  max-width: 1550px !important;
+  min-height: 82px !important;
+  padding: 14px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+.brand-block {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: auto !important;
+  padding-right: 0 !important;
+  color: #0f172a !important;
+  text-decoration: none !important;
+}
+.brand-logo { display: none !important; }
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #22c55e, #4285f4);
+}
+.brand-copy { min-width: auto !important; }
+.logo {
+  background: none !important;
+  -webkit-text-fill-color: currentColor !important;
+  color: #0f172a !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+}
+.tagline { display: none !important; }
+.header-search {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  min-width: 220px;
+  height: 54px;
+  margin-left: 20px;
+  padding: 0 16px;
+  background: #eef4ff;
+  border-radius: 4px;
+}
+.header-search span {
+  margin-right: 18px;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 500;
+}
+.header-search #search-input {
+  width: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  font-size: 18px !important;
+}
+.header-actions {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin-left: 0 !important;
+}
+.theme-toggle { display: none !important; }
+.home-link,
+#cart-toggle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 52px !important;
+  padding: 0 22px !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  background: #fff !important;
+  color: #020617 !important;
+  text-decoration: none !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  width: auto !important;
+}
+#cart-toggle svg { display: none !important; }
+#cart-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  margin-left: 10px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #fff;
+  font-size: 16px;
+}
+.controls { margin: 1.4rem 0 2.5rem !important; }
+@media (max-width: 760px) {
+  .header-inner { flex-wrap: wrap !important; padding: 12px !important; }
+  .header-search { order: 3; flex-basis: 100%; margin-left: 0; }
+  .header-actions { order: 4; flex-basis: 100%; }
+  .home-link, #cart-toggle { flex: 1 1 0; font-size: 17px !important; }
+}
+</style>
+  <link rel="stylesheet" href="/mobile.css">
+</head>
+<body>
+<!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a class="brand-block" href="/">
+        <span class="brand-mark">G</span>
+        <img
+          class="brand-logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png"
+          alt="Google G Logo"
+          width="34"
+          height="34"
+        />
+        <div class="brand-copy">
+          <div class="logo">Google Grocery</div>
+          <div class="tagline">Fresh under the moonlight</div>
+        </div>
+      </a>
+      <label class="header-search">
+        <span>Search</span>
+        <input type="text" id="search-input" placeholder="Search products in this service" aria-label="Search products"/>
+      </label>
+      <div class="header-actions" style="position: absolute; top: 24px; right: 32px; z-index: 2000;">
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+          <!-- Moon/Sun Icon SVG (Moon default, swap via JS) -->
+          <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M21 12.79A9 9 0 0 1 11.21 3.01a1 1 0 0 0-1.02-1.33A10 10 0 1 0 22.32 13.81a1 1 0 0 0-1.33-1.02ZM12 21a8 8 0 0 1-1-15.94V5a7 7 0 1 0 8 8h-.06A7.93 7.93 0 0 1 12 21Z" fill="currentColor"/></svg>
+        </button>
+        <a class="home-link" href="/">Home</a>
+        <button id="cart-toggle" aria-label="Open cart" style="display: flex; align-items: center; gap: 0.4rem;">
+          <!-- Cart Icon SVG -->
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.16 15l.84-2h7l.94 2H7.16zM17 6a1 1 0 0 0-1-1H7.42l-.34-2.68A1 1 0 0 0 6.09 2H2v2h2.38l1.72 13.62c.1.76.77 1.38 1.55 1.38H19a1 1 0 0 0 0-2H7.38l-.32-2H17a1 1 0 0 0 .96-.74l2-7A1 1 0 0 0 19 5H7.62L7.16 3h9.34A1 1 0 0 0 17 6zm-7.46 5l-1-4h11.12l-1.5 4H9.54z" fill="currentColor"/></svg>
+          Cart <span id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <section class="container controls">
+    <div class="categories" id="category-list"></div>
+  </section>
+
+  <!-- Products -->
+  <section class="container products" id="product-list"></section>
+
+  <!-- Cart -->
+  <aside class="cart" id="cart" aria-label="Shopping cart">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-cart" id="close-cart" aria-label="Close cart">×</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-total">Total: <span id="cart-total">Rs. 0.00</span></div>
+    <button class="checkout-btn" id="checkout-btn">Checkout</button>
+  </aside>
+
+  <!-- Checkout Modal -->
+  <div class="modal" id="checkout-modal">
+    <div class="modal-content" id="modal-content-root">
+      <div id="grocery-payment-form">
+        <h3>Grocery Payment</h3>
+        <p class="payment-subtitle">Confirm delivery details and complete payment.</p>
+        <div class="payment-error" id="payment-error"></div>
+        <div class="payment-grid">
+          <div class="payment-field">
+            <label for="payment-name">Name</label>
+            <input id="payment-name" autocomplete="name" placeholder="Customer name">
+          </div>
+          <div class="payment-field">
+            <label for="payment-phone">Phone</label>
+            <input id="payment-phone" autocomplete="tel" placeholder="Mobile number">
+          </div>
+          <div class="payment-field full">
+            <label for="payment-email">Email</label>
+            <input id="payment-email" autocomplete="email" placeholder="Email address">
+          </div>
+          <div class="payment-field full">
+            <label for="payment-address">Delivery Address</label>
+            <textarea id="payment-address" placeholder="House, street, city"></textarea>
+          </div>
+        </div>
+        <div class="payment-total"><span>Total</span><span id="payment-total">Rs. 0.00</span></div>
+        <div class="payment-methods" id="payment-methods">
+          <button class="payment-tab active" data-payment-method="UPI">UPI</button>
+          <button class="payment-tab" data-payment-method="Net Banking">Net Banking</button>
+          <button class="payment-tab" data-payment-method="Card">Card</button>
+        </div>
+        <div class="payment-panel active" data-payment-panel="UPI">
+          <div class="upi-box">
+            <img src="scan.jpg" alt="UPI QR code">
+            <div>
+              <p>Scan and pay, then press Pay Now.</p>
+              <strong>UPI ID: multicloud-veera-sir@kotak811</strong>
+              <input id="upi-input" type="text" value="multicloud-veera-sir@kotak811" readonly onclick="this.select()" style="margin-top:0.75rem;text-align:center;">
+            </div>
+          </div>
+          <button class="pay-now-btn" style="margin-bottom:0.7rem;background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.16);" onclick="copyGroceryUPI()">Copy UPI ID</button>
+          <button class="pay-now-btn" onclick="completeGroceryPayment('UPI')">Pay Now</button>
+        </div>
+        <div class="payment-panel" data-payment-panel="Net Banking">
+          <p>Select your bank and confirm payment.</p>
+          <select id="bank-name" aria-label="Bank name">
+            <option>State Bank of India</option>
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>Axis Bank</option>
+          </select>
+          <input id="bank-user" placeholder="User ID" style="margin-top:0.7rem;">
+          <input id="bank-password" type="password" placeholder="Password" style="margin-top:0.7rem;">
+          <button class="pay-now-btn" onclick="completeGroceryPayment('Net Banking')" style="margin-top:0.9rem;">Pay Now</button>
+        </div>
+        <div class="payment-panel" data-payment-panel="Card">
+          <p>Enter card details to place the order.</p>
+          <div class="payment-panel-row">
+            <input id="card-number" placeholder="Card number" inputmode="numeric">
+            <input id="card-name" placeholder="Name on card">
+          </div>
+          <div class="payment-panel-row">
+            <input id="card-expiry" placeholder="MM/YY">
+            <input id="card-cvv" placeholder="CVV" inputmode="numeric">
+          </div>
+          <button class="pay-now-btn" onclick="completeGroceryPayment('Card')">Pay Now</button>
+        </div>
+      </div>
+      <div id="payment-success">
+        <h3>Order Confirmed!</h3>
+        <p>Thank you for shopping with MoonCart. Your fresh items are on the way.</p>
+        <div class="modal-receipt-actions" style="display:none;" id="receipt-actions">
+          <button id="view-receipt-btn">View Details / Receipt</button>
+          <button id="download-receipt-btn">Download Receipt</button>
+        </div>
+      </div>
+      <button id="close-modal">Continue Shopping</button>
+    </div>
+  </div>
+
+  <!-- Receipt Modal for viewing receipt -->
+  <div class="modal" id="receipt-modal">
+    <div class="modal-content" id="receipt-modal-content" style="max-width:560px;text-align:left;">
+      <h3 style="text-align:center;margin-bottom:1.2rem;">Order Receipt</h3>
+      <div id="receipt-content" style="background:rgba(255,255,255,0.08);border-radius:14px;padding:1.3rem 1rem 1rem 1.3rem;box-sizing:border-box;margin-bottom:2rem;font-size:1.06rem;max-height:380px;overflow:auto;"></div>
+      <button id="close-receipt-modal" style="display:block;margin:0 auto;background:var(--accent);color:#fff;border:none;padding:.7rem 1.7rem;border-radius:13px;font-weight:700;font-size:1rem;cursor:pointer;">Close</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ==== DATA ====
+    const rawProducts = [
+      // Fruits (4 items)
+      { id:1, name:"Cosmic Apples (1 kg)", price:3.29, img:"https://i5.walmartimages.com/seo/Fresh-Cosmic-Apples-3-lb-Bag_58c1243d-980a-4f63-95ff-b027a8799966.597f9b87feb4aec17fbfe0d8b2a6adaa.png", cat:"Fruits" },
+      { id:2, name:"Lunar Bananas (bunch)", price:1.69, img:"https://thumbs.dreamstime.com/b/large-bunch-yellow-bananas-hanging-banana-tree-357067936.jpg?w=768", cat:"Fruits" },
+      { id:3, name:"Starlight Oranges (1 kg)", price:3.49, img:"https://supersavings.lk/wp-content/uploads/2021/05/Orange-1.png", cat:"Fruits" },
+      { id:13, name:"Pluto Pears (1 kg)", price:2.95, img:"https://tse1.mm.bing.net/th/id/OIP.N8h4wjceQxLttep9PnQVxAHaHa?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", cat:"Fruits" },
+      // Vegetables (4 items)
+      { id:4, name:"Meteor Carrots (1 kg)", price:1.39, img:"https://www.butter-n-thyme.com/wp-content/uploads/2022/10/Baltimore-Carrots-types-of-carrots-768x1152.jpg", cat:"Vegetables" },
+      { id:5, name:"Nebula Broccoli (500 g)", price:2.79, img:"https://nebula.org/blog/wp-content/uploads/2023/03/broccoli.jpg", cat:"Vegetables" },
+      { id:6, name:"Galaxy Spinach (200 g)", price:1.99, img:"https://th.bing.com/th/id/R.1f0c87a96ca8aa4823ec27e2ccb5956b?rik=mZ0ISGUVrDqF0A&riu=http%3a%2f%2frukmini1.flixcart.com%2fimage%2f300%2f300%2fxif0q%2fplant-seed%2fw%2fg%2fn%2f1-rty20-greenry-original-imah8gd4p2gg7zcw.jpeg&ehk=vmEMk5t0WOajT3LFoLyei9KoNX7AeBvF2SOViJ13po0%3d&risl=&pid=ImgRaw&r=0", cat:"Vegetables" },
+      { id:14, name:"Celestial Tomatoes (500 g)", price:2.15, img:"https://www.epicgardening.com/wp-content/uploads/2024/06/Ripening-branch-of-red-and-green-tomato.jpeg", cat:"Vegetables" },
+      // Dairy (4 items)
+      { id:7, name:"Moon Milk (1 L)", price:1.29, img:"https://st2.depositphotos.com/1001877/12383/i/600/depositphotos_123834700-stock-photo-milk-carton-packs-isolated-on.jpg", cat:"Dairy" },
+      { id:8, name:"Stellar Cheddar (200 g)", price:4.99, img:"https://media.cnn.com/api/v1/images/stellar/prod/211206051811-21-europe-best-cheeses-cheddar-somerset.jpg?q=h_2813,w_5000,x_0,y_0/h_447", cat:"Dairy" },
+      { id:15, name:"Milky Galaxy Yogurt (400 g)", price:2.25, img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=420&q=80", cat:"Dairy" },
+      { id:16, name:"Astronaut Butter (250 g)", price:3.49, img:"https://foodiosity.com/wp-content/uploads/2021/04/yellow-butter.jpg", cat:"Dairy" },
+      // Bakery (4 items)
+      { id:9, name:"Orbit Bread Loaf", price:2.79, img:"https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=420&q=80", cat:"Bakery" },
+      { id:17, name:"Galactic Croissant", price:1.49, img:"https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202227/0015/galaxy-classic-chocolate-croissants-set-of-30-o.jpg", cat:"Bakery" },
+      { id:18, name:"Nebula Baguette", price:2.29, img:"https://assets-eu-01.kc-usercontent.com/559bb7d3-88a4-01c1-79a3-dd4d5b2d2bb0/b952b71e-20ff-4434-9486-5aa0b4378145/1-French-Baguettes.jpg", cat:"Bakery" },
+      { id:19, name:"Meteor Muffins (2 pcs)", price:1.99, img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=420&q=80", cat:"Bakery" },
+      // Meat (4 items)
+      { id:10, name:"Comet Chicken (1 kg)", price:8.49, img:"https://englishmeatempire.com/wp-content/uploads/2023/05/images-51.jpeg", cat:"Meat" },
+      { id:20, name:"Star Steak (400 g)", price:9.99, img:"https://www.homewetbar.com/blog/wp-content/uploads/2014/04/how-to-grill-steak.jpg", cat:"Meat" },
+      { id:21, name:"Moon Mince (500 g)", price:6.79, img:"https://www.hanifaafrozen.sg/media/catalog/product/m/i/mince-meat2.jpg", cat:"Meat" },
+      { id:22, name:"Meteor Sausage Pack", price:4.65, img:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=420&q=80", cat:"Meat" },
+      // Pantry (4 items)
+      { id:11, name:"Pasta Nebula (500 g)", price:1.99, img:"https://centslessdeals.com/wp-content/uploads/2022/09/Skillet-Pasta-With-Ground-Beef-TheShortcutKitchen-9-1024x1536.jpg", cat:"Pantry" },
+      { id:12, name:"Marinara Meteor", price:1.49, img:"https://tse1.mm.bing.net/th/id/OIP.16xXLRm_Bwgnp8B5g-XTPwHaLH?cb=ucfimg2ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3", cat:"Pantry" },
+      { id:23, name:"Rocket Rice (1 kg)", price:2.19, img:"https://wallpapers.com/images/hd/rice-background-wqjdq3dvpktg1fal.jpg", cat:"Pantry" },
+      { id:24, name:"Astro Oil (1 L)", price:3.29, img:"https://cdn-prod.medicalnewstoday.com/content/images/hero/324/324844/324844_1100.jpg", cat:"Pantry" }
+    ];
+
+    const categories = ["All", ...new Set(rawProducts.map(p => p.cat))].sort();
+
+    // ==== STATE ====
+    let cart = JSON.parse(localStorage.getItem('mooncart_cart') || '[]');
+    let currentCategory = "All";
+    let searchTerm = "";
+    let lastReceipt = null; // Store receipt after purchase
+
+    // ==== DOM ====
+    const els = {
+      productList: document.getElementById('product-list'),
+      searchInput: document.getElementById('search-input'),
+      catList: document.getElementById('category-list'),
+      cartEl: document.getElementById('cart'),
+      cartToggle: document.getElementById('cart-toggle'),
+      closeCart: document.getElementById('close-cart'),
+      cartItems: document.getElementById('cart-items'),
+      cartTotal: document.getElementById('cart-total'),
+      cartCount: document.getElementById('cart-count'),
+      checkoutBtn: document.getElementById('checkout-btn'),
+      modal: document.getElementById('checkout-modal'),
+      closeModal: document.getElementById('close-modal'),
+      toast: document.getElementById('toast'),
+      themeToggle: document.getElementById('theme-toggle'),
+      paymentForm: document.getElementById('grocery-payment-form'),
+      paymentSuccess: document.getElementById('payment-success'),
+      paymentError: document.getElementById('payment-error'),
+      paymentTotal: document.getElementById('payment-total'),
+      paymentMethods: document.getElementById('payment-methods'),
+      paymentName: document.getElementById('payment-name'),
+      paymentPhone: document.getElementById('payment-phone'),
+      paymentEmail: document.getElementById('payment-email'),
+      paymentAddress: document.getElementById('payment-address'),
+      receiptActions: document.getElementById('receipt-actions'),
+      viewReceiptBtn: document.getElementById('view-receipt-btn'),
+      downloadReceiptBtn: document.getElementById('download-receipt-btn'),
+      receiptModal: document.getElementById('receipt-modal'),
+      receiptContent: document.getElementById('receipt-content'),
+      closeReceiptModal: document.getElementById('close-receipt-modal')
+    };
+
+    // ==== UTILS ====
+    const showToast = (msg) => {
+      els.toast.textContent = msg;
+      els.toast.classList.add('show');
+      setTimeout(() => els.toast.classList.remove('show'), 2200);
+    };
+    const saveCart = () => localStorage.setItem('mooncart_cart', JSON.stringify(cart));
+
+    function getCurrentUser() {
+      try {
+        return JSON.parse(localStorage.getItem('googleStoreUser') || 'null');
+      } catch {
+        return null;
+      }
+    }
+
+    async function sendOrderReceipt(items, receiptObj, paymentMethod = "Grocery checkout", shipping = {}) {
+      const user = getCurrentUser();
+      if (!user || !user.email) {
+        throw new Error("Please login on the home page before checkout.");
+      }
+      const orderItems = items.map((item) => ({
+        product_id: `grocery-${item.product.id}`,
+        product_name: item.product.name,
+        product_image: item.product.img,
+        product_description: item.product.cat,
+        price: Number(item.product.price || 0) * 83,
+        quantity: Number(item.qty || 1)
+      }));
+      const payload = {
+        email: shipping.email || user.email,
+        shipping_name: shipping.name || user.full_name || user.username || user.email,
+        shipping_address: shipping.address || user.address || "Address not provided",
+        shipping_phone: shipping.phone || user.phone || "",
+        payment_method: paymentMethod,
+        payment_status: "paid",
+        transaction_reference: `GROCERY-${Date.now()}`,
+        payment_notes: "Google Grocery service order",
+        items: orderItems
+      };
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data.error || "Order receipt email failed.");
+      }
+      if (data.order) {
+        receiptObj.orderId = data.order_id;
+        receiptObj.emailMessage = data.email_message;
+      }
+      return data;
+    }
+
+    function formatDate(d) {
+      return d.toLocaleString
+        ? d.toLocaleString(undefined, {hour12: false}).replace(",", "")
+        : d.toString();
+    }
+
+    function formatPrice(value) {
+      return "Rs. " + (Number(value || 0) * 83).toLocaleString("en-IN", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    }
+
+    function getCartTotal() {
+      return cart.reduce((sum, item) => sum + (Number(item.product.price || 0) * Number(item.qty || 1)), 0);
+    }
+
+    function setPaymentError(message = "") {
+      els.paymentError.textContent = message;
+      els.paymentError.style.display = message ? "block" : "none";
+    }
+
+    function prefillPaymentFields() {
+      const user = getCurrentUser();
+      els.paymentName.value = user?.full_name || user?.username || "";
+      els.paymentPhone.value = user?.phone || "";
+      els.paymentEmail.value = user?.email || "";
+      els.paymentAddress.value = user?.address || "";
+    }
+
+    function getPaymentDetails() {
+      return {
+        name: els.paymentName.value.trim(),
+        phone: els.paymentPhone.value.trim(),
+        email: els.paymentEmail.value.trim(),
+        address: els.paymentAddress.value.trim()
+      };
+    }
+
+    function validatePaymentDetails(details) {
+      if (!details.name) return "Please enter delivery name.";
+      if (!details.email) return "Please enter email address.";
+      if (!details.phone) return "Please enter phone number.";
+      if (!details.address) return "Please enter delivery address.";
+      return "";
+    }
+
+    function selectGroceryPayment(method) {
+      document.querySelectorAll("[data-payment-method]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.paymentMethod === method);
+      });
+      document.querySelectorAll("[data-payment-panel]").forEach((panel) => {
+        panel.classList.toggle("active", panel.dataset.paymentPanel === method);
+      });
+      setPaymentError("");
+    }
+
+    function copyGroceryUPI() {
+      const input = document.getElementById("upi-input");
+      input.select();
+      navigator.clipboard?.writeText(input.value);
+      showToast("UPI ID copied.");
+    }
+
+    function openCheckoutPayment() {
+      const user = getCurrentUser();
+      if (!user || !user.email) {
+        showToast("Please login on the home page before checkout.");
+        return;
+      }
+      prefillPaymentFields();
+      setPaymentError("");
+      selectGroceryPayment("UPI");
+      els.paymentTotal.textContent = formatPrice(getCartTotal());
+      els.paymentForm.style.display = "block";
+      els.paymentSuccess.style.display = "none";
+      els.receiptActions.style.display = "none";
+      els.closeModal.textContent = "Close";
+      els.modal.classList.add("open");
+      gsap.fromTo("#modal-content-root",
+        { scale: 0.6, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" }
+      );
+      gsap.to(els.cartEl, { x: 400, duration: 0.4, ease: "power3.in", onComplete: () => els.cartEl.classList.remove("open") });
+    }
+
+    async function completeGroceryPayment(method) {
+      if (!cart.length) {
+        els.modal.classList.remove("open");
+        return showToast("Cart is empty!");
+      }
+      const details = getPaymentDetails();
+      const detailError = validatePaymentDetails(details);
+      if (detailError) {
+        setPaymentError(detailError);
+        return;
+      }
+      if (method === "Card") {
+        const cardNumber = document.getElementById("card-number").value.trim();
+        const cardName = document.getElementById("card-name").value.trim();
+        const cardExpiry = document.getElementById("card-expiry").value.trim();
+        const cardCvv = document.getElementById("card-cvv").value.trim();
+        if (!cardNumber || !cardName || !cardExpiry || !cardCvv) {
+          setPaymentError("Please enter complete card details.");
+          return;
+        }
+      }
+      if (method === "Net Banking") {
+        const bankUser = document.getElementById("bank-user").value.trim();
+        const bankPassword = document.getElementById("bank-password").value.trim();
+        if (!bankUser || !bankPassword) {
+          setPaymentError("Please enter net banking user ID and password.");
+          return;
+        }
+      }
+      setPaymentError("");
+      const checkoutItems = [...cart];
+      const receiptObj = buildReceiptObj(checkoutItems);
+      try {
+        const response = await sendOrderReceipt(checkoutItems, receiptObj, method, details);
+        lastReceipt = receiptObj;
+        els.paymentForm.style.display = "none";
+        els.paymentSuccess.style.display = "block";
+        els.receiptActions.style.display = "flex";
+        els.closeModal.textContent = "Continue Shopping";
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+        cart = [];
+        saveCart();
+        updateCartUI();
+        showToast(response.email_message || "Payment done. Receipt email is being sent.");
+      } catch (error) {
+        setPaymentError(error.message || "Order failed. Please try again.");
+      }
+    }
+
+    function buildReceiptObj(items) {
+      // items: array of {product, qty}
+      let total = 0;
+      let receiptLines = [];
+      items.forEach(i => {
+        total += i.product.price * i.qty;
+        receiptLines.push({
+          name: i.product.name,
+          qty: i.qty,
+          priceEach: i.product.price,
+          total: i.product.price * i.qty
+        });
+      });
+      return {
+        date: formatDate(new Date()),
+        lines: receiptLines,
+        total: total
+      };
+    }
+
+    function renderReceiptTable(receiptObj) {
+      // outputs simple HTML for viewing
+      let out = '';
+      out += `<div style="margin-bottom:0.3rem;text-align:right;font-size:0.92em;color:#a1a1b1;">${receiptObj.date}</div>`;
+      out += `<table style="width:100%; border-collapse:collapse; font-size:1rem;">`;
+      out += "<thead><tr><th align='left'>Product</th><th>Qty</th><th>Each</th><th align='right'>Total</th></tr></thead><tbody>";
+      for(const line of receiptObj.lines) {
+        out += `<tr>
+          <td>${line.name}</td>
+          <td style="text-align:center;">${line.qty}</td>
+          <td style="text-align:center;">${formatPrice(line.priceEach)}</td>
+          <td style="text-align:right;">${formatPrice(line.total)}</td>
+        </tr>`;
+      }
+      out += "</tbody></table>";
+      out += `<div style="border-top:1px dashed #888; margin-top:1.1em;padding-top:.6em;text-align:right;font-weight:700;">Total: ${formatPrice(receiptObj.total)}</div>`;
+      out += "<div style='font-size:0.98em; margin-top:1em;color:#c0c0ff;'>Thank you for your purchase from MoonCart!</div>";
+      return out;
+    }
+
+    function receiptText(receiptObj) {
+      // For downloading as .txt
+      let text = `MoonCart Order Receipt\nDate: ${receiptObj.date}\n\n`;
+      text += "Product                Qty   Each     Total\n";
+      for(const l of receiptObj.lines) {
+        // pad name 20, qty 5, each 8, total
+        let n = l.name.padEnd(20,' ').slice(0,20);
+        let q = String(l.qty).padStart(3,' ');
+        let pe = formatPrice(l.priceEach).padStart(12,' ');
+        let tot = formatPrice(l.total).padStart(13,' ');
+        text += `${n} ${q}  ${pe} ${tot}\n`;
+      }
+      text += `\nTotal: ${formatPrice(receiptObj.total)}\n`;
+      text += "\nThank you for shopping with MoonCart!\n";
+      return text;
+    }
+
+    function showReceiptModal() {
+      if (!lastReceipt) return;
+      els.receiptContent.innerHTML = renderReceiptTable(lastReceipt);
+      els.receiptModal.classList.add("open");
+      gsap.fromTo("#receipt-modal-content",
+        { scale: 0.6, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.45, ease: "power3.out" }
+      );
+    }
+    function closeReceiptModal() {
+      els.receiptModal.classList.remove("open");
+    }
+
+    function downloadReceipt() {
+      if(!lastReceipt) return;
+      const blob = new Blob([receiptText(lastReceipt)], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `MoonCart-Receipt-${Date.now()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    }
+
+    // ==== FILTER ====
+    const getFiltered = () => rawProducts.filter(p => {
+      const catOk = currentCategory === "All" || p.cat === currentCategory;
+      const searchOk = p.name.toLowerCase().includes(searchTerm);
+      return catOk && searchOk;
+    });
+
+    // ==== CATEGORIES ====
+    const renderCategories = () => {
+      els.catList.innerHTML = '';
+      categories.forEach(c => {
+        const b = document.createElement('button');
+        b.className = `cat-btn ${currentCategory === c ? 'active' : ''}`;
+        b.textContent = c;
+        b.onclick = () => {
+          currentCategory = c;
+          renderProducts(getFiltered());
+          renderCategories();
+        };
+        els.catList.appendChild(b);
+      });
+    };
+
+    // ==== PRODUCTS (GSAP) ====
+    const renderProducts = (list) => {
+      els.productList.innerHTML = '';
+      list.forEach((p, i) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}" loading="lazy">
+          <div class="card-body">
+            <div class="card-title">${p.name}</div>
+            <div class="price">${formatPrice(p.price)}</div>
+            <button class="add-btn" data-id="${p.id}">Add to Cart</button>
+          </div>
+        `;
+        card.querySelector('.add-btn').onclick = () => addToCart(p);
+        els.productList.appendChild(card);
+
+        gsap.fromTo(card,
+          { y: 60, opacity: 0, scale: 0.88 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.7, delay: i * 0.07, ease: "back.out(1.5)" }
+        );
+      });
+    };
+
+    // ==== CART ====
+    const addToCart = (prod) => {
+      const it = cart.find(i => i.product.id === prod.id);
+      if (it) it.qty++; else cart.push({ product: prod, qty: 1 });
+      saveCart();
+      updateCartUI();
+      showToast(`${prod.name} added!`);
+      gsap.to(els.cartToggle, { scale: 1.35, duration: 0.2, yoyo: true, repeat: 1 });
+    };
+
+    const changeQty = (id, delta) => {
+      const it = cart.find(i => i.product.id === id);
+      if (it) {
+        it.qty += delta;
+        if (it.qty <= 0) cart = cart.filter(i => i.product.id !== id);
+        saveCart();
+        updateCartUI();
+      }
+    };
+
+    const updateCartUI = () => {
+      els.cartItems.innerHTML = '';
+      let total = 0, count = 0;
+      cart.forEach((i, idx) => {
+        const {product, qty} = i;
+        total += product.price * qty;
+        count += qty;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${product.img}" alt="${product.name}">
+          <div class="info">
+            <div>${product.name}</div>
+            <div>${formatPrice(product.price)} x ${qty}</div>
+          </div>
+          <div class="qty-controls">
+            <button class="qty-btn" data-d="-1">–</button>
+            <span>${qty}</span>
+            <button class="qty-btn" data-d="1">+</button>
+          </div>
+        `;
+        div.querySelectorAll('.qty-btn').forEach(b => {
+          b.onclick = () => {
+            changeQty(product.id, Number(b.dataset.d));
+            gsap.fromTo(b, { scale: 0.75 }, { scale: 1, duration: 0.2 });
+          };
+        });
+        els.cartItems.appendChild(div);
+        gsap.fromTo(div, { x: 120, opacity: 0 }, { x: 0, opacity: 1, duration: 0.45, delay: idx * 0.06 });
+      });
+      els.cartTotal.textContent = formatPrice(total);
+      els.cartCount.textContent = count;
+    };
+
+    // ==== EVENTS ====
+    els.searchInput.addEventListener('input', e => {
+      searchTerm = e.target.value.toLowerCase();
+      renderProducts(getFiltered());
+    });
+
+    els.cartToggle.onclick = () => {
+      const open = els.cartEl.classList.toggle('open');
+      gsap.to(els.cartEl, { x: open ? -400 : 400, duration: 0.55, ease: "power3.inOut" });
+    };
+    els.closeCart.onclick = () => {
+      gsap.to(els.cartEl, { x: 400, duration: 0.55, ease: "power3.in", onComplete: () => els.cartEl.classList.remove('open') });
+    };
+
+    els.paymentMethods.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-payment-method]");
+      if (button) selectGroceryPayment(button.dataset.paymentMethod);
+    });
+
+    // Open payment first, then create the order after payment confirmation.
+    els.checkoutBtn.onclick = () => {
+      if (!cart.length) return showToast("Cart is empty!");
+      openCheckoutPayment();
+    };
+
+    els.closeModal.onclick = () => {
+      els.modal.classList.remove('open');
+      els.paymentForm.style.display = "block";
+      els.paymentSuccess.style.display = "none";
+      els.receiptActions.style.display = "none"; // reset for next time
+      els.closeModal.textContent = "Close";
+      setPaymentError("");
+    };
+
+    // Receipt buttons
+    els.viewReceiptBtn.onclick = () => {
+      showReceiptModal();
+    };
+    els.downloadReceiptBtn.onclick = () => {
+      downloadReceipt();
+    };
+
+    // Receipt modal close
+    els.closeReceiptModal.onclick = () => {
+      closeReceiptModal();
+    };
+    // Allow clicking outside on .modal to dismiss receipt modal
+    window.addEventListener("click", function(e){
+      if (e.target === els.receiptModal) closeReceiptModal();
+      if (e.target === els.modal) els.modal.classList.remove("open");
+    });
+
+    // Theme toggle
+    els.themeToggle.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      els.themeToggle.textContent = isDark ? 'Sun' : 'Moon';
+    };
+
+    // ==== INIT ====
+    renderCategories();
+    renderProducts(rawProducts);
+    updateCartUI();
+
+    // Parallax header on scroll
+    gsap.to("header", {
+      yPercent: -30,
+      ease: "none",
+      scrollTrigger: { trigger: "header", start: "top top", end: "+=300", scrub: true }
+    });
+  </script>
+  <script src="/image-fallback.js" defer></script>
+  <script src="/session-watchdog.js" defer></script>
+</body>
+</html>

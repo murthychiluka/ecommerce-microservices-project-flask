@@ -1,0 +1,1861 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Multicloud DevOps Veera Sir Naresh IT Store - Shop Smart, Live Better</title>
+  <meta name="description" content="Multicloud DevOps Veera Sir Naresh IT narni multicloud ecommerce home. Fashion, mobiles, electronics, beauty, home, payments, grocery, music and more.">
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="/mobile.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand: #c1121f;
+      --brand-dark: #780000;
+      --brand-light: #fff1b8;
+      --accent: #f4b400;
+      --accent2: #ffcc33;
+      --green: #26a541;
+      --ink: #111827;
+      --ink2: #374151;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --surface: #fff;
+      --bg: #f0f4fb;
+      --shadow: 0 2px 16px rgba(193, 18, 31, 0.09);
+      --hover: 0 8px 32px rgba(193, 18, 31, 0.18);
+      font-family: "Nunito", "Space Grotesk", Arial, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+    body.modal-open { overflow: hidden; }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    img { max-width: 100%; display: block; }
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: linear-gradient(90deg, #9b111e 0%, #c1121f 48%, #f4b400 100%);
+      box-shadow: 0 2px 14px rgba(120, 0, 0, 0.28);
+    }
+    .topbar-inner {
+      max-width: 1280px; height: 64px; margin: 0 auto; padding: 0 16px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      color: #fff; font-size: clamp(13px, 1.6vw, 18px); font-weight: 900; white-space: normal;
+      line-height: 1.08; max-width: 280px;
+    }
+    .brand-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: grid; place-items: center;
+      background: #f4b400; color: #780000; font-weight: 900;
+    }
+    .brand span { color: #fff1b8; }
+    .search-wrap {
+      flex: 1; max-width: 560px; height: 42px;
+      display: flex; align-items: center;
+      background: #fff; border-radius: 4px; overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+    .search-wrap input {
+      flex: 1; min-width: 0; border: 0; outline: 0;
+      padding: 0 14px; color: var(--ink); font-size: 14px;
+    }
+    .search-btn {
+      height: 100%; border: 0; padding: 0 18px;
+      display: grid; place-items: center;
+      background: #c1121f; color: #fff; font-size: 18px;
+    }
+    .search-btn:hover { background: #780000; }
+    .topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+    .topbar-btn {
+      border: 0; border-radius: 4px; background: transparent; color: #fff;
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; font-size: 14px; font-weight: 800; white-space: nowrap;
+    }
+    .topbar-btn:hover { background: rgba(255,255,255,0.15); }
+    .topbar-btn .icon { font-size: 18px; }
+    .cart-badge {
+      min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+      display: inline-grid; place-items: center;
+      background: var(--accent); color: #fff; font-size: 11px; font-weight: 900;
+    }
+    .user-chip {
+      position: relative; display: flex; align-items: center; gap: 8px;
+      border-radius: 4px; padding: 6px 12px;
+      background: rgba(255,255,255,0.18); color: #fff; cursor: pointer;
+    }
+    .avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, #ffd700, #ff9f00);
+      color: var(--brand-dark); font-weight: 900; font-size: 13px;
+    }
+    .user-menu {
+      display: none; position: absolute; right: 0; top: calc(100% + 8px);
+      min-width: 230px; overflow: hidden; z-index: 220;
+      background: #fff; border: 1px solid var(--line); border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+    }
+    .user-chip:hover .user-menu, .user-menu:hover { display: block; }
+    .user-menu-header {
+      padding: 16px; color: #fff;
+      background: linear-gradient(135deg, var(--brand), #6aa8ff);
+    }
+    .user-menu-header h3 { font-size: 15px; }
+    .user-menu-header p { margin-top: 2px; font-size: 12px; opacity: 0.86; }
+    .menu-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; border-bottom: 1px solid #f3f4f6;
+      color: var(--ink2); font-size: 14px; cursor: pointer;
+    }
+    .menu-item:hover { background: var(--brand-light); color: var(--brand); }
+    .menu-item.danger:hover { background: #fef2f2; color: #dc2626; }
+    .cats-bar {
+      background: #fff; border-bottom: 1px solid var(--line);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .cats-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 8px;
+      display: flex; overflow-x: auto; scrollbar-width: none;
+    }
+    .cats-inner::-webkit-scrollbar { display: none; }
+    .cat-item {
+      min-width: fit-content; padding: 10px 16px; border-bottom: 3px solid transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      color: var(--ink2); font-size: 13px; font-weight: 800;
+    }
+    .cat-item:hover, .cat-item.active { border-bottom-color: var(--brand); color: var(--brand); }
+    .cat-emoji { font-size: 20px; }
+    .app-heading {
+      max-width: 1280px; margin: 18px auto 0; padding: 0 16px;
+      color: var(--brand-dark); font-family: "Space Grotesk", "Nunito", Arial, sans-serif;
+      font-size: clamp(16px, 1.8vw, 24px);
+      line-height: 1.12; font-weight: 800; letter-spacing: 0;
+      text-align: center;
+    }
+    .app-heading span {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 8px 16px; border: 1px solid rgba(193, 18, 31, 0.16);
+      border-radius: 8px;
+      background: linear-gradient(90deg, #fffdf2 0%, #ffffff 52%, #fff6d6 100%);
+      box-shadow: 0 8px 24px rgba(120, 0, 0, 0.08);
+    }
+    .banner-wrap {
+      max-width: 1280px; margin: 10px auto 0; padding: 0 16px;
+      display: grid; gap: 12px;
+    }
+    .hero-deal-grid {
+      overflow: hidden;
+      border-radius: 14px;
+      width: 100%;
+    }
+    .hero-deal-track {
+      display: flex; gap: 14px; width: max-content;
+      animation: heroDealScroll 44s linear infinite;
+      will-change: transform;
+    }
+    .hero-deal-grid:hover .hero-deal-track { animation-play-state: paused; }
+    .deal-hero, .deal-mini {
+      position: relative; overflow: hidden; border-radius: 14px; color: #fff;
+      min-height: 224px; display: flex; align-items: center; isolation: isolate;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.13);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .deal-hero { flex: 0 0 clamp(300px, 34vw, 470px); }
+    .deal-hero.featured { flex-basis: clamp(380px, 42vw, 600px); }
+    .deal-hero.compact { flex-basis: clamp(250px, 19vw, 310px); }
+    .deal-hero:hover, .deal-mini:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(15, 23, 42, 0.18); }
+    .deal-blue { background: radial-gradient(circle at 75% 30%, rgba(255,255,255,0.22), transparent 26%), linear-gradient(135deg, #0842c8, #0b7cff); }
+    .deal-red { background: radial-gradient(circle at 76% 28%, rgba(255,255,255,0.18), transparent 26%), linear-gradient(135deg, #ef3f23, #c42012); }
+    .deal-dark { background: linear-gradient(135deg, #101a13, #303c29); }
+    .deal-gold { background: radial-gradient(circle at 75% 25%, rgba(255,255,255,0.18), transparent 24%), linear-gradient(135deg, #f59e0b, #b91c1c); }
+    .deal-green { background: radial-gradient(circle at 76% 28%, rgba(255,255,255,0.18), transparent 25%), linear-gradient(135deg, #065f46, #16a34a); }
+    .deal-purple { background: radial-gradient(circle at 75% 28%, rgba(255,255,255,0.2), transparent 26%), linear-gradient(135deg, #4c1d95, #db2777); }
+    .deal-cyan { background: radial-gradient(circle at 75% 25%, rgba(255,255,255,0.2), transparent 26%), linear-gradient(135deg, #075985, #06b6d4); }
+    .deal-copy { position: relative; z-index: 2; padding: 24px 28px; max-width: 58%; }
+    .deal-mini .deal-copy { max-width: 100%; padding: 24px 20px; }
+    .deal-logo {
+      width: fit-content; margin-bottom: 16px; padding: 6px 9px; border-radius: 4px;
+      background: #f6e800; color: #111827; font-size: 18px; line-height: 0.86; font-weight: 900;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.18); text-transform: uppercase;
+    }
+    .deal-note {
+      display: inline-flex; align-items: center; margin-bottom: 10px; padding: 4px 8px;
+      border-radius: 4px; background: rgba(255,255,255,0.92); color: #111827;
+      font-size: 10px; font-weight: 900; text-transform: uppercase;
+    }
+    .deal-hero h1, .deal-hero h2, .deal-mini h2 {
+      margin: 0; font-weight: 900; letter-spacing: 0; line-height: 1.02;
+    }
+    .deal-hero h1 { font-size: clamp(28px, 3.5vw, 48px); text-transform: uppercase; }
+    .deal-hero h2 { font-size: clamp(22px, 2.7vw, 34px); }
+    .deal-mini h2 { font-size: 25px; }
+    .deal-hero p, .deal-mini p { margin-top: 8px; font-size: 14px; font-weight: 800; opacity: 0.92; }
+    .deal-card-img {
+      position: absolute; right: 18px; bottom: 8px; z-index: 1;
+      width: min(42%, 220px); height: 78%; object-fit: contain;
+      filter: drop-shadow(0 14px 22px rgba(0,0,0,0.25));
+    }
+    .deal-red .deal-card-img { width: min(48%, 245px); height: 82%; }
+    .deal-dark .deal-card-img { width: min(70%, 210px); opacity: 0.92; }
+    .bank-strip {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 7px 11px;
+      border-radius: 5px; background: rgba(255,255,255,0.92); color: #1f2937;
+      font-size: 11px; font-weight: 900;
+    }
+    .bank-strip strong { color: #1b74e4; font-size: 17px; }
+    .deal-dots { display: flex; justify-content: center; gap: 5px; height: 10px; align-items: center; }
+    .deal-dots span { width: 6px; height: 6px; border-radius: 999px; background: #d1d5db; }
+    .deal-dots span:first-child { width: 16px; background: #6b7280; }
+    .mini-deal-grid {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
+    }
+    .deal-mini {
+      min-height: 124px; border-radius: 8px; align-items: stretch; background: #111827;
+    }
+    .deal-mini img {
+      width: 100%; height: 86px; object-fit: cover; opacity: 0.92;
+    }
+    .deal-mini-info {
+      position: absolute; inset: auto 0 0; z-index: 2; min-height: 38px;
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      padding: 9px 12px; background: #ff3d20; color: #fff; font-size: 13px; font-weight: 900;
+    }
+    .deal-mini-info span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .deal-arrow {
+      width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+      background: #fff; color: #111827; font-size: 18px; flex-shrink: 0;
+    }
+    @keyframes heroDealScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-50% - 7px)); }
+    }
+    .promo-banner-grid {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px;
+    }
+    .promo-banner {
+      position: relative; min-height: 150px; overflow: hidden; border-radius: 10px;
+      display: flex; align-items: center; color: #fff; background: #111827;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .promo-banner:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(15, 23, 42, 0.17); }
+    .promo-banner.wide { grid-column: span 2; }
+    .promo-banner.gold { background: linear-gradient(135deg, #f59e0b, #c1121f); }
+    .promo-banner.green { background: linear-gradient(135deg, #047857, #16a34a); }
+    .promo-banner.pink { background: linear-gradient(135deg, #be185d, #f97316); }
+    .promo-banner.navy { background: linear-gradient(135deg, #0f172a, #2563eb); }
+    .promo-banner.purple { background: linear-gradient(135deg, #4c1d95, #db2777); }
+    .promo-banner.red { background: linear-gradient(135deg, #7f1d1d, #ef4444); }
+    .promo-banner.cyan { background: linear-gradient(135deg, #164e63, #06b6d4); }
+    .promo-banner-copy { position: relative; z-index: 2; width: 62%; padding: 18px; }
+    .promo-banner strong { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; opacity: 0.9; }
+    .promo-banner h3 { margin-top: 6px; font-size: 21px; line-height: 1.05; font-weight: 900; letter-spacing: 0; }
+    .promo-banner p { margin-top: 8px; font-size: 13px; font-weight: 800; opacity: 0.92; }
+    .promo-banner img {
+      position: absolute; right: 8px; bottom: 0; width: 42%; height: 92%; object-fit: contain;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.22));
+    }
+    .promo-strip, .section {
+      max-width: 1280px; margin: 14px auto; padding: 0 16px;
+    }
+    .promo-strip {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px;
+    }
+    .promo-tile {
+      border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      background: #fff; box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .promo-tile:hover { box-shadow: var(--hover); transform: translateY(-2px); }
+    .promo-tile-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: grid; place-items: center; font-size: 22px; flex-shrink: 0;
+    }
+    .promo-tile h4 { font-size: 14px; font-weight: 900; }
+    .promo-tile p { margin-top: 2px; font-size: 12px; color: var(--muted); }
+    .section { animation: fadeUp 0.5s ease both; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 18px; border-radius: 8px 8px 0 0;
+      background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .section-header h2 { font-size: 18px; font-weight: 900; }
+    .section-header a { color: var(--brand); font-weight: 800; font-size: 13px; }
+    .section-body {
+      background: #fff; border-radius: 0 0 8px 8px;
+      padding: 16px; overflow: hidden;
+    }
+    .cat-showcase-grid {
+      display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px;
+    }
+    .cat-tile {
+      border: 1px solid var(--line); border-radius: 8px; padding: 18px 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      background: #fff; text-align: center; box-shadow: var(--shadow);
+      transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+    }
+    .cat-tile:hover { border-color: var(--brand); box-shadow: var(--hover); transform: translateY(-3px); }
+    .cat-tile-icon {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: grid; place-items: center; font-size: 26px;
+    }
+    .cat-tile h3 { color: var(--ink2); font-size: 12px; font-weight: 900; }
+    .cat-tile p { color: var(--green); font-size: 10px; font-weight: 800; }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
+    }
+    .product-card {
+      border: 1px solid transparent; border-radius: 8px; padding: 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      text-align: center; transition: all 0.22s;
+    }
+    .product-card:hover { border-color: var(--brand); box-shadow: var(--hover); transform: translateY(-3px); }
+    .product-thumb {
+      width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden; padding: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(180deg, #f8fbff, #eef3ff);
+    }
+    .product-thumb img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.25s; }
+    .product-card:hover .product-thumb img { transform: scale(1.07); }
+    .product-card h3 { color: var(--ink2); font-size: 13px; line-height: 1.3; font-weight: 800; }
+    .product-price { color: var(--ink); font-size: 15px; font-weight: 900; }
+    .product-off { color: var(--green); font-size: 12px; font-weight: 800; }
+    .add-btn {
+      width: 100%; border: 0; border-radius: 6px; padding: 7px;
+      background: var(--brand); color: #fff; font-size: 12px; font-weight: 900;
+    }
+    .add-btn:hover { background: var(--brand-dark); transform: scale(1.03); }
+    .deals-scroll { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
+    .deal-card {
+      min-width: 160px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+      background: #fff; box-shadow: var(--shadow); transition: all 0.2s;
+    }
+    .deal-card:hover { box-shadow: var(--hover); transform: translateY(-3px); }
+    .deal-img {
+      height: 140px; padding: 10px; display: grid; place-items: center;
+      background: linear-gradient(180deg, #f8fbff, #eef3ff);
+    }
+    .deal-img img { width: 100%; height: 100%; object-fit: contain; }
+    .deal-info { padding: 10px; }
+    .deal-info h4 { margin-bottom: 4px; color: var(--ink2); font-size: 13px; font-weight: 800; }
+    .deal-price { font-size: 15px; font-weight: 900; }
+    .deal-off { color: var(--green); font-size: 11px; font-weight: 800; }
+    .deal-add-btn {
+      width: calc(100% - 20px); margin: 0 10px 10px; border: 0; border-radius: 6px;
+      padding: 8px 10px; background: var(--brand); color: #fff;
+      font-size: 12px; font-weight: 900;
+    }
+    .deal-add-btn:hover { background: var(--brand-dark); transform: translateY(-1px); }
+    .footer {
+      margin-top: 32px; padding: 32px 16px;
+      background: var(--brand-dark); color: rgba(255,255,255,0.72);
+      text-align: center; font-size: 13px;
+    }
+    .footer strong { color: #fff; }
+    .overlay {
+      position: fixed; inset: 0; z-index: 300; display: none; place-items: center;
+      padding: 18px; background: rgba(15,23,42,0.65);
+    }
+    .overlay.open { display: grid; }
+    .modal-card {
+      width: min(480px, 100%); max-height: calc(100vh - 36px);
+      overflow: auto; border-radius: 12px; background: #fff;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+    .orders-modal { width: min(780px, 100%); }
+    .modal-top {
+      padding: 28px 28px 24px; color: #fff;
+      background: linear-gradient(135deg, var(--brand), #6aa8ff);
+    }
+    .orders-modal .modal-top { background: linear-gradient(135deg, #1a1a2e, #374151); }
+    .modal-top h2 { margin-bottom: 4px; font-size: 24px; font-weight: 900; }
+    .modal-top p { opacity: 0.86; font-size: 14px; }
+    .modal-close {
+      float: right; border: 0; border-radius: 6px; padding: 4px 10px;
+      background: rgba(255,255,255,0.2); color: #fff; font-size: 18px; line-height: 1;
+    }
+    .modal-body { padding: 24px; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 6px; color: var(--ink2); font-size: 13px; font-weight: 800; }
+    .field input, .field textarea {
+      width: 100%; border: 1.5px solid var(--line); border-radius: 8px;
+      padding: 11px 14px; outline: 0; color: var(--ink); font-size: 14px;
+    }
+    .field textarea { resize: vertical; }
+    .field input:focus, .field textarea:focus { border-color: var(--brand); }
+    .form-tabs, .history-tabs, .payment-tab-row { display: flex; gap: 8px; margin-bottom: 20px; }
+    .form-tab, .history-tab, .pay-tab {
+      flex: 1; border: 2px solid var(--line); border-radius: 8px; padding: 10px;
+      background: #fff; color: var(--muted); font-size: 14px; font-weight: 900;
+    }
+    .history-tabs { gap: 0; overflow: hidden; border: 1.5px solid var(--line); border-radius: 8px; }
+    .history-tab { border: 0; border-right: 1px solid var(--line); border-radius: 0; font-size: 13px; }
+    .history-tab:last-child { border-right: 0; }
+    .form-tab.active, .pay-tab.active { border-color: var(--brand); background: var(--brand-light); color: var(--brand); }
+    .history-tab.active { background: var(--brand); color: #fff; }
+    .submit-btn, .checkout-cta {
+      width: 100%; border: 0; border-radius: 8px; padding: 13px;
+      background: var(--brand); color: #fff; font-size: 15px; font-weight: 900;
+    }
+    .submit-btn:hover, .checkout-cta:hover { background: var(--brand-dark); }
+    .submit-btn:disabled, .checkout-cta:disabled { background: var(--muted); cursor: not-allowed; }
+    .notice {
+      display: none; margin-top: 12px; border-radius: 8px; padding: 11px 14px; font-size: 13px;
+    }
+    .notice.success { display: block; background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .notice.error { display: block; background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+    #authOverlay { background: rgba(15,23,42,0.72); }
+    #authOverlay .modal-close {
+      position: absolute; top: 12px; right: 12px; z-index: 140;
+      float: none; width: 34px; height: 34px; padding: 0; border-radius: 999px;
+      background: rgba(17,24,39,0.48); color: #fff;
+    }
+    .auth-card {
+      position: relative; width: min(920px, 100%); min-height: 520px; max-height: calc(100vh - 36px);
+      overflow: hidden; border-radius: 10px; background: #fff;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+    }
+    .auth-form-panel {
+      position: absolute; top: 0; height: 100%; width: 50%;
+      transition: all 0.6s ease-in-out;
+    }
+    .auth-form-panel form {
+      height: 100%; padding: 42px 50px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; background: #fff;
+    }
+    .auth-form-panel h2 {
+      margin-bottom: 16px; color: var(--ink); font-size: 30px; font-weight: 900;
+    }
+    .auth-helper {
+      margin: 0 0 16px; color: var(--muted); font-size: 13px; line-height: 1.45;
+    }
+    .auth-socials { display: flex; justify-content: center; gap: 10px; margin-bottom: 16px; }
+    .auth-social {
+      width: 40px; height: 40px; border: 1px solid #ddd; border-radius: 50%;
+      display: grid; place-items: center; background: #fff; color: #333;
+      font-size: 16px; font-weight: 900; transition: all 0.2s ease;
+    }
+    .auth-social:hover {
+      border-color: #ff4b2b; color: #ff4b2b; background: rgba(255,75,43,0.08);
+      box-shadow: 0 4px 12px rgba(255,75,43,0.25); transform: translateY(-2px) scale(1.05);
+    }
+    .auth-form-panel .field { width: 100%; margin-bottom: 10px; }
+    .auth-form-panel .field label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .auth-form-panel .field input {
+      border: 0; border-radius: 0; background: #eee; padding: 13px 15px;
+    }
+    .auth-form-panel .field input:focus {
+      outline: 2px solid rgba(255,75,43,0.25); border-color: transparent;
+    }
+    .auth-link {
+      margin: 8px 0 16px; border: 0; background: transparent; color: #333;
+      font-size: 14px; font-weight: 700;
+    }
+    .auth-submit {
+      width: auto; min-width: 150px; border: 1px solid #ff4b2b; border-radius: 20px;
+      padding: 12px 36px; background: #ff4b2b; color: #fff;
+      font-size: 12px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
+      transition: transform 80ms ease-in, background 0.2s ease;
+    }
+    .auth-submit:hover { background: #e63d20; }
+    .auth-submit:active, .auth-ghost:active { transform: scale(0.95); }
+    .auth-sign-in { left: 0; z-index: 2; }
+    .auth-sign-up { left: 0; opacity: 0; z-index: 1; }
+    .auth-card.right-panel-active .auth-sign-in { transform: translateX(100%); }
+    .auth-card.right-panel-active .auth-sign-up {
+      transform: translateX(100%); opacity: 1; z-index: 5; animation: authShow 0.6s;
+    }
+    @keyframes authShow {
+      0%, 49.99% { opacity: 0; z-index: 1; }
+      50%, 100% { opacity: 1; z-index: 5; }
+    }
+    .auth-overlay-container {
+      position: absolute; top: 0; left: 50%; width: 50%; height: 100%;
+      overflow: hidden; transition: transform 0.6s ease-in-out; z-index: 100;
+    }
+    .auth-card.right-panel-active .auth-overlay-container { transform: translateX(-100%); }
+    .auth-gradient {
+      position: relative; left: -100%; width: 200%; height: 100%;
+      background: linear-gradient(to right, #ff4b2b, #ff416c); color: #fff;
+      transform: translateX(0); transition: transform 0.6s ease-in-out;
+    }
+    .auth-card.right-panel-active .auth-gradient { transform: translateX(50%); }
+    .auth-overlay-panel {
+      position: absolute; top: 0; width: 50%; height: 100%;
+      padding: 0 44px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; transition: transform 0.6s ease-in-out;
+    }
+    .auth-overlay-panel h2 { margin: 0; color: #fff; font-size: 30px; font-weight: 900; }
+    .auth-overlay-panel p {
+      margin: 20px 0 30px; max-width: 270px; color: rgba(255,255,255,0.9);
+      font-size: 14px; line-height: 20px;
+    }
+    .auth-left { transform: translateX(-20%); }
+    .auth-card.right-panel-active .auth-left { transform: translateX(0); }
+    .auth-right { right: 0; transform: translateX(0); }
+    .auth-card.right-panel-active .auth-right { transform: translateX(20%); }
+    .auth-ghost {
+      border: 1px solid #fff; border-radius: 20px; padding: 12px 42px;
+      background: transparent; color: #fff; font-size: 12px; font-weight: 900;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .auth-otp-note { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    @media (max-width: 760px) {
+      .auth-card { min-height: 680px; overflow-y: auto; }
+      .auth-form-panel {
+        position: relative; inset: auto; width: 100%; height: auto; min-height: 520px;
+        opacity: 1; transform: none !important; display: none;
+      }
+      .auth-card:not(.right-panel-active) .auth-sign-in,
+      .auth-card.right-panel-active .auth-sign-up { display: block; }
+      .auth-overlay-container {
+        position: relative; left: auto; width: 100%; height: auto; transform: none !important;
+      }
+      .auth-gradient {
+        left: auto; width: 100%; min-height: 160px; transform: none !important;
+        display: flex; flex-direction: column;
+      }
+      .auth-overlay-panel {
+        position: relative; width: 100%; min-height: 160px; padding: 24px;
+        transform: none !important; display: none;
+      }
+      .auth-card:not(.right-panel-active) .auth-right,
+      .auth-card.right-panel-active .auth-left { display: flex; }
+      .auth-form-panel form { padding: 44px 24px 28px; }
+    }
+    .history-panel { display: none; }
+    .history-panel.show { display: block; }
+    .order-card {
+      border: 1.5px solid var(--line); border-radius: 10px; margin-bottom: 14px; overflow: hidden;
+    }
+    .order-card:hover { box-shadow: var(--shadow); }
+    .order-card-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      background: var(--bg); padding: 12px 16px;
+    }
+    .order-card-header h4 { font-size: 14px; font-weight: 900; }
+    .status-badge {
+      border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 900;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .status-placed { background: #fef3c7; color: #92400e; }
+    .status-delivered { background: #d1fae5; color: #065f46; }
+    .status-processing { background: #dbeafe; color: #1e40af; }
+    .status-cancelled { background: #fee2e2; color: #991b1b; }
+    .order-items-list { padding: 12px 16px; }
+    .order-item-row {
+      display: flex; align-items: center; gap: 12px; padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .order-item-row:last-child { border-bottom: 0; }
+    .order-item-img {
+      width: 56px; height: 56px; border-radius: 6px; flex-shrink: 0;
+      background: var(--bg); overflow: hidden;
+    }
+    .order-item-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .order-item-info { flex: 1; min-width: 0; }
+    .order-item-info h5 { margin-bottom: 3px; font-size: 13px; font-weight: 800; }
+    .order-item-info p, .activity-meta { color: var(--muted); font-size: 12px; }
+    .order-item-price { font-size: 14px; font-weight: 900; }
+    .order-footer {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      border-top: 1px solid var(--line); background: #f9fafb; padding: 12px 16px;
+    }
+    .order-total { font-size: 15px; font-weight: 900; }
+    .empty-state, .empty-cart {
+      text-align: center; padding: 48px 24px; color: var(--muted);
+    }
+    .big-icon, .ec-icon { margin-bottom: 12px; font-size: 60px; }
+    .empty-state h3, .empty-cart h3 { margin-bottom: 6px; color: var(--ink2); font-size: 18px; font-weight: 900; }
+    .loading-spinner { display: flex; justify-content: center; padding: 32px; }
+    .spinner {
+      width: 36px; height: 36px; border-radius: 50%; border: 3px solid var(--line);
+      border-top-color: var(--brand); animation: spin 0.7s linear infinite;
+    }
+    .toast {
+      position: fixed; right: 24px; bottom: 24px; z-index: 500;
+      display: flex; align-items: center; gap: 10px;
+      border-radius: 8px; padding: 12px 20px;
+      background: var(--ink); color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      font-size: 14px; font-weight: 800; opacity: 0; transform: translateY(80px);
+      transition: all 0.3s;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.success { background: var(--green); }
+    .toast.error { background: #dc2626; }
+    .drawer-overlay {
+      position: fixed; inset: 0; z-index: 249; display: none; background: rgba(0,0,0,0.4);
+    }
+    .drawer-overlay.open { display: block; }
+    .drawer {
+      position: fixed; inset: 0 0 0 auto; z-index: 250;
+      width: min(420px, 100vw); display: flex; flex-direction: column;
+      background: #fff; box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+      transform: translateX(110%); transition: transform 0.3s ease;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; background: var(--brand); color: #fff;
+    }
+    .drawer-header h3 { font-size: 18px; font-weight: 900; }
+    .drawer-close {
+      border: 0; border-radius: 6px; padding: 6px 12px;
+      background: rgba(255,255,255,0.2); color: #fff; font-weight: 900;
+    }
+    .drawer-body { flex: 1; overflow-y: auto; padding: 16px; }
+    .cart-item-row {
+      display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line);
+    }
+    .cart-item-img {
+      width: 72px; height: 72px; border-radius: 8px; flex-shrink: 0; background: var(--bg); overflow: hidden;
+    }
+    .cart-item-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-info h4 { margin-bottom: 4px; font-size: 14px; font-weight: 800; }
+    .qty-ctrl { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .qty-btn {
+      width: 28px; height: 28px; border: 1.5px solid var(--line); border-radius: 6px;
+      display: grid; place-items: center; background: #fff; font-size: 16px; font-weight: 900;
+    }
+    .qty-btn:hover { border-color: var(--brand); color: var(--brand); }
+    .qty-val { min-width: 20px; text-align: center; font-weight: 900; }
+    .remove-btn {
+      border: 0; border-radius: 4px; padding: 4px 6px;
+      background: transparent; color: #dc2626; font-size: 12px; font-weight: 900;
+    }
+    .remove-btn:hover { background: #fef2f2; }
+    .drawer-footer { border-top: 1px solid var(--line); background: #f9fafb; padding: 16px 20px; }
+    .cart-total-row {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .cart-total-row span:first-child { font-size: 16px; font-weight: 800; }
+    .cart-total-row span:last-child { color: var(--brand); font-size: 20px; font-weight: 900; }
+    .payment-tab-row { flex-wrap: wrap; margin: 14px 0; }
+    .pay-tab { flex: 0 0 auto; padding: 8px 14px; border-radius: 6px; font-size: 13px; }
+    .qr-panel {
+      display: flex; align-items: center; gap: 16px; margin: 14px 0; padding: 14px;
+      border: 1px solid var(--line); border-radius: 8px; background: #f8fafc;
+    }
+    .qr-panel img { width: 130px; height: 130px; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
+    .qr-upi { flex: 1; }
+    .qr-upi strong { display: block; margin-bottom: 6px; font-size: 14px; }
+    .qr-upi p { margin-bottom: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .upi-copy {
+      width: 100%; border: 1.5px solid var(--line); border-radius: 6px;
+      padding: 9px 12px; background: #fff; color: var(--brand);
+      text-align: center; font-size: 13px; font-weight: 900;
+    }
+    .receipt-panel {
+      display: none; margin-top: 14px; border: 1px solid #bbf7d0; border-radius: 8px;
+      background: #f0fdf4; padding: 16px;
+    }
+    .receipt-panel.open { display: block; }
+    .receipt-panel h3 { margin-bottom: 10px; color: #065f46; font-size: 16px; }
+    .receipt-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+    .receipt-table th, .receipt-table td { border-bottom: 1px solid #d1fae5; padding: 7px 10px; text-align: left; }
+    .receipt-table th { background: rgba(16,185,129,0.07); color: #065f46; font-weight: 900; }
+    .receipt-btns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+    .rec-btn {
+      border: 0; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 900;
+    }
+    .rec-btn.primary { background: var(--brand); color: #fff; }
+    .rec-btn.ghost { border: 1.5px solid var(--line); background: #fff; color: var(--ink2); }
+    .activity-row {
+      display: flex; align-items: center; gap: 12px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #f9fafb; padding: 12px; margin-bottom: 8px;
+    }
+    .activity-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: grid; place-items: center; background: var(--brand-light);
+    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (max-width: 1100px) {
+      .products-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .cat-showcase-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    @media (max-width: 900px) {
+      .deal-hero, .deal-hero.featured, .deal-hero.compact { flex-basis: clamp(280px, 58vw, 460px); }
+      .deal-dark { min-height: 190px; }
+      .mini-deal-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .promo-banner-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .promo-banner.wide { grid-column: span 1; }
+      .promo-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cat-showcase-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 620px) {
+      .topbar-inner { height: auto; flex-wrap: wrap; padding: 10px 12px; gap: 8px; }
+      .search-wrap { order: 3; flex-basis: 100%; max-width: 100%; }
+      .brand { font-size: 18px; }
+      .app-heading { margin-top: 12px; font-size: 16px; }
+      .app-heading span { width: 100%; padding: 8px 10px; }
+      .topbar-btn { padding: 8px; }
+      .topbar-btn span:not(.icon):not(.cart-badge) { display: none; }
+      .topbar-btn .icon { font-size: 22px; }
+      .promo-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .cat-showcase-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .mini-deal-grid { grid-template-columns: 1fr; }
+      .promo-banner-grid { grid-template-columns: 1fr; }
+      .promo-banner { min-height: 134px; }
+      .promo-banner-copy { width: 68%; padding: 16px; }
+      .promo-banner h3 { font-size: 19px; }
+      .hero-deal-track { animation-duration: 34s; }
+      .deal-hero, .deal-hero.featured, .deal-hero.compact { flex-basis: calc(100vw - 48px); }
+      .deal-hero { min-height: 196px; }
+      .deal-copy { max-width: 66%; padding: 18px; }
+      .deal-logo { font-size: 14px; margin-bottom: 10px; }
+      .deal-hero h1 { font-size: 26px; }
+      .deal-hero h2, .deal-mini h2 { font-size: 22px; }
+      .deal-card-img { right: 8px; width: 40%; height: 70%; }
+      .deal-mini { min-height: 116px; }
+      .qr-panel { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="./" class="brand">
+        <div class="brand-icon">M</div>
+        Multicloud DevOps Veera Sir Naresh IT<span>Harshi  Store</span>
+      </a>
+      <div class="search-wrap">
+        <input type="search" placeholder="Search for products, brands and Akki" id="searchInput">
+        <button class="search-btn" id="searchBtn" aria-label="Search">🔍</button>
+      </div>
+      <div class="topbar-actions">
+        <div id="loginArea">
+          <button class="topbar-btn" id="loginBtn">
+            <span class="icon">👤</span><span>Login</span>
+          </button>
+        </div>
+        <button class="topbar-btn" id="ordersBtn">
+          <span class="icon">📦</span><span>Orders</span>
+        </button>
+        <button class="topbar-btn" id="cartBtnTop">
+          <span class="icon">🛒</span><span>Cart</span><span class="cart-badge" id="cartCountBadge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="cats-bar">
+    <div class="cats-inner" id="topCategories"></div>
+  </nav>
+
+  <h1 class="app-heading"><span>Enterprise E-Commerce Application with Microservices – Veera Sir</span></h1>
+
+  <div class="banner-wrap">
+    <div class="hero-deal-grid">
+      <div class="hero-deal-track">
+      <a class="deal-hero deal-blue featured" href="/electronics" data-service-name="Electronics" data-service-path="/electronics">
+        <div class="deal-copy">
+          <div class="deal-logo">Sasa<br>Lele</div>
+          <div class="deal-note">Starts on 9th May</div>
+          <h1>Early Bird Deals<br>Are Live</h1>
+          <div class="bank-strip"><strong>SBI card</strong> 10% instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=shopping%20sale%20boy%20sneakers%20illustration&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Early bird sale">
+      </a>
+      <a class="deal-hero deal-red featured" href="/fashion" data-service-name="Fashion" data-service-path="/fashion">
+        <div class="deal-copy">
+          <div class="deal-logo">Sasa<br>Lele</div>
+          <div class="deal-note">Early access live</div>
+          <h2>Step Into Comfort</h2>
+          <p>Min. 75% Off</p>
+          <div class="bank-strip"><strong>SBI card</strong> 10% instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=brown%20sandals%20product%20photo&w=520&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Footwear offer">
+      </a>
+      <a class="deal-hero deal-dark compact" href="/mobiles" data-service-name="Mobiles" data-service-path="/mobiles">
+        <div class="deal-copy">
+          <div class="deal-note">Vivo | OriginOS</div>
+          <h2>vivo X300 FE</h2>
+          <p>Pre-book now</p>
+          <div class="bank-strip"><strong>SBI card</strong> instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=vivo%20phone%20product%20photo&w=360&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Vivo phone offer">
+      </a>
+      <a class="deal-hero deal-gold" href="/googlepay" data-service-name="Google Pay" data-service-path="/googlepay">
+        <div class="deal-copy">
+          <div class="deal-logo">Pay<br>Fest</div>
+          <div class="deal-note">Cashback weekend</div>
+          <h2>Recharge & Bills</h2>
+          <p>Rewards on every payment</p>
+          <div class="bank-strip"><strong>UPI</strong> instant receipts</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=upi%20cashback%20mobile%20payment%20offer&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Payment offer">
+      </a>
+      <a class="deal-hero deal-green" href="/googlegrocery" data-service-name="Grocery" data-service-path="/googlegrocery">
+        <div class="deal-copy">
+          <div class="deal-logo">Fresh<br>Cart</div>
+          <div class="deal-note">Morning drops</div>
+          <h2>Grocery Super Saver</h2>
+          <p>Daily essentials from Rs. 99</p>
+          <div class="bank-strip"><strong>Save</strong> extra 20%</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=grocery%20basket%20vegetables%20offer&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Grocery offer">
+      </a>
+      <a class="deal-hero deal-purple" href="/beauty" data-service-name="Beauty" data-service-path="/beauty">
+        <div class="deal-copy">
+          <div class="deal-logo">Glow<br>Up</div>
+          <div class="deal-note">Beauty carnival</div>
+          <h2>Skincare Deals</h2>
+          <p>Up to 60% off today</p>
+          <div class="bank-strip"><strong>SBI card</strong> extra off</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=beauty%20skincare%20products%20sale&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Beauty offer">
+      </a>
+      <a class="deal-hero deal-cyan" href="/appliances" data-service-name="Appliances" data-service-path="/appliances">
+        <div class="deal-copy">
+          <div class="deal-logo">Home<br>Rush</div>
+          <div class="deal-note">Installation offers</div>
+          <h2>AC & Appliances</h2>
+          <p>From Rs. 2,111/month</p>
+          <div class="bank-strip"><strong>EMI</strong> no-cost plans</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=air%20conditioner%20appliance%20sale&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="Appliance offer">
+      </a>
+      <a class="deal-hero deal-blue featured" href="/electronics" data-service-name="Electronics" data-service-path="/electronics" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Sasa<br>Lele</div>
+          <div class="deal-note">Starts on 9th May</div>
+          <h1>Early Bird Deals<br>Are Live</h1>
+          <div class="bank-strip"><strong>SBI card</strong> 10% instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=shopping%20sale%20boy%20sneakers%20illustration&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-red featured" href="/fashion" data-service-name="Fashion" data-service-path="/fashion" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Sasa<br>Lele</div>
+          <div class="deal-note">Early access live</div>
+          <h2>Step Into Comfort</h2>
+          <p>Min. 75% Off</p>
+          <div class="bank-strip"><strong>SBI card</strong> 10% instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=brown%20sandals%20product%20photo&w=520&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-dark compact" href="/mobiles" data-service-name="Mobiles" data-service-path="/mobiles" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-note">Vivo | OriginOS</div>
+          <h2>vivo X300 FE</h2>
+          <p>Pre-book now</p>
+          <div class="bank-strip"><strong>SBI card</strong> instant discount</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=vivo%20phone%20product%20photo&w=360&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-gold" href="/googlepay" data-service-name="Google Pay" data-service-path="/googlepay" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Pay<br>Fest</div>
+          <div class="deal-note">Cashback weekend</div>
+          <h2>Recharge & Bills</h2>
+          <p>Rewards on every payment</p>
+          <div class="bank-strip"><strong>UPI</strong> instant receipts</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=upi%20cashback%20mobile%20payment%20offer&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-green" href="/googlegrocery" data-service-name="Grocery" data-service-path="/googlegrocery" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Fresh<br>Cart</div>
+          <div class="deal-note">Morning drops</div>
+          <h2>Grocery Super Saver</h2>
+          <p>Daily essentials from Rs. 99</p>
+          <div class="bank-strip"><strong>Save</strong> extra 20%</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=grocery%20basket%20vegetables%20offer&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-purple" href="/beauty" data-service-name="Beauty" data-service-path="/beauty" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Glow<br>Up</div>
+          <div class="deal-note">Beauty carnival</div>
+          <h2>Skincare Deals</h2>
+          <p>Up to 60% off today</p>
+          <div class="bank-strip"><strong>SBI card</strong> extra off</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=beauty%20skincare%20products%20sale&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      <a class="deal-hero deal-cyan" href="/appliances" data-service-name="Appliances" data-service-path="/appliances" aria-hidden="true" tabindex="-1">
+        <div class="deal-copy">
+          <div class="deal-logo">Home<br>Rush</div>
+          <div class="deal-note">Installation offers</div>
+          <h2>AC & Appliances</h2>
+          <p>From Rs. 2,111/month</p>
+          <div class="bank-strip"><strong>EMI</strong> no-cost plans</div>
+        </div>
+        <img class="deal-card-img" src="https://tse1.mm.bing.net/th?q=air%20conditioner%20appliance%20sale&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7" alt="">
+      </a>
+      </div>
+    </div>
+    <div class="deal-dots"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="mini-deal-grid">
+      <a class="deal-mini" href="/computers" data-service-name="Computers" data-service-path="/computers">
+        <img src="https://tse1.mm.bing.net/th?q=gaming%20laptop%20product%20dark%20ad&w=520&h=180&c=7&rs=1&p=0&o=5&pid=1.7" alt="Laptop deal">
+        <div class="deal-mini-info"><span>Wishlist now</span></div>
+      </a>
+      <a class="deal-mini" href="/beauty" data-service-name="Beauty" data-service-path="/beauty">
+        <img src="https://tse1.mm.bing.net/th?q=toothpaste%20product%20advertisement&w=520&h=180&c=7&rs=1&p=0&o=5&pid=1.7" alt="Beauty offer">
+        <div class="deal-mini-info"><span>Up to 50% Off</span></div>
+      </a>
+      <a class="deal-mini" href="/appliances" data-service-name="Appliances" data-service-path="/appliances">
+        <img src="https://tse1.mm.bing.net/th?q=air%20conditioner%20home%20appliance%20ad&w=520&h=180&c=7&rs=1&p=0&o=5&pid=1.7" alt="AC deal">
+        <div class="deal-mini-info"><span>From Rs. 27,999</span></div>
+      </a>
+      <a class="deal-mini" href="/home" data-service-name="Home" data-service-path="/home">
+        <img src="https://tse1.mm.bing.net/th?q=samsung%20refrigerator%20kitchen%20product%20ad&w=520&h=180&c=7&rs=1&p=0&o=5&pid=1.7" alt="Refrigerator deal">
+        <div class="deal-mini-info"><span>From Rs. 2,111/M</span></div>
+      </a>
+      <a class="deal-mini" href="/sports" data-service-name="Sports" data-service-path="/sports">
+        <img src="https://tse1.mm.bing.net/th?q=marvel%20sports%20shoes%20product%20ad&w=520&h=180&c=7&rs=1&p=0&o=5&pid=1.7" alt="Sports deal">
+        <div class="deal-mini-info"><span>Explore now</span><div class="deal-arrow">&rsaquo;</div></div>
+      </a>
+    </div>
+    <div class="promo-banner-grid">
+      <a class="promo-banner wide gold" href="/googlepay" data-service-name="Google Pay" data-service-path="/googlepay">
+        <div class="promo-banner-copy">
+          <strong>Recharge festival</strong>
+          <h3>Pay bills and win rewards</h3>
+          <p>UPI, mobile recharge, receipts and payment history.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=upi%20payment%20phone%20cashback%20illustration&w=420&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Payment promotion">
+      </a>
+      <a class="promo-banner green" href="/googlegrocery" data-service-name="Grocery" data-service-path="/googlegrocery">
+        <div class="promo-banner-copy">
+          <strong>Fresh picks</strong>
+          <h3>Grocery deals</h3>
+          <p>Daily essentials from Rs. 99.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=grocery%20basket%20vegetables%20product%20offer&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Grocery promotion">
+      </a>
+      <a class="promo-banner pink" href="/beauty" data-service-name="Beauty" data-service-path="/beauty">
+        <div class="promo-banner-copy">
+          <strong>Glow sale</strong>
+          <h3>Beauty under Rs. 499</h3>
+          <p>Skincare, grooming and makeup offers.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=beauty%20skincare%20products%20offer&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Beauty promotion">
+      </a>
+      <a class="promo-banner navy" href="/electronics" data-service-name="Electronics" data-service-path="/electronics">
+        <div class="promo-banner-copy">
+          <strong>Tech jackpot</strong>
+          <h3>Smart gadgets up to 70% off</h3>
+          <p>Speakers, cameras, hubs and more.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=smart%20gadgets%20electronics%20sale&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Electronics promotion">
+      </a>
+      <a class="promo-banner purple" href="/googlemusic" data-service-name="Music" data-service-path="/googlemusic">
+        <div class="promo-banner-copy">
+          <strong>Weekend vibe</strong>
+          <h3>Music plans and audio picks</h3>
+          <p>Streaming and earphone offers live.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=music%20headphones%20neon%20sale&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Music promotion">
+      </a>
+      <a class="promo-banner red" href="/fashion" data-service-name="Fashion" data-service-path="/fashion">
+        <div class="promo-banner-copy">
+          <strong>Style rush</strong>
+          <h3>Fashion flash picks</h3>
+          <p>Shirts, sneakers and bags from Rs. 499.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=fashion%20clothes%20sneakers%20sale%20offer&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Fashion promotion">
+      </a>
+      <a class="promo-banner cyan" href="/two-wheelers" data-service-name="2 Wheelers" data-service-path="/two-wheelers">
+        <div class="promo-banner-copy">
+          <strong>Ride ready</strong>
+          <h3>Two wheeler gear deals</h3>
+          <p>Helmets, EV picks and accessories.</p>
+        </div>
+        <img src="https://tse1.mm.bing.net/th?q=motorcycle%20helmet%20accessories%20sale&w=360&h=260&c=7&rs=1&p=0&o=5&pid=1.7" alt="Two wheeler promotion">
+      </a>
+    </div>
+  </div>
+  <section class="section">
+    <div class="section-header"><h2>🛍️ Shop by Category</h2></div>
+    <div class="section-body">
+      <div class="cat-showcase-grid" id="categoryGrid"></div>
+    </div>
+  </section>
+
+  <section class="section" id="featured">
+    <div class="section-header">
+      <h2>⚡ Grab or Gone - Flash Deals</h2>
+      <a href="/electronics" data-service-name="Electronics" data-service-path="/electronics">See all</a>
+    </div>
+    <div class="section-body"><div class="products-grid" id="featuredGrid"></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>⭐ Popular Picks</h2>
+      <a href="/fashion" data-service-name="Fashion" data-service-path="/fashion">See all</a>
+    </div>
+    <div class="section-body"><div class="products-grid" id="popularGrid"></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header"><h2>🔥 Trending Deals</h2></div>
+    <div class="section-body"><div class="deals-scroll" id="dealsScroll"></div></div>
+  </section>
+
+  <footer class="footer">
+    <strong>Multicloud DevOps Veera Sir Naresh IT Store</strong> - Multicloud DevOps Veera Sir Store<br>
+    <span style="margin-top:6px;display:block;font-size:11px;">Secure payments - Fast delivery - 24/7 support - Live service activity</span>
+  </footer>
+
+  <div class="overlay" id="authOverlay">
+    <div class="auth-card" id="authCard">
+      <button class="modal-close" onclick="closeModal('authOverlay')" aria-label="Close">x</button>
+      <button class="form-tab active" id="tab-login" onclick="switchTab('login')" style="display:none;">Login</button>
+      <button class="form-tab" id="tab-signup" onclick="switchTab('signup')" style="display:none;">Sign Up</button>
+      <span id="authTitle" style="display:none;">Welcome Back</span>
+      <span id="authSubtitle" style="display:none;">Login to your Multicloud DevOps Veera Sir Naresh IT Store account</span>
+
+      <div class="auth-form-panel auth-sign-up" id="signupForm">
+        <form action="#" onsubmit="event.preventDefault(); document.getElementById('signupStep2').style.display === 'block' ? doSignupOtp() : doSignup();">
+          <h2>Create Account</h2>
+          <div class="auth-socials" aria-label="Social signup options">
+            <a href="#" class="auth-social" aria-label="Facebook">f</a>
+            <a href="#" class="auth-social" aria-label="Google">G</a>
+            <a href="#" class="auth-social" aria-label="LinkedIn">in</a>
+          </div>
+          <p class="auth-helper">or use your email for registration</p>
+          <div id="signupStep1">
+            <div class="field"><label>Username</label><input type="text" id="signupUser" placeholder="Username"></div>
+            <div class="field"><label>Full Name</label><input type="text" id="signupFull" placeholder="Name"></div>
+            <div class="field"><label>Email</label><input type="email" id="signupEmail" placeholder="Email"></div>
+            <div class="field"><label>Password</label><input type="password" id="signupPass" placeholder="Password"></div>
+            <button class="auth-submit" type="submit">Sign Up</button>
+          </div>
+          <div id="signupStep2" style="display:none;">
+            <p class="auth-otp-note">Check your email for a 6-digit OTP</p>
+            <div class="field"><label>OTP Code</label><input type="text" id="signupOtp" placeholder="123456" maxlength="6" style="letter-spacing:6px;text-align:center;font-size:22px;font-weight:900;"></div>
+            <button class="auth-submit" type="button" onclick="doSignupOtp()">Create Account</button>
+          </div>
+          <div class="notice" id="signupNotice"></div>
+        </form>
+      </div>
+
+      <div class="auth-form-panel auth-sign-in" id="loginForm">
+        <form action="#" onsubmit="event.preventDefault(); document.getElementById('loginStep2').style.display === 'block' ? doLoginOtp() : doLogin();">
+          <h2>Sign in</h2>
+          <div class="auth-socials" aria-label="Social login options">
+            <a href="#" class="auth-social" aria-label="Facebook">f</a>
+            <a href="#" class="auth-social" aria-label="Google">G</a>
+            <a href="#" class="auth-social" aria-label="LinkedIn">in</a>
+          </div>
+          <p class="auth-helper">or use your account</p>
+          <div id="loginStep1">
+            <div class="field"><label>Email</label><input type="email" id="loginEmail" placeholder="Email"></div>
+            <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="Password"></div>
+            <!-- <button class="auth-link" type="button">Forgot your password?</button> -->
+            <button class="auth-submit" type="submit">Sign In</button>
+          </div>
+          <div id="loginStep2" style="display:none;">
+            <p class="auth-otp-note">Check your email for a 6-digit OTP</p>
+            <div class="field"><label>OTP Code</label><input type="text" id="loginOtp" placeholder="123456" maxlength="6" style="letter-spacing:6px;text-align:center;font-size:22px;font-weight:900;"></div>
+            <button class="auth-submit" type="button" onclick="doLoginOtp()">Verify OTP</button>
+          </div>
+          <div class="notice" id="loginNotice"></div>
+        </form>
+      </div>
+
+      <div class="auth-overlay-container">
+        <div class="auth-gradient">
+          <div class="auth-overlay-panel auth-left">
+            <h2>Welcome Back to Multi Cloud DevOps Veera Sir Ecommerce Application</h2>
+            <p>To keep connected with us please login with your personal info</p>
+            <button class="auth-ghost" type="button" id="signIn" onclick="switchTab('login')">Sign In</button>
+          </div>
+          <div class="auth-overlay-panel auth-right">
+            <h2>Hello, Veera sir</h2>
+            <p>Enter your personal details and start journey with us</p>
+            <button class="auth-ghost" type="button" id="signUp" onclick="switchTab('signup')">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="ordersOverlay">
+    <div class="modal-card orders-modal">
+      <div class="modal-top">
+        <button class="modal-close" onclick="closeModal('ordersOverlay')">x</button>
+        <h2>📦 My Orders & History</h2>
+        <p id="ordersUserLabel">Loading your order history...</p>
+      </div>
+      <div class="modal-body">
+        <div class="history-tabs">
+          <button class="history-tab active" onclick="switchHistory(event,'orders')">🛒 Orders</button>
+          <button class="history-tab" onclick="switchHistory(event,'payments')">💳 Payments</button>
+          <button class="history-tab" onclick="switchHistory(event,'recharges')">📡 Recharges</button>
+          <button class="history-tab" onclick="switchHistory(event,'activity')">📊 Activity</button>
+        </div>
+        <div id="hist-orders" class="history-panel show"><div class="loading-spinner"><div class="spinner"></div></div></div>
+        <div id="hist-payments" class="history-panel"><div class="loading-spinner"><div class="spinner"></div></div></div>
+        <div id="hist-recharges" class="history-panel"><div class="loading-spinner"><div class="spinner"></div></div></div>
+        <div id="hist-activity" class="history-panel"><div class="loading-spinner"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeCart()"></div>
+  <aside class="drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h3>🛒 Your Cart</h3>
+      <button class="drawer-close" onclick="closeCart()">x</button>
+    </div>
+    <div class="drawer-body" id="cartBody"></div>
+    <div class="drawer-footer">
+      <div class="cart-total-row"><span>Total Amount</span><span id="cartTotalAmt">Rs. 0</span></div>
+      <button class="checkout-cta" id="checkoutCta" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="checkoutOverlay">
+    <div class="modal-card">
+      <div class="modal-top">
+        <button class="modal-close" onclick="closeModal('checkoutOverlay')">x</button>
+        <h2>✅ Checkout</h2>
+        <p>Complete your order securely</p>
+      </div>
+      <div class="modal-body">
+        <div class="field"><label>Full Name</label><input type="text" id="coName" placeholder="Your full name"></div>
+        <div class="field"><label>Email</label><input type="email" id="coEmail" placeholder="your@email.com"></div>
+        <div class="field"><label>Mobile</label><input type="tel" id="coPhone" placeholder="+91 99999 99999"></div>
+        <div class="field"><label>Shipping Address</label><textarea id="coAddress" rows="3" placeholder="Full delivery address with city and pincode"></textarea></div>
+        <label style="font-size:13px;font-weight:800;color:var(--ink2);margin-bottom:8px;display:block;">Payment Method</label>
+        <div class="payment-tab-row" id="payTabs">
+          <button class="pay-tab active" data-pay="UPI" onclick="selectPayment(this)">📱 UPI</button>
+          <button class="pay-tab" data-pay="Card" onclick="selectPayment(this)">💳 Card</button>
+          <button class="pay-tab" data-pay="Net Banking" onclick="selectPayment(this)">🏦 Net Banking</button>
+          <button class="pay-tab" data-pay="Cash on Delivery" onclick="selectPayment(this)">💵 COD</button>
+        </div>
+        <div class="qr-panel" id="qrPanel">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=multicloud-veera-sir@kotak811&pn=Multicloud%20DevOps%20Veera%20Sir%20Naresh%20IT%20Store" alt="UPI QR" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/QR_Code_Example.svg/300px-QR_Code_Example.svg.png'">
+          <div class="qr-upi">
+            <strong>Scan & Pay with UPI</strong>
+            <p>Use PhonePe, GPay, Paytm or any UPI app to scan, or copy the UPI ID below.</p>
+            <button class="upi-copy" onclick="copyUPI()">multicloud-veera-sir@kotak811</button>
+          </div>
+        </div>
+        <button class="submit-btn" onclick="placeOrder()" id="placeOrderBtn">🚀 Place Order</button>
+        <div class="notice" id="coNotice"></div>
+        <div class="receipt-panel" id="receiptPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Added!</div>
+
+  <script>
+    const USER_KEY = "googleStoreUser";
+    const CART_KEY = "googleStoreServiceCart";
+    const API = "/api";
+    const SERVICE_API_QUEUE_KEY = "googleStoreApiQueue";
+    const LOGIN_EXPIRE_MINUTES = 60;
+    let currentUser = null;
+    let cartItems = [];
+    let latestOrder = null;
+    let selectedPayment = "UPI";
+    let historyData = null;
+    let signupEmail = "";
+
+    const categories = [
+      {name:"Home", path:"/", cat:"all", icon:"🏠", deal:"Start here", color:"#eef3ff"},
+      {name:"Fashion", path:"/fashion", cat:"fashion", icon:"👗", deal:"50-80% OFF", color:"#fdf2f8"},
+      {name:"Mobiles", path:"/mobiles", cat:"mobiles", icon:"📱", deal:"Top Brands", color:"#eff6ff"},
+      {name:"Beauty", path:"/beauty", cat:"beauty", icon:"💄", deal:"30% OFF", color:"#fff0f6"},
+      {name:"Electronics", path:"/electronics", cat:"electronics", icon:"🔌", deal:"Latest Tech", color:"#e0f2fe"},
+      {name:"Home", path:"/home", cat:"home", icon:"🏡", deal:"Decor & More", color:"#fdf4ff"},
+      {name:"Appliances", path:"/appliances", cat:"appliances", icon:"🍳", deal:"Up to 60%", color:"#f0fdf4"},
+      {name:"Toys", path:"/toys", cat:"toys", icon:"🧸", deal:"Fun & Learning", color:"#fff7ed"},
+      {name:"Food & Health", path:"/food", cat:"food", icon:"🥗", deal:"Nutrition", color:"#f0fdf4"},
+      {name:"Auto", path:"/auto", cat:"auto", icon:"🚗", deal:"Accessories", color:"#e0f2fe"},
+      {name:"2 Wheelers", path:"/two-wheelers", cat:"two-wheelers", icon:"🛵", deal:"Helmets & EV", color:"#fef3c7"},
+      {name:"Sports", path:"/sports", cat:"sports", icon:"⚽", deal:"Fitness Gear", color:"#ecfdf5"},
+      {name:"Books", path:"/books", cat:"books", icon:"📚", deal:"Knowledge", color:"#f5f3ff"},
+      {name:"Furniture", path:"/furniture", cat:"furniture", icon:"🪑", deal:"Home Setup", color:"#fffbeb"},
+      {name:"Computers", path:"/computers", cat:"computers", icon:"💻", deal:"Work Gear", color:"#eef2ff"},
+      {name:"Earphones", path:"/earphones", cat:"earphones", icon:"🎧", deal:"Music Deals", color:"#f0f9ff"},
+      {name:"Google Pay", path:"/googlepay", cat:"pay", icon:"💳", deal:"Recharge", color:"#ecfdf5"},
+      {name:"Grocery", path:"/googlegrocery", cat:"grocery", icon:"🛒", deal:"Daily Fresh", color:"#f0fdf4"},
+      {name:"Music", path:"/googlemusic", cat:"music", icon:"🎵", deal:"Streaming", color:"#fdf2f8"}
+    ];
+
+    const allProducts = [
+      {id:"e1",name:"Pixel Home Hub",price:6999,off:20,cat:"electronics",kw:"smart display",emoji:"Hub"},
+      {id:"e2",name:"Nest Cam 4K",price:9999,off:15,cat:"electronics",kw:"security camera",emoji:"Cam"},
+      {id:"e3",name:"Chromecast Ultra",price:3499,off:30,cat:"electronics",kw:"streaming device",emoji:"TV"},
+      {id:"e4",name:"Smart Lamp RGB",price:2899,off:25,cat:"electronics",kw:"smart lamp",emoji:"Lamp"},
+      {id:"e5",name:"Bluetooth Speaker",price:2299,off:18,cat:"electronics",kw:"bluetooth speaker",emoji:"Audio"},
+      {id:"m1",name:"Pixel 9a",price:29999,off:10,cat:"mobiles",kw:"android phone",emoji:"Phone"},
+      {id:"m2",name:"Pixel Watch 2",price:19999,off:12,cat:"mobiles",kw:"smartwatch",emoji:"Watch"},
+      {id:"m3",name:"Fast Charger 45W",price:1799,off:40,cat:"mobiles",kw:"USB-C charger",emoji:"Charge"},
+      {id:"m4",name:"Wireless Power Stand",price:3499,off:22,cat:"mobiles",kw:"wireless charger",emoji:"Power"},
+      {id:"m5",name:"Clear Phone Case",price:899,off:50,cat:"mobiles",kw:"phone case",emoji:"Case"},
+      {id:"f1",name:"Cotton Casual Shirt",price:1299,off:55,cat:"fashion",kw:"casual shirt",emoji:"Shirt"},
+      {id:"f2",name:"Denim Jacket",price:2499,off:40,cat:"fashion",kw:"denim jacket",emoji:"Jacket"},
+      {id:"f3",name:"Running Sneakers",price:3299,off:35,cat:"fashion",kw:"sneakers",emoji:"Shoes"},
+      {id:"f4",name:"Women Kurti Set",price:1899,off:60,cat:"fashion",kw:"kurti",emoji:"Kurti"},
+      {id:"f5",name:"Travel Backpack",price:1599,off:45,cat:"fashion",kw:"backpack",emoji:"Bag"},
+      {id:"b1",name:"Vitamin C Serum",price:699,off:30,cat:"beauty",kw:"vitamin serum",emoji:"Glow"},
+      {id:"b2",name:"Sunscreen SPF 50",price:599,off:25,cat:"beauty",kw:"sunscreen",emoji:"SPF"},
+      {id:"b3",name:"Aloe Face Wash",price:299,off:20,cat:"beauty",kw:"face wash",emoji:"Wash"},
+      {id:"a1",name:"Air Fryer 5L",price:5999,off:28,cat:"appliances",kw:"air fryer",emoji:"Fryer"},
+      {id:"a2",name:"Mixer Grinder",price:2799,off:35,cat:"appliances",kw:"mixer grinder",emoji:"Mixer"},
+      {id:"a3",name:"Water Purifier RO",price:10999,off:20,cat:"appliances",kw:"water purifier",emoji:"RO"},
+      {id:"c1",name:"Laptop Pro Dock",price:4999,off:18,cat:"computers",kw:"laptop docking station",emoji:"Dock"},
+      {id:"au1",name:"Bass Earbuds Pro",price:2499,off:32,cat:"earphones",kw:"wireless earbuds",emoji:"Buds"}
+    ];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      currentUser = readUser();
+      renderCategories();
+      renderUserUI();
+      renderFeatured();
+      renderPopular();
+      renderDeals();
+      refreshCart();
+      initServiceTracking();
+      processQueuedServiceRequests();
+      document.getElementById("cartBtnTop").onclick = openCart;
+      document.getElementById("ordersBtn").onclick = openOrders;
+      document.getElementById("loginBtn")?.addEventListener("click", () => openModal("authOverlay"));
+      document.getElementById("searchBtn").onclick = runSearch;
+      document.getElementById("searchInput").addEventListener("keydown", (event) => {
+        if (event.key === "Enter") runSearch();
+      });
+      document.querySelectorAll(".overlay").forEach((overlay) => {
+        overlay.addEventListener("click", (event) => {
+          if (event.target === overlay) closeModal(overlay.id);
+        });
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") document.querySelectorAll(".overlay.open").forEach((o) => closeModal(o.id));
+      });
+    });
+
+    function renderCategories() {
+      const top = document.getElementById("topCategories");
+      top.innerHTML = categories.map((c, idx) => `
+        <a class="cat-item ${idx === 0 ? "active" : ""}" href="${c.path}" data-cat="${c.cat}" data-service-name="${c.name}" data-service-path="${c.path}">
+          <span class="cat-emoji">${c.icon}</span><span>${c.name}</span>
+        </a>
+      `).join("");
+      const grid = document.getElementById("categoryGrid");
+      grid.innerHTML = categories.filter((c) => c.path !== "/").map((c) => `
+        <a class="cat-tile" href="${c.path}" data-service-name="${c.name}" data-service-path="${c.path}">
+          <div class="cat-tile-icon" style="background:${c.color};">${c.icon}</div>
+          <h3>${c.name}</h3><p>${c.deal}</p>
+        </a>
+      `).join("");
+    }
+
+    function imgUrl(p) {
+      const query = `${p.name} ${p.kw} product ecommerce`;
+      return `https://tse1.mm.bing.net/th?q=${encodeURIComponent(query)}&w=420&h=420&c=7&rs=1&p=0&o=5&pid=1.7&lock=${stableHash(p.id)}`;
+    }
+    function stableHash(s) {
+      return Array.from(s).reduce((h,c) => (h * 33 + c.charCodeAt(0)) % 99999, 7) + 1;
+    }
+    function formatRs(v) {
+      return "Rs. " + Number(v || 0).toLocaleString("en-IN");
+    }
+    function readUser() {
+      try {
+        const u = JSON.parse(localStorage.getItem(USER_KEY) || "null");
+        if (!u?.email) return null;
+        if (u.t && Date.now() - u.t > LOGIN_EXPIRE_MINUTES * 60000) {
+          localStorage.removeItem(USER_KEY);
+          return null;
+        }
+        return u;
+      } catch { return null; }
+    }
+    function saveUser(u) {
+      localStorage.setItem(USER_KEY, JSON.stringify({...u, t: Date.now()}));
+      currentUser = readUser();
+    }
+    function clearUser() {
+      localStorage.removeItem(USER_KEY);
+      currentUser = null;
+      historyData = null;
+    }
+    function renderUserUI() {
+      const area = document.getElementById("loginArea");
+      if (currentUser) {
+        const initials = (currentUser.username || currentUser.email || "U")[0].toUpperCase();
+        area.innerHTML = `
+          <div class="user-chip">
+            <div class="avatar">${initials}</div>
+            <span style="font-size:13px;font-weight:800;">${currentUser.username || "User"}</span>
+            <span style="color:rgba(255,255,255,0.7);font-size:12px;">v</span>
+            <div class="user-menu">
+              <div class="user-menu-header"><h3>${currentUser.full_name || currentUser.username || "User"}</h3><p>${currentUser.email}</p></div>
+              <div class="menu-item" onclick="openOrders()">My Orders</div>
+              <div class="menu-item" onclick="openOrders()">Order History</div>
+              <div class="menu-item" onclick="openOrders()">Payments</div>
+              <div class="menu-item" onclick="openOrders()">Activity</div>
+              <div class="menu-item danger" onclick="doLogout()">Logout</div>
+            </div>
+          </div>`;
+      } else {
+        area.innerHTML = `<button class="topbar-btn" id="loginBtn" onclick="openModal('authOverlay')"><span class="icon">👤</span><span>Login</span></button>`;
+      }
+    }
+
+    function renderFeatured() {
+      const items = allProducts.filter((p) => ["e1","e2","e3","m1","m2","f3","a1","b1","b2","c1"].includes(p.id));
+      document.getElementById("featuredGrid").innerHTML = items.map(renderProductCard).join("");
+    }
+    function renderPopular() {
+      const items = allProducts.filter((p) => ["f4","f5","m3","m4","b3","a2","e4","e5","f2","au1"].includes(p.id));
+      document.getElementById("popularGrid").innerHTML = items.map(renderProductCard).join("");
+    }
+    function renderDeals() {
+      document.getElementById("dealsScroll").innerHTML = allProducts.slice(0,14).map((p) => `
+        <div class="deal-card">
+          <div class="deal-img"><img src="${imgUrl(p)}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'"></div>
+          <div class="deal-info"><h4>${p.name}</h4><div class="deal-price">${formatRs(p.price)}</div><div class="deal-off">${p.off}% OFF</div></div>
+          <button class="deal-add-btn" onclick="quickAdd('${p.id}')">Add to Cart</button>
+        </div>
+      `).join("");
+    }
+    function renderProductCard(p) {
+      return `<div class="product-card">
+        <div class="product-thumb"><img src="${imgUrl(p)}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/200x200?text=${encodeURIComponent(p.emoji)}'"></div>
+        <h3>${p.name}</h3><div class="product-price">${formatRs(p.price)}</div><div class="product-off">${p.off}% OFF</div>
+        <button class="add-btn" onclick="quickAdd('${p.id}')">Add to Cart</button>
+      </div>`;
+    }
+
+    function getCartKey(email) { return `${email || "guest"}:home`; }
+    function readCart(email) {
+      try {
+        const all = JSON.parse(localStorage.getItem(CART_KEY) || "{}");
+        return all[getCartKey(email)] || [];
+      } catch { return []; }
+    }
+    function writeCart(email, items) {
+      let all = {};
+      try { all = JSON.parse(localStorage.getItem(CART_KEY) || "{}"); } catch {}
+      all[getCartKey(email)] = items;
+      localStorage.setItem(CART_KEY, JSON.stringify(all));
+    }
+    async function refreshCart() {
+      if (!currentUser?.email) {
+        cartItems = [];
+        renderCartUI();
+        return;
+      }
+      try {
+        const r = await fetch(`${API}/cart?email=${encodeURIComponent(currentUser.email)}`);
+        const d = await r.json().catch(() => ({}));
+        cartItems = d.items || readCart(currentUser.email) || [];
+      } catch {
+        cartItems = readCart(currentUser.email) || [];
+      }
+      renderCartUI();
+    }
+    function renderCartUI() {
+      const count = cartItems.reduce((s,i) => s + Number(i.quantity || 0), 0);
+      const total = cartItems.reduce((s,i) => s + Number(i.subtotal || Number(i.price || 0) * Number(i.quantity || 0)), 0);
+      document.getElementById("cartCountBadge").textContent = count;
+      document.getElementById("cartTotalAmt").textContent = formatRs(total);
+      const body = document.getElementById("cartBody");
+      if (!cartItems.length) {
+        body.innerHTML = `<div class="empty-cart"><div class="ec-icon">🛒</div><h3>Cart is empty</h3><p>Add some items to get started.</p></div>`;
+        return;
+      }
+      body.innerHTML = cartItems.map((item) => {
+        const p = allProducts.find((x) => x.id === item.product_id) || {};
+        const name = item.product_name || p.name || "Product";
+        const price = Number(item.price || p.price || 0);
+        const qty = Number(item.quantity || 1);
+        const img = item.product_image || (p.id ? imgUrl(p) : "");
+        return `<div class="cart-item-row">
+          <div class="cart-item-img"><img src="${img}" alt="${name}" onerror="this.style.display='none'"></div>
+          <div class="cart-item-info">
+            <h4>${name}</h4><div style="font-weight:900;color:var(--brand)">${formatRs(price * qty)}</div>
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('${item.product_id}',-1)">-</button>
+              <span class="qty-val">${qty}</span>
+              <button class="qty-btn" onclick="changeQty('${item.product_id}',1)">+</button>
+              <button class="remove-btn" onclick="removeItem('${item.product_id}')">Remove</button>
+            </div>
+          </div>
+        </div>`;
+      }).join("");
+    }
+    async function quickAdd(productId) {
+      if (!requireLogin("Please login to add items")) return;
+      const p = allProducts.find((x) => x.id === productId);
+      if (!p) return;
+      try {
+        await fetch(`${API}/cart/items`, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({email: currentUser.email, product_id: p.id, product_name: p.name, product_image: imgUrl(p), product_description: `${p.cat} - ${p.off}% off`, price: p.price, quantity: 1})
+        });
+        await refreshCart();
+      } catch {
+        const items = readCart(currentUser.email);
+        const idx = items.findIndex((x) => x.product_id === productId);
+        if (idx >= 0) {
+          items[idx].quantity += 1;
+          items[idx].subtotal = Number(items[idx].price || 0) * Number(items[idx].quantity || 0);
+        } else {
+          items.push({product_id:p.id, product_name:p.name, product_image:imgUrl(p), price:p.price, quantity:1, subtotal:p.price});
+        }
+        writeCart(currentUser.email, items);
+        cartItems = items;
+        renderCartUI();
+      }
+      showToast(`${p.name} added to cart`, "success");
+    }
+    async function changeQty(productId, delta) {
+      if (!requireLogin("Please login to update your cart")) return;
+      const item = cartItems.find((x) => x.product_id === productId);
+      if (!item) return;
+      const newQty = Number(item.quantity || 1) + delta;
+      if (newQty <= 0) {
+        removeItem(productId);
+        return;
+      }
+      try {
+        await fetch(`${API}/cart/items`, {method:"PUT", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email:currentUser.email, product_id:productId, quantity:newQty})});
+        await refreshCart();
+      } catch {
+        const items = readCart(currentUser.email);
+        const idx = items.findIndex((x) => x.product_id === productId);
+        if (idx >= 0) {
+          items[idx].quantity = newQty;
+          items[idx].subtotal = Number(items[idx].price || 0) * newQty;
+        }
+        writeCart(currentUser.email, items);
+        cartItems = items;
+        renderCartUI();
+      }
+    }
+    async function removeItem(productId) {
+      if (!requireLogin("Please login to remove items")) return;
+      try {
+        await fetch(`${API}/cart/items`, {method:"DELETE", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email:currentUser.email, product_id:productId})});
+        await refreshCart();
+      } catch {
+        const items = readCart(currentUser.email).filter((x) => x.product_id !== productId);
+        writeCart(currentUser.email, items);
+        cartItems = items;
+        renderCartUI();
+      }
+    }
+    function openCart() {
+      if (!requireLogin("Please login to view your cart")) return;
+      document.getElementById("cartDrawer").classList.add("open");
+      document.getElementById("drawerOverlay").classList.add("open");
+    }
+    function closeCart() {
+      document.getElementById("cartDrawer").classList.remove("open");
+      document.getElementById("drawerOverlay").classList.remove("open");
+    }
+
+    function openCheckout() {
+      if (!requireLogin("Please login before checkout")) return;
+      if (!cartItems.length) {
+        showToast("Cart is empty", "error");
+        return;
+      }
+      closeCart();
+      document.getElementById("coEmail").value = currentUser.email;
+      document.getElementById("coName").value = currentUser.full_name || currentUser.username || "";
+      document.getElementById("coPhone").value = currentUser.phone || "";
+      document.getElementById("coAddress").value = currentUser.address || "";
+      document.getElementById("receiptPanel").className = "receipt-panel";
+      document.getElementById("coNotice").className = "notice";
+      openModal("checkoutOverlay");
+    }
+    function selectPayment(btn) {
+      if (!requireLogin("Please login to choose payment")) return;
+      document.querySelectorAll(".pay-tab").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      selectedPayment = btn.dataset.pay;
+      document.getElementById("qrPanel").style.display = selectedPayment === "UPI" ? "flex" : "none";
+    }
+    function copyUPI() {
+      if (!requireLogin("Please login to continue payment")) return;
+      navigator.clipboard?.writeText("multicloud-veera-sir@kotak811").then(() => showToast("UPI ID copied", "success")).catch(() => {});
+    }
+    async function placeOrder() {
+      if (!requireLogin("Please login to place order")) return;
+      const name = document.getElementById("coName").value.trim();
+      const email = document.getElementById("coEmail").value.trim();
+      const phone = document.getElementById("coPhone").value.trim();
+      const address = document.getElementById("coAddress").value.trim();
+      if (!name || !email || !phone || !address) return setCoNotice("Please fill all fields", "error");
+      if (email !== currentUser?.email) return setCoNotice("Use your login email", "error");
+      const btn = document.getElementById("placeOrderBtn");
+      btn.disabled = true;
+      btn.textContent = "Placing order...";
+      try {
+        const r = await fetch(`${API}/orders`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email, shipping_name:name, shipping_address:address, shipping_phone:phone, payment_method:selectedPayment, payment_status:"paid", status:"placed"})});
+        const d = await r.json().catch(() => ({}));
+        latestOrder = d.order || {id:d.order_id || `L-${Date.now()}`, shipping_name:name, shipping_email:email, shipping_phone:phone, shipping_address:address, total_amount:d.total_amount || cartItems.reduce((s,i) => s + Number(i.subtotal || 0), 0), status:"placed", created_at:new Date().toLocaleString(), items:cartItems};
+        writeCart(email, []);
+        await refreshCart();
+        historyData = null;
+        renderReceipt(latestOrder);
+        setCoNotice("Order placed. Receipt below.", "success");
+        showToast("Order placed successfully", "success");
+      } catch {
+        latestOrder = {id:`L-${Date.now()}`, shipping_name:name, shipping_email:email, shipping_phone:phone, shipping_address:address, total_amount:cartItems.reduce((s,i) => s + Number(i.subtotal || 0), 0), status:"placed", created_at:new Date().toLocaleString(), items:cartItems};
+        writeCart(email, []);
+        cartItems = [];
+        renderCartUI();
+        renderReceipt(latestOrder);
+        setCoNotice("Order saved locally because backend is offline.", "success");
+      }
+      btn.disabled = false;
+      btn.textContent = "🚀 Place Order";
+    }
+    function setCoNotice(msg, type) {
+      const n = document.getElementById("coNotice");
+      n.textContent = msg;
+      n.className = `notice ${type}`;
+    }
+    function renderReceipt(order) {
+      const rows = (order.items || []).map((i) => `<tr><td>${i.product_name || "Product"}</td><td>${i.quantity}</td><td>${formatRs(i.price)}</td><td>${formatRs(i.subtotal || i.price * i.quantity)}</td></tr>`).join("");
+      const panel = document.getElementById("receiptPanel");
+      panel.innerHTML = `<h3>Payment Successful</h3>
+        <p style="font-size:13px;color:#374151;margin-bottom:10px;">Order <strong>#${order.id}</strong> - ${order.created_at}</p>
+        <table class="receipt-table"><thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>${rows || "<tr><td colspan='4'>No items</td></tr>"}</tbody></table>
+        <div style="text-align:right;font-weight:900;font-size:16px;margin-top:10px;color:#065f46;">Grand Total: ${formatRs(order.total_amount)}</div>
+        <div class="receipt-btns"><button class="rec-btn ghost" onclick="downloadReceipt()">Download</button><button class="rec-btn primary" onclick="openOrders()">View Orders</button></div>`;
+      panel.classList.add("open");
+    }
+    function downloadReceipt() {
+      if (!requireLogin("Please login to download receipt")) return;
+      if (!latestOrder) return;
+      const lines = [`Multicloud DevOps Veera Sir Naresh IT Store Receipt - Order #${latestOrder.id}`, `Date: ${latestOrder.created_at}`, `Name: ${latestOrder.shipping_name}`, `Email: ${latestOrder.shipping_email}`, `Phone: ${latestOrder.shipping_phone || "N/A"}`, `Address: ${latestOrder.shipping_address || "N/A"}`, "", ...(latestOrder.items || []).map((i) => `- ${i.product_name} x${i.quantity} = ${formatRs(i.subtotal || 0)}`), "", `TOTAL: ${formatRs(latestOrder.total_amount)}`, "Status: PLACED - Payment Successful"];
+      const blob = new Blob([lines.join("\n")], {type:"text/plain"});
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `Multicloud DevOps Veera Sir Naresh IT Store_Receipt_${latestOrder.id}.txt`;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 500);
+    }
+
+    function switchTab(tab) {
+      document.getElementById("authCard")?.classList.toggle("right-panel-active", tab === "signup");
+      document.getElementById("tab-login").classList.toggle("active", tab === "login");
+      document.getElementById("tab-signup").classList.toggle("active", tab === "signup");
+      document.getElementById("authTitle").textContent = tab === "login" ? "Welcome Back" : "Create Account";
+      document.getElementById("authSubtitle").textContent = tab === "login" ? "Login to your Multicloud DevOps Veera Sir Naresh IT Store account" : "Sign up to unlock shopping and history";
+    }
+    async function doLogin() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const pass = document.getElementById("loginPass").value.trim();
+      if (!email || !pass) return setNotice("loginNotice", "Enter email and password", "error");
+      try {
+        const r = await fetch(`${API}/login/request`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email, password:pass})});
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) return setNotice("loginNotice", d.error || "Login failed", "error");
+        if (d.otp_required === false) {
+          saveUser(d.user);
+          closeModal("authOverlay");
+          renderUserUI();
+          refreshCart();
+          processQueuedServiceRequests();
+          showToast(`Welcome back, ${d.user.username || "User"}`, "success");
+        } else {
+          setNotice("loginNotice", "OTP sent to your email", "success");
+          document.getElementById("loginStep1").style.display = "none";
+          document.getElementById("loginStep2").style.display = "block";
+        }
+      } catch { setNotice("loginNotice", "Network error", "error"); }
+    }
+    async function doLoginOtp() {
+      const email = document.getElementById("loginEmail").value.trim();
+      const otp = document.getElementById("loginOtp").value.trim();
+      if (!otp) return setNotice("loginNotice", "Enter OTP", "error");
+      try {
+        const r = await fetch(`${API}/login/verify`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email, otp})});
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) return setNotice("loginNotice", d.error || "Invalid OTP", "error");
+        saveUser(d.user);
+        closeModal("authOverlay");
+        renderUserUI();
+        refreshCart();
+        processQueuedServiceRequests();
+        showToast(`Welcome back, ${d.user.username || "User"}`, "success");
+      } catch { setNotice("loginNotice", "Network error", "error"); }
+    }
+    async function doSignup() {
+      const username = document.getElementById("signupUser").value.trim();
+      const full_name = document.getElementById("signupFull").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPass").value.trim();
+      if (!username || !email || !password) return setNotice("signupNotice", "Fill all required fields", "error");
+      signupEmail = email;
+      try {
+        const r = await fetch(`${API}/signup/request`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({username, full_name, email, password})});
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) return setNotice("signupNotice", d.error || "Signup failed", "error");
+        setNotice("signupNotice", "OTP sent. Check email.", "success");
+        document.getElementById("signupStep1").style.display = "none";
+        document.getElementById("signupStep2").style.display = "block";
+      } catch { setNotice("signupNotice", "Network error", "error"); }
+    }
+    async function doSignupOtp() {
+      const otp = document.getElementById("signupOtp").value.trim();
+      if (!otp) return setNotice("signupNotice", "Enter OTP", "error");
+      try {
+        const r = await fetch(`${API}/signup/verify`, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({email:signupEmail, otp})});
+        const d = await r.json().catch(() => ({}));
+        if (!r.ok) return setNotice("signupNotice", d.error || "Invalid OTP", "error");
+        setNotice("signupNotice", "Account created. Login now.", "success");
+        setTimeout(() => {
+          switchTab("login");
+          document.getElementById("loginEmail").value = signupEmail;
+          setNotice("loginNotice", "Account created. Enter password to login.", "success");
+        }, 800);
+      } catch { setNotice("signupNotice", "Network error", "error"); }
+    }
+    function doLogout() {
+      clearUser();
+      renderUserUI();
+      refreshCart();
+      showToast("Logged out successfully", "success");
+    }
+    function setNotice(id, msg, type) {
+      const n = document.getElementById(id);
+      n.textContent = msg;
+      n.className = `notice ${type}`;
+    }
+
+    async function openOrders() {
+      if (!requireLogin("Please login to check your orders")) return;
+      closeModal("checkoutOverlay");
+      document.getElementById("ordersUserLabel").textContent = `Showing history for ${currentUser.email}`;
+      openModal("ordersOverlay");
+      if (!historyData) await loadHistory();
+    }
+    async function loadHistory() {
+      try {
+        const r = await fetch(`${API}/history?email=${encodeURIComponent(currentUser.email)}`);
+        historyData = await r.json().catch(() => ({}));
+      } catch {
+        historyData = {orders:[], payments:[], recharges:[], service_activity:[]};
+      }
+      renderHistory();
+    }
+    function renderHistory() {
+      renderOrdersHistory();
+      renderPaymentsHistory();
+      renderRechargesHistory();
+      renderActivityHistory();
+    }
+    function getStatusClass(s) {
+      if (s === "placed" || s === "processing") return "status-placed";
+      if (s === "delivered" || s === "success" || s === "paid") return "status-delivered";
+      if (s === "cancelled") return "status-cancelled";
+      return "status-processing";
+    }
+    function renderOrdersHistory() {
+      const el = document.getElementById("hist-orders");
+      const orders = historyData?.orders || [];
+      if (!orders.length) {
+        el.innerHTML = `<div class="empty-state"><div class="big-icon">📦</div><h3>No orders yet</h3><p>Start shopping to see your orders here.</p></div>`;
+        return;
+      }
+      el.innerHTML = orders.map((o) => `<div class="order-card">
+        <div class="order-card-header"><div><h4>Order #${o.id}</h4><div style="font-size:12px;color:var(--muted);margin-top:2px;">${new Date(o.created_at || Date.now()).toLocaleString("en-IN")}</div></div><span class="status-badge ${getStatusClass(o.status)}">${(o.status || "placed").toUpperCase()}</span></div>
+        <div class="order-items-list">${(o.items || []).map((item) => `<div class="order-item-row"><div class="order-item-img"><img src="${item.product_image || ""}" alt="${item.product_name || "Product"}" onerror="this.style.display='none'"></div><div class="order-item-info"><h5>${item.product_name || "Product"}</h5><p>Qty: ${item.quantity} x ${formatRs(item.price)}</p></div><div class="order-item-price">${formatRs(item.subtotal || item.price * item.quantity)}</div></div>`).join("") || "<p style='color:var(--muted);font-size:13px;'>No item details</p>"}</div>
+        <div class="order-footer"><div class="order-total">${formatRs(o.total_amount)}</div><div class="activity-meta">${o.shipping_address?.split("\\n")[0] || "Address on file"}</div></div>
+      </div>`).join("");
+    }
+    function renderPaymentsHistory() {
+      const el = document.getElementById("hist-payments");
+      const payments = historyData?.payments || [];
+      if (!payments.length) {
+        el.innerHTML = `<div class="empty-state"><div class="big-icon">💳</div><h3>No payments yet</h3><p>Your payment history will appear here.</p></div>`;
+        return;
+      }
+      el.innerHTML = `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr style="background:var(--bg);"><th style="padding:10px;text-align:left;">ID</th><th style="padding:10px;text-align:left;">Method</th><th style="padding:10px;text-align:left;">Type</th><th style="padding:10px;text-align:right;">Amount</th><th style="padding:10px;text-align:center;">Status</th><th style="padding:10px;text-align:left;">Date</th></tr></thead><tbody>${payments.map((p) => `<tr style="border-bottom:1px solid var(--line);"><td style="padding:10px;">#${p.id}</td><td style="padding:10px;font-weight:800;">${p.payment_method || "Payment"}</td><td style="padding:10px;color:var(--muted);">${p.payment_type || "payment"}</td><td style="padding:10px;text-align:right;font-weight:900;">${formatRs(p.amount)}</td><td style="padding:10px;text-align:center;"><span class="status-badge ${getStatusClass(p.status)}">${p.status || "paid"}</span></td><td style="padding:10px;color:var(--muted);">${new Date(p.created_at || Date.now()).toLocaleDateString("en-IN")}</td></tr>`).join("")}</tbody></table></div>`;
+    }
+    function renderRechargesHistory() {
+      const el = document.getElementById("hist-recharges");
+      const recharges = historyData?.recharges || [];
+      if (!recharges.length) {
+        el.innerHTML = `<div class="empty-state"><div class="big-icon">📡</div><h3>No recharges yet</h3><p>Your recharge history will appear here.</p></div>`;
+        return;
+      }
+      el.innerHTML = recharges.map((r) => `<div class="order-card"><div class="order-card-header"><div><h4>${r.operator_name || "Operator"} Recharge</h4><div style="font-size:12px;color:var(--muted);">${r.mobile_number || ""} - ${new Date(r.created_at || Date.now()).toLocaleDateString("en-IN")}</div></div><span class="status-badge ${getStatusClass(r.status)}">${r.status || "success"}</span></div><div style="padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;"><div><strong>${r.plan_name || "Custom Plan"}</strong><div class="activity-meta">Via ${r.payment_method || "payment"}</div></div><div style="font-size:18px;font-weight:900;color:var(--brand)">${formatRs(r.amount)}</div></div></div>`).join("");
+    }
+    function renderActivityHistory() {
+      const el = document.getElementById("hist-activity");
+      const activities = historyData?.service_activity || [];
+      if (!activities.length) {
+        el.innerHTML = `<div class="empty-state"><div class="big-icon">📊</div><h3>No activity yet</h3><p>Open services from this page to see activity here.</p></div>`;
+        return;
+      }
+      el.innerHTML = activities.map((a) => `<div class="activity-row"><div class="activity-icon">🛍️</div><div style="flex:1;"><div style="font-weight:800;font-size:13px;">${a.service_name || "Service"}</div><div class="activity-meta">${a.activity_type || "open"} - ${a.note || a.service_path || ""}</div></div><div class="activity-meta">${new Date(a.created_at || Date.now()).toLocaleDateString("en-IN")}</div></div>`).join("");
+    }
+    function switchHistory(event, tab) {
+      document.querySelectorAll(".history-tab").forEach((t) => t.classList.remove("active"));
+      document.querySelectorAll(".history-panel").forEach((p) => p.classList.remove("show"));
+      event.currentTarget.classList.add("active");
+      document.getElementById(`hist-${tab}`).classList.add("show");
+    }
+
+    async function mainApiRequest(path, options = {}) {
+      const response = await fetch(`${API}${path}`, {headers: {"Content-Type":"application/json", ...(options.headers || {})}, ...options});
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || "Request failed");
+      return data;
+    }
+    function readQueuedServiceRequests() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(SERVICE_API_QUEUE_KEY) || "[]");
+        return Array.isArray(parsed) ? parsed : [];
+      } catch { return []; }
+    }
+    function writeQueuedServiceRequests(requests) {
+      localStorage.setItem(SERVICE_API_QUEUE_KEY, JSON.stringify(requests));
+    }
+    async function processQueuedServiceRequests() {
+      const user = readUser();
+      const requests = readQueuedServiceRequests();
+      if (!user?.email || !requests.length) return;
+      const remaining = [];
+      let syncedCount = 0;
+      for (const request of requests) {
+        const body = typeof request.body === "string" ? JSON.parse(request.body || "{}") : (request.body || {});
+        if (body.email && body.email !== user.email) {
+          remaining.push(request);
+          continue;
+        }
+        try {
+          await mainApiRequest(request.path, {method: request.method || "POST", body: JSON.stringify({...body, email: body.email || user.email})});
+          syncedCount += 1;
+        } catch {
+          remaining.push(request);
+        }
+      }
+      writeQueuedServiceRequests(remaining);
+      if (syncedCount) showToast(`${syncedCount} service action(s) synced`, "success");
+    }
+    function trackServiceActivity(serviceName, servicePath) {
+      const user = readUser();
+      if (!user?.email || !serviceName || servicePath === "/") return;
+      fetch(`${API}/service-activity`, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({email:user.email, service_name:serviceName, service_path:servicePath, activity_type:"open", note:"Opened from home page"}),
+        keepalive: true
+      }).catch(() => {});
+    }
+    const serviceRoutes = new Set([
+      "/fashion",
+      "/mobiles",
+      "/beauty",
+      "/electronics",
+      "/home",
+      "/appliances",
+      "/toys",
+      "/food",
+      "/auto",
+      "/two-wheelers",
+      "/sports",
+      "/books",
+      "/furniture",
+      "/googlepay",
+      "/computers",
+      "/earphones",
+      "/googlegrocery",
+      "/googlemusic"
+    ]);
+
+    function isProtectedServiceLink(target) {
+      const link = target.closest("a");
+      if (!link) return null;
+      const href = link.getAttribute("href") || "";
+      const path = href.startsWith("/") ? href : link.dataset.servicePath || "";
+      const isServiceLink = link.hasAttribute("data-service-name") && serviceRoutes.has(path);
+      const isKnownServiceUi = link.matches(".card-link, .nav-pill, #cta-button, .cat-item, .cat-tile, .deal-hero, .deal-mini, .promo-banner");
+      return isServiceLink || (isKnownServiceUi && serviceRoutes.has(path)) ? link : null;
+    }
+
+    function initServiceTracking() {
+      document.addEventListener("click", (event) => {
+        const link = isProtectedServiceLink(event.target);
+        if (!link) return;
+        if (!requireLogin("Please login to open services")) {
+          event.preventDefault();
+          return;
+        }
+        trackServiceActivity(link.dataset.serviceName || link.textContent.trim(), link.dataset.servicePath || link.getAttribute("href"));
+      });
+    }
+
+    function requireLogin(message = "Please login first") {
+      currentUser = readUser();
+      if (currentUser?.email) return true;
+      renderUserUI();
+      showToast(message, "error");
+      switchTab("login");
+      openModal("authOverlay");
+      return false;
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
+      document.body.classList.add("modal-open");
+    }
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove("open");
+      if (!document.querySelector(".overlay.open")) document.body.classList.remove("modal-open");
+    }
+    let toastTimer;
+    function showToast(msg, type = "") {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.className = `toast show ${type}`;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.className = "toast", 3000);
+    }
+    function runSearch() {
+      if (!requireLogin("Please login to search and harshi")) return;
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (!q) return;
+      const service = categories.find((c) => c.name.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q));
+      if (service && service.path !== "/") {
+        trackServiceActivity(service.name, service.path);
+        location.href = service.path;
+        return;
+      }
+      const found = allProducts.filter((p) => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q) || p.kw.toLowerCase().includes(q));
+      if (!found.length) {
+        showToast(`No results for "${q}"`, "error");
+        return;
+      }
+      document.getElementById("featuredGrid").innerHTML = found.map(renderProductCard).join("");
+      document.getElementById("featured").scrollIntoView({behavior:"smooth"});
+      showToast(`${found.length} result(s) for "${q}"`, "success");
+    }
+  </script>
+  <script src="/image-fallback.js" defer></script>
+  <script src="/session-watchdog.js" defer></script>
+</body>
+</html>

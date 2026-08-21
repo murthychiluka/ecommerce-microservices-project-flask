@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Pay</title>
+    <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <style>
+        /* [Intact: Styles Unchanged] */
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #06d6a0;
+            --danger: #ef476f;
+            --warning: #ffd166;
+            --dark: #2b2d42;
+            --light: #edf2f4;
+            --gray: #8d99ae;
+            --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-light: linear-gradient(135deg, #5c7aff, #4361ee);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        /* Header & Navigation */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 0;
+            position: relative;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            font-size: 2rem;
+            color: var(--warning);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--warning);
+            transition: width 0.3s;
+        }
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        /* Hero Section */
+        .hero {
+            padding: 120px 2rem 80px;
+            text-align: center;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%234361ee" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient-light);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--gray);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+        .btn-receipt {
+            background: var(--success);
+            color: white;
+            border: none;
+            margin-left: 0.5rem;
+            margin-top: 1rem;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-receipt:hover {
+            background: var(--primary);
+            color: white;
+        }
+        /* Recharge Form */
+        .recharge-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .recharge-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease;
+            overflow: hidden;
+            position: relative;
+        }
+        .recharge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        .form-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        .form-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .step {
+            background: var(--light);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 500;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+        .step.active {
+            background: var(--gradient);
+            color: white;
+            transform: scale(1.05);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            color: var(--gray);
+            z-index: 1;
+        }
+        input, select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+        .operator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .operator-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .operator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .operator-card.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        .operator-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+        }
+        .jio-symbol {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 0.5rem;
+            border-radius: 50%;
+            background: #0a4abf;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+        }
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .plan-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .plan-card.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        .plan-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        .plan-validity {
+            color: var(--success);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .plan-details {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        .amount-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1rem 0;
+        }
+        .amount-btn {
+            padding: 10px 20px;
+            background: #f1f3f5;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .amount-btn:hover, .amount-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .custom-amount {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        .custom-amount input {
+            flex: 1;
+        }
+        /* Payment Section */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        .payment-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .payment-card:hover {
+            transform: translateY(-3px);
+        }
+        .payment-card.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+        .payment-card i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        /* Summary */
+        .summary {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+        .summary-total {
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: var(--primary);
+            border-top: 2px dashed #dee2e6;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        .scanner-payment {
+            display: grid;
+            grid-template-columns: minmax(160px, 220px) 1fr;
+            gap: 1rem;
+            align-items: center;
+            background: var(--light);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .scanner-payment img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: contain;
+            background: white;
+            border-radius: 10px;
+            padding: 0.75rem;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+        }
+        .scanner-payment h4 {
+            margin: 0 0 0.35rem;
+            color: var(--dark);
+        }
+        .scanner-payment p {
+            margin: 0;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+        /* Features */
+        .features {
+            padding: 5rem 2rem;
+            background: white;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+        }
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .footer-col h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--warning);
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        .footer-links a {
+            color: #adb5bd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--warning);
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            background: var(--warning);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #6c757d;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .scanner-payment {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .scanner-payment img {
+                max-width: 220px;
+                margin: 0 auto;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--dark);
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .mobile-menu {
+                display: block;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .recharge-card {
+                padding: 1.5rem;
+            }
+            .form-steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            .step {
+                width: 200px;
+            }
+        }
+        /* Loading Animation */
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: var(--success);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin: 1rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+        .success-message i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .toast.success {
+            background: var(--success);
+        }
+        .toast.error {
+            background: var(--danger);
+        }
+    </style>
+<style>
+.home-back-button {
+  position: absolute;
+  top: 88px;
+  left: 20px;
+  z-index: 1400;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(12, 18, 28, 0.92);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+}
+@media (max-width: 640px) {
+  .home-back-button {
+    top: 82px;
+    left: 12px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+}
+</style>
+  <link rel="stylesheet" href="/mobile.css">
+</head>
+<body>
+<!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Processing your recharge...</p>
+    </div>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fab fa-google-pay"></i>
+                Google Pay
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#recharge">Recharge</a></li>
+                <li>
+                    <a href="#offers" id="showErrorOffers">Offers</a>
+                </li>
+                <li><a href="#support" onclick="poperror(event)">Support</a></li>
+                <script>
+                    function poperror(e) {
+                        e.preventDefault();
+                        showToast("abinash did not allow, please contact abinash", "error");
+                    }
+                </script>
+            </ul>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var errorOffer = document.getElementById('showErrorOffers');
+                    if(errorOffer) {
+                        errorOffer.addEventListener('click', function(e){
+                            e.preventDefault();
+                            showToast("abinash did not allow, please contact abinash", "error");
+                        });
+                    }
+                    function showToast(message, type) {
+                        // Remove any existing toast
+                        let oldToast = document.querySelector('.toast');
+                        if (oldToast) oldToast.remove();
+                        let toast = document.createElement('div');
+                        toast.className = 'toast error';
+                        if (type === 'success') toast.className = 'toast success';
+                        toast.innerHTML = '<i class="fas fa-exclamation-circle"></i>' + message;
+                        document.body.appendChild(toast);
+                        // Show the toast with animation
+                        setTimeout(() => toast.classList.add('show'), 100);
+                        // Remove toast after 3s
+                        setTimeout(() => {
+                            toast.classList.remove('show');
+                            setTimeout(()=>toast.remove(), 300);
+                        }, 3000);
+                    }
+                });
+            </script>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1 class="animate__animated animate__fadeInDown">Google Pay</h1>
+        <p class="animate__animated animate__fadeInUp">Recharge any mobile number in seconds. Get exclusive cashback offers on every transaction!</p>
+    </section>
+
+    <!-- Recharge Form -->
+    <div class="recharge-container" id="recharge">
+        <div class="recharge-card">
+            <h2 class="form-title">Recharge Your Mobile</h2>
+            <div class="form-steps">
+                <div class="step active" data-step="1">1. Mobile Details</div>
+                <div class="step" data-step="2">2. Select Plan</div>
+                <div class="step" data-step="3">3. Payment</div>
+            </div>
+            <form id="rechargeForm">
+                <!-- Step 1: Mobile Details -->
+                <div class="step-content active" data-step="1">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <div class="input-group">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="mobile" placeholder="Enter 10-digit mobile number" maxlength="10" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Operator</label>
+                        <div class="operator-grid">
+                            <div class="operator-card" data-operator="airtel">
+                                <img src="https://www.gavi.org/sites/default/files/investing/funding/donor-contributions-pledges/1200px-Bharti_Airtel_Logo.png" alt="Airtel">
+                                <p>Airtel</p>
+                            </div>
+                            <div class="operator-card" data-operator="jio">
+                                <div class="jio-symbol" aria-label="Jio">Jio</div>
+                                <p>Jio</p>
+                            </div>
+                            <div class="operator-card" data-operator="vi">
+                                <img src="https://telecomtalk.info/wp-content/uploads/2021/07/Vodafone-Idea-Confident-About-Future-in-India.png" alt="Vi">
+                                <p>Vi</p>
+                            </div>
+                            <div class="operator-card" data-operator="bsnl">
+                                <img src="https://static.vecteezy.com/system/resources/previews/021/671/892/non_2x/bsnl-transparent-free-png.png" alt="BSNL">
+                                <p>BSNL</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Select Circle (Optional)</label>
+                        <div class="input-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <select id="circle">
+                                <option value="">Auto Detect</option>
+                                <option value="delhi">Delhi NCR</option>
+                                <option value="mumbai">Mumbai</option>
+                                <option value="kolkata">Kolkata</option>
+                                <option value="chennai">Chennai</option>
+                                <option value="bangalore">Bangalore</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary next-step" style="width: 100%; margin-top: 1rem;">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <!-- Step 2: Select Plan -->
+                <div class="step-content" data-step="2">
+                    <div class="form-group">
+                        <label>Browse Plans</label>
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem; overflow-x: auto; padding: 0.5rem 0;">
+                            <button type="button" class="amount-btn selected" data-category="topup">Top Up</button>
+                            <button type="button" class="amount-btn" data-category="data">Data</button>
+                            <button type="button" class="amount-btn" data-category="fulltt">Full Talktime</button>
+                            <button type="button" class="amount-btn" data-category="sms">SMS</button>
+                            <button type="button" class="amount-btn" data-category="roaming">Roaming</button>
+                        </div>
+                    </div>
+                    <div id="plansContainer">
+                        <!-- Plans will be dynamically loaded here -->
+                    </div>
+                    <!-- The amount will be automatically taken from the selected plan above. -->
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <div class="custom-amount">
+                            <span>₹</span>
+                            <input type="number" id="customAmount" placeholder="Auto-filled from plan" min="10" max="5000" readonly disabled style="background-color: #f1f3f4; cursor: not-allowed;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" class="btn btn-outline prev-step" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary next-step" style="flex: 1;">
+                            Proceed to Pay <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- Step 3: Payment -->
+                <div class="step-content" data-step="3">
+                    <div class="summary">
+                        <div class="summary-item">
+                            <span>Mobile Number:</span>
+                            <strong id="summaryMobile">-</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Operator:</span>
+                            <strong id="summaryOperator">-</strong>
+                        </div>
+                        <div class="summary-item">
+                            <span>Plan/Amount:</span>
+                            <strong id="summaryPlan">-</strong>
+                        </div>
+                        <div class="summary-total">
+                            <span>Total Amount:</span>
+                            <strong id="summaryTotal">₹0</strong>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <div class="payment-methods">
+                            <div class="payment-card" data-method="upi">
+                                <i class="fas fa-qrcode"></i>
+                                <p>UPI</p>
+                            </div>
+                            <div class="payment-card" data-method="card">
+                                <i class="fas fa-credit-card"></i>
+                                <p>Card</p>
+                            </div>
+                            <div class="payment-card" data-method="wallet">
+                                <i class="fas fa-wallet"></i>
+                                <p>Wallet</p>
+                            </div>
+                            <div class="payment-card" data-method="netbanking">
+                                <i class="fas fa-university"></i>
+                                <p>Net Banking</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paymentDetails"></div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button type="button" class="btn btn-outline prev-step" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-primary" style="flex: 1;" id="payBtn">
+                            Pay Now <i class="fas fa-lock"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>Recharge Successful!</h3>
+                <p>Your mobile has been recharged successfully.</p>
+                <div class="recharge-details" id="receiptDetails" style="margin: 1.5rem 0 1rem 0; padding: 1rem; background: #f3f8ff; border-radius: 8px; color: #26367a;">
+                    <div><strong>Mobile Number:</strong> <span id="successMobile"></span></div>
+                    <div><strong>Operator:</strong> <span id="successOperator"></span></div>
+                    <div><strong>Plan/Amount:</strong> <span id="successPlan"></span></div>
+                    <div><strong>Total Amount:</strong> <span id="successTotal"></span></div>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <button class="btn btn-outline" style="margin-top: 1rem;" id="newRechargeBtn">
+                        New Recharge
+                    </button>
+                    <a href="#home" id="backHomeBtn" class="btn btn-outline" style="margin-top: 1rem;">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                    <button class="btn btn-receipt" id="downloadReceiptBtn" type="button" style="margin-top: 1rem;">
+                        <i class="fas fa-download"></i> Download Receipt
+                    </button>
+                </div>
+            </div>
+            <script>
+                // Populate recharge details on success
+                function showSuccessDetails() {
+                    document.getElementById('successMobile').textContent = document.getElementById('summaryMobile').textContent;
+                    document.getElementById('successOperator').textContent = document.getElementById('summaryOperator').textContent;
+                    document.getElementById('successPlan').textContent = document.getElementById('summaryPlan').textContent;
+                    document.getElementById('successTotal').textContent = document.getElementById('summaryTotal').textContent;
+                }
+                // Called after recharge completed (call this where you show success message)
+                if (typeof showSuccessDetailsCalled === 'undefined') {
+                    var showSuccessDetailsCalled = false;
+                }
+                function triggerSuccessDetailsIfNeeded() {
+                    if (!showSuccessDetailsCalled && document.getElementById('successMessage').style.display !== 'none') {
+                        showSuccessDetails();
+                        showSuccessDetailsCalled = true;
+                    }
+                }
+                // Observe visibility change to successMessage
+                const successMsgObserver = new MutationObserver(function(mutations) {
+                    triggerSuccessDetailsIfNeeded();
+                });
+                successMsgObserver.observe(document.getElementById('successMessage'), { attributes: true, attributeFilter: ['style', 'class'] });
+
+                // New Recharge: reset form to step 1 without reload
+                document.getElementById('newRechargeBtn').onclick = function() {
+                    // Hide success message
+                    document.getElementById('successMessage').style.display = 'none';
+                    // Show form
+                    var form = document.querySelector('.recharge-card > form');
+                    if (form) {
+                        form.style.display = '';
+                        // Optionally, reset only necessary fields
+                        form.reset();
+                        // Reset step (assuming step system)
+                        var steps = form.querySelectorAll('.step');
+                        steps.forEach(function(step, i) {
+                            step.style.display = (i === 0) ? '' : 'none';
+                        });
+                        document.querySelectorAll('.operator-card.selected, .amount-card.selected').forEach(function(el){
+                            el.classList.remove('selected');
+                        });
+                        document.getElementById('summaryMobile').textContent = '-';
+                        document.getElementById('summaryOperator').textContent = '-';
+                        document.getElementById('summaryPlan').textContent = '-';
+                        document.getElementById('summaryTotal').textContent = '₹0';
+                    }
+                    showSuccessDetailsCalled = false;
+                };
+
+                // Back to Home button
+                document.getElementById('backHomeBtn').onclick = function(e) {
+                    e.preventDefault();
+                    // Hide the success message and scroll to Home section
+                    document.getElementById('successMessage').style.display = 'none';
+                    var form = document.querySelector('.recharge-card > form');
+                    if (form) {
+                        form.style.display = '';
+                        form.reset();
+                        var steps = form.querySelectorAll('.step');
+                        steps.forEach(function(step, i) {
+                            step.style.display = (i === 0) ? '' : 'none';
+                        });
+                        document.querySelectorAll('.operator-card.selected, .amount-card.selected').forEach(function(el){
+                            el.classList.remove('selected');
+                        });
+                        document.getElementById('summaryMobile').textContent = '-';
+                        document.getElementById('summaryOperator').textContent = '-';
+                        document.getElementById('summaryPlan').textContent = '-';
+                        document.getElementById('summaryTotal').textContent = '₹0';
+                        showSuccessDetailsCalled = false;
+                    }
+                    // Scroll to the hero or home section
+                    var homeSection = document.getElementById('home');
+                    if (homeSection) {
+                        homeSection.scrollIntoView({behavior: 'smooth'});
+                    }
+                };
+
+                // Download Receipt Button
+                document.getElementById("downloadReceiptBtn").onclick = function() {
+                    // Create receipt text
+                    var mobile = document.getElementById('successMobile').textContent || "-";
+                    var operator = document.getElementById('successOperator').textContent || "-";
+                    var plan = document.getElementById('successPlan').textContent || "-";
+                    var total = document.getElementById('successTotal').textContent || "-";
+                    var date = new Date();
+                    var receiptTxt =
+                        "------ Google Pay Recharge Receipt ------\n" +
+                        "Date: " + date.toLocaleString() + "\n" +
+                        "Mobile Number: " + mobile + "\n" +
+                        "Operator: " + operator + "\n" +
+                        "Plan/Amount: " + plan + "\n" +
+                        "Total Amount: " + total + "\n" +
+                        "Transaction ID: GPAY-" + date.getTime() + "\n" +
+                        "----------------------------------------\n" +
+                        "Thank you for using Google Pay! by abinash";
+                    // Download as text file
+                    var blob = new Blob([receiptTxt], {type: "text/plain"});
+                    var link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "GooglePay-Recharge-Receipt.txt";
+                    document.body.appendChild(link);
+                    link.click();
+                    setTimeout(function() { document.body.removeChild(link); }, 100);
+                };
+            </script>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2 class="section-title">Why Choose Google Pay?</h2>
+        <div class="features-grid">
+            <div class="feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Instant Recharge</h3>
+                <p>Get your recharge done in less than 10 seconds with our lightning-fast processing.</p>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>100% Secure</h3>
+                <p>Bank-grade encryption and PCI DSS compliance ensure your transactions are safe.</p>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                <div class="feature-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <h3>Best Offers</h3>
+                <p>Exclusive cashback, discounts, and promo codes on every recharge.</p>
+            </div>
+            <div class="feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock customer support via chat, call, or email.</p>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo" style="color: white; margin-bottom: 1rem;">
+                    <i class="fas fa-bolt"></i>
+                    Google Pay
+                </div>
+                <p>The fastest and most reliable mobile recharge platform in India. Trusted by millions.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home" class="footer-error-link">Home</a></li>
+                    <li><a href="#recharge" class="footer-error-link">Recharge</a></li>
+                    <li><a href="#offers" class="footer-error-link">Offers</a></li>
+                    <li><a href="#support" class="footer-error-link">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#" class="footer-error-link">Mobile Recharge</a></li>
+                    <li><a href="#" class="footer-error-link">DTH Recharge</a></li>
+                    <li><a href="#" class="footer-error-link">Bill Payments</a></li>
+                    <li><a href="#" class="footer-error-link">Gift Cards</a></li>
+                </ul>
+            </div>
+            <script>
+                // Show error pop for all footer links
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelectorAll('.footer-error-link').forEach(function(link) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            if (typeof showToast === 'function') {
+                                showToast("admin did not allow, please contact abinash", "error");
+                            } else {
+                                alert("admin did not allow, please contact abinash");
+                            }
+                        });
+                    });
+                });
+            </script>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> Googlepay@gmail.com</li>
+                    <li><i class="fas fa-map-marker-alt"></i> usa</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 Google Pay. All rights reserved multicloud dveops .
+        </div>
+    </footer>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+    <script>
+        const SERVICE_API_QUEUE_KEY = "googleStoreApiQueue";
+        const USER_KEY = "googleStoreUser";
+
+        function getCurrentUser() {
+            try {
+                return JSON.parse(localStorage.getItem(USER_KEY) || "null");
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function queueMainIndexRequest(path, body, method = 'POST') {
+            let queue = [];
+            try {
+                queue = JSON.parse(localStorage.getItem(SERVICE_API_QUEUE_KEY) || "[]");
+            } catch (error) {
+                queue = [];
+            }
+            queue.push({
+                id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+                path,
+                method,
+                body,
+                source: "googlepay"
+            });
+            localStorage.setItem(SERVICE_API_QUEUE_KEY, JSON.stringify(queue));
+        }
+
+        async function sendBackendRequest(path, body, method = 'POST') {
+            try {
+                const response = await fetch(`/api${path}`, {
+                    method,
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok) {
+                    throw new Error(data.error || response.statusText || 'Backend request failed');
+                }
+                return data;
+            } catch (error) {
+                queueMainIndexRequest(path, body, method);
+                return {
+                    queued: true,
+                    email_queued: false,
+                    email_message: "Backend unavailable. Receipt email will send after the main page syncs this recharge."
+                };
+            }
+        }
+
+        // Sample Plans Data
+        const plans = {
+            airtel: {
+                topup: [
+                    { amount: 10, validity: 'N.A.', details: 'Talktime ₹7.47', type: 'topup' },
+                    { amount: 20, validity: 'N.A.', details: 'Talktime ₹14.95', type: 'topup' },
+                    { amount: 50, validity: 'N.A.', details: 'Talktime ₹40.48', type: 'topup' },
+                    { amount: 100, validity: 'N.A.', details: 'Talktime ₹81.75', type: 'topup' }
+                ],
+                data: [
+                    { amount: 149, validity: '28 days', details: '1.5 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 299, validity: '28 days', details: '2 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 479, validity: '56 days', details: '1.5 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 719, validity: '84 days', details: '1.5 GB/day + Unlimited Calls', type: 'data' }
+                ],
+                fulltt: [
+                    { amount: 100, validity: 'N.A.', details: 'Full Talktime ₹100', type: 'fulltt' },
+                    { amount: 500, validity: 'N.A.', details: 'Full Talktime ₹500', type: 'fulltt' },
+                    { amount: 1000, validity: 'N.A.', details: 'Full Talktime ₹1000', type: 'fulltt' }
+                ]
+            },
+            jio: {
+                topup: [
+                    { amount: 10, validity: 'N.A.', details: 'Talktime ₹7.47', type: 'topup' },
+                    { amount: 100, validity: 'N.A.', details: 'Talktime ₹81.75', type: 'topup' }
+                ],
+                data: [
+                    { amount: 149, validity: '28 days', details: '1.5 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 249, validity: '28 days', details: '2 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 399, validity: '56 days', details: '1.5 GB/day + Unlimited Calls', type: 'data' }
+                ],
+                fulltt: [
+                    { amount: 1000, validity: 'N.A.', details: 'Full Talktime ₹1000', type: 'fulltt' }
+                ]
+            },
+            vi: {
+                topup: [
+                    { amount: 10, validity: 'N.A.', details: 'Talktime ₹7.47', type: 'topup' },
+                    { amount: 50, validity: 'N.A.', details: 'Talktime ₹40.48', type: 'topup' }
+                ],
+                data: [
+                    { amount: 155, validity: '28 days', details: '1 GB/day + Unlimited Calls', type: 'data' },
+                    { amount: 299, validity: '28 days', details: '2 GB/day + Unlimited Calls', type: 'data' }
+                ],
+                fulltt: [
+                    { amount: 500, validity: 'N.A.', details: 'Full Talktime ₹500', type: 'fulltt' }
+                ]
+            },
+            bsnl: {
+                topup: [
+                    { amount: 10, validity: 'N.A.', details: 'Talktime ₹7.47', type: 'topup' }
+                ],
+                data: [
+                    { amount: 151, validity: '28 days', details: '1 GB/day + Unlimited Calls', type: 'data' }
+                ],
+                fulltt: [
+                    { amount: 110, validity: 'N.A.', details: 'Full Talktime ₹110', type: 'fulltt' }
+                ]
+            }
+        };
+        // DOM Elements
+        const mobileMenu = document.getElementById('mobileMenu');
+        const navLinks = document.querySelector('.nav-links');
+        const steps = document.querySelectorAll('.step');
+        const stepContents = document.querySelectorAll('.step-content');
+        const nextBtns = document.querySelectorAll('.next-step');
+        const prevBtns = document.querySelectorAll('.prev-step');
+        const operatorCards = document.querySelectorAll('.operator-card');
+        const planCategoryBtns = document.querySelectorAll('[data-category]');
+        const plansContainer = document.getElementById('plansContainer');
+        const customAmount = document.getElementById('customAmount');
+        const paymentMethods = document.querySelectorAll('.payment-card');
+        const paymentDetails = document.getElementById('paymentDetails');
+        const rechargeForm = document.getElementById('rechargeForm');
+        const payBtn = document.getElementById('payBtn');
+        const loading = document.getElementById('loading');
+        const successMessage = document.getElementById('successMessage');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        // State
+        let currentStep = 1;
+        let selectedOperator = '';
+        let selectedPlan = null;
+        let selectedAmount = 0;
+        let selectedPaymentMethod = '';
+        // Mobile Menu Toggle
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+            const icon = mobileMenu.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+        // Step Navigation
+        steps.forEach(step => {
+            step.addEventListener('click', () => {
+                const stepNum = parseInt(step.dataset.step);
+                if (stepNum < currentStep) {
+                    goToStep(stepNum);
+                }
+            });
+        });
+        nextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (validateCurrentStep()) {
+                    goToStep(currentStep + 1);
+                }
+            });
+        });
+        prevBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                goToStep(currentStep - 1);
+            });
+        });
+        function goToStep(step) {
+            if (step < 1 || step > 3) return;
+            currentStep = step;
+            // Update steps
+            steps.forEach(s => {
+                s.classList.remove('active');
+                if (parseInt(s.dataset.step) === step) {
+                    s.classList.add('active');
+                }
+            });
+            // Update content
+            stepContents.forEach(content => {
+                content.classList.remove('active');
+                if (parseInt(content.dataset.step) === step) {
+                    content.classList.add('active');
+                }
+            });
+            // Update summary if going to payment
+            if (step === 3) {
+                updateSummary();
+            }
+        }
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                const mobile = document.getElementById('mobile').value;
+                if (!mobile || mobile.length !== 10 || !/^\d+$/.test(mobile)) {
+                    showToast('Please enter a valid 10-digit mobile number', 'error');
+                    return false;
+                }
+                if (!selectedOperator) {
+                    showToast('Please select an operator', 'error');
+                    return false;
+                }
+            } else if (currentStep === 2) {
+                if (!selectedPlan && (!customAmount.value || customAmount.value < 10)) {
+                    showToast('Please select a plan or enter a valid amount', 'error');
+                    return false;
+                }
+            } else if (currentStep === 3) {
+                if (!selectedPaymentMethod) {
+                    showToast('Please select a payment method', 'error');
+                    return false;
+                }
+            }
+            return true;
+        }
+        // Operator Selection
+        operatorCards.forEach(card => {
+            card.addEventListener('click', () => {
+                operatorCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedOperator = card.dataset.operator;
+                loadPlans('topup'); // Load default category
+            });
+        });
+        // Plan Category Selection
+        planCategoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                planCategoryBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                const category = btn.dataset.category;
+                loadPlans(category);
+            });
+        });
+        function loadPlans(category) {
+            if (!selectedOperator || !plans[selectedOperator]) return;
+            plansContainer.innerHTML = '';
+            const operatorPlans = plans[selectedOperator][category] || [];
+            if (operatorPlans.length === 0) {
+                plansContainer.innerHTML = '<p style="text-align: center; color: var(--gray);">No plans available in this category.</p>';
+                return;
+            }
+            const grid = document.createElement('div');
+            grid.className = 'plan-grid';
+            operatorPlans.forEach(plan => {
+                const card = document.createElement('div');
+                card.className = 'plan-card';
+                card.innerHTML = `
+                    <div class="plan-price">₹${plan.amount}</div>
+                    <div class="plan-validity">${plan.validity}</div>
+                    <div class="plan-details">${plan.details}</div>
+                `;
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedPlan = plan;
+                    selectedAmount = plan.amount;
+                    customAmount.value = '';
+                });
+                grid.appendChild(card);
+            });
+            plansContainer.appendChild(grid);
+        }
+        // Custom Amount
+        customAmount.addEventListener('input', () => {
+            if (customAmount.value) {
+                document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+                selectedPlan = null;
+                selectedAmount = parseInt(customAmount.value) || 0;
+            }
+        });
+        // Payment Method Selection
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                paymentMethods.forEach(m => m.classList.remove('selected'));
+                method.classList.add('selected');
+                selectedPaymentMethod = method.dataset.method;
+                showPaymentForm(selectedPaymentMethod);
+            });
+        });
+        function showPaymentForm(method) {
+            paymentDetails.innerHTML = '';
+            let formHTML = '';
+            if (method === 'upi') {
+                formHTML = `
+                    <div class="scanner-payment">
+                        <img src="scan.jpg" alt="UPI scanner code">
+                        <div>
+                            <h4>Scan and pay</h4>
+                            <p>Use any UPI app to scan this code, then tap Pay Now to save your recharge.</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>UPI ID</label>
+                        <div class="input-group">
+                            <i class="fas fa-at"></i>
+                            <input type="text" placeholder="yourname@upi" id="upiId">
+                        </div>
+                    </div>
+                `;
+            } else if (method === 'card') {
+                formHTML = `
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <div class="input-group">
+                            <i class="fas fa-credit-card"></i>
+                            <input type="text" placeholder="1234 5678 9012 3456" maxlength="19" id="cardNumber">
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <div class="input-group">
+                                <i class="fas fa-calendar"></i>
+                                <input type="text" placeholder="MM/YY" maxlength="5" id="expiry">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" placeholder="123" maxlength="3" id="cvv">
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (method === 'wallet') {
+                formHTML = `
+                    <div class="form-group">
+                        <label>Wallet</label>
+                        <select style="width: 100%; padding: 15px;">
+                            <option>Paytm</option>
+                            <option>PhonePe</option>
+                            <option>Google Pay</option>
+                            <option>Amazon Pay</option>
+                        </select>
+                    </div>
+                `;
+            } else if (method === 'netbanking') {
+                formHTML = `
+                    <div class="form-group">
+                        <label>Bank</label>
+                        <select style="width: 100%; padding: 15px;">
+                            <option>HDFC Bank</option>
+                            <option>SBI</option>
+                            <option>ICICI Bank</option>
+                            <option>Axis Bank</option>
+                        </select>
+                    </div>
+                `;
+            }
+            paymentDetails.innerHTML = formHTML;
+        }
+        // Update Summary
+        function updateSummary() {
+            const mobile = document.getElementById('mobile').value;
+            document.getElementById('summaryMobile').textContent = mobile;
+            document.getElementById('summaryOperator').textContent = selectedOperator.charAt(0).toUpperCase() + selectedOperator.slice(1);
+            if (selectedPlan) {
+                document.getElementById('summaryPlan').textContent = `₹${selectedPlan.amount} - ${selectedPlan.details}`;
+            } else {
+                document.getElementById('summaryPlan').textContent = `Custom Amount ₹${selectedAmount}`;
+            }
+            document.getElementById('summaryTotal').textContent = `₹${selectedAmount}`;
+        }
+        // Form Submission
+        rechargeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!validateCurrentStep()) return;
+
+            const currentUser = getCurrentUser();
+            if (!currentUser || !currentUser.email) {
+                showToast('Please login on the home page before making a payment.', 'error');
+                return;
+            }
+
+            // Show loading
+            loading.style.display = 'flex';
+            payBtn.disabled = true;
+            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            try {
+                const mobile = document.getElementById('mobile').value;
+                const planName = selectedPlan
+                    ? `${selectedPlan.amount} - ${selectedPlan.details}`
+                    : `Custom Amount ${selectedAmount}`;
+                const transactionReference = `GPAY-${Date.now()}`;
+
+                const rechargeResponse = await sendBackendRequest('/recharges', {
+                    email: currentUser.email,
+                    mobile_number: mobile,
+                    operator_name: selectedOperator,
+                    plan_name: planName,
+                    amount: selectedAmount,
+                    payment_method: selectedPaymentMethod,
+                    status: 'success',
+                    transaction_reference: transactionReference
+                });
+
+                loading.style.display = 'none';
+                payBtn.disabled = false;
+                payBtn.innerHTML = 'Pay Now <i class="fas fa-lock"></i>';
+
+                // Show success
+                document.querySelector('.recharge-card > form').style.display = 'none';
+                successMessage.style.display = 'block';
+
+                showToast(rechargeResponse.email_message || 'Recharge saved. Receipt email is being sent.', 'success');
+
+                // After success, strictly DON'T reload or go to home, even on touch or click
+                // Listen to touches/clicks on the success message, but block navigation or reload
+                let blockInteraction = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                };
+
+                successMessage.addEventListener('click', blockInteraction);
+                successMessage.addEventListener('touchstart', blockInteraction);
+                window.addEventListener('beforeunload', function (e) {
+                    // Prevent accidental reload by user
+                    e.preventDefault();
+                    e.returnValue = '';
+                });
+
+                // After 5s, allow user to reset/navigate, etc. (but do not automatically reset)
+                setTimeout(() => {
+                    successMessage.removeEventListener('click', blockInteraction);
+                    successMessage.removeEventListener('touchstart', blockInteraction);
+                }, 5000);
+            } catch (error) {
+                loading.style.display = 'none';
+                payBtn.disabled = false;
+                payBtn.innerHTML = 'Pay Now <i class="fas fa-lock"></i>';
+                showToast(error.message || 'Payment failed. Please try again.', 'error');
+            }
+        });
+        function resetForm() {
+            // Instead of reloading, just reset all fields and UI to initial state
+            // Hide success message, show form, clear inputs and selections
+            successMessage.style.display = 'none';
+            let form = document.querySelector('.recharge-card > form');
+            form.style.display = 'block';
+            form.reset();
+            // Reset wizard steps to initial state
+            document.querySelectorAll('.form-steps .step').forEach((el, idx) => {
+                el.classList.remove('active');
+                if (idx === 0) el.classList.add('active');
+            });
+            document.querySelectorAll('.step-content').forEach((el, idx) => {
+                el.classList.remove('active');
+                if (idx === 0) el.classList.add('active');
+            });
+            // Deselect operator
+            document.querySelectorAll('.operator-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            selectedOperator = '';
+            selectedPlan = null;
+            selectedAmount = '';
+            // Clear summary (if summary has static placeholder maybe reset to default text)
+            document.getElementById('summaryMobile').textContent = '';
+            document.getElementById('summaryOperator').textContent = '';
+            document.getElementById('summaryPlan').textContent = '';
+            document.getElementById('summaryTotal').textContent = '';
+        }
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            // Remove any existing toast
+            let oldToast = document.querySelector('.toast');
+            if (oldToast) oldToast.remove();
+            let toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3000);
+        }
+        // Input formatting
+        document.getElementById('mobile').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+        document.getElementById('cardNumber') && document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+            this.value = value.trim();
+        });
+        document.getElementById('expiry') && document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0,2) + '/' + value.substring(2,4);
+            }
+            this.value = value;
+        });
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Auto select first operator for demo
+            setTimeout(() => {
+                const firstOperator = document.querySelector('.operator-card');
+                if (firstOperator) firstOperator.click();
+            }, 500);
+        });
+        // Smooth scrolling (NO navigation/reload after touch/click, stays on current page!)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                // DO NOT change URL, reload, or navigate
+                history.replaceState(null, '', location.pathname + location.search);
+            });
+        });
+        
+    </script>
+  <script src="/image-fallback.js" defer></script>
+  <script src="/session-watchdog.js" defer></script>
+</body>
+</html>
+

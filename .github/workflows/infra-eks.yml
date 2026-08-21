@@ -1,0 +1,162 @@
+name: EKS Terraform Deployment
+
+on:
+  workflow_dispatch:
+
+env:
+  AWS_REGION: us-east-1
+  TF_VERSION: "1.12.2"
+  TF_WORKING_DIR: EKS-Terraform
+  BUCKET_NAME : devncloudtechdevops
+
+jobs:
+
+  # ============================================================
+  # TERRAFORM PLAN
+  # ============================================================
+  terraform-plan:
+    name: Terraform Validate & Plan
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # AWS AUTHENTICATION
+      # ----------------------------------------------------------
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS Identity
+        run: |
+          aws sts get-caller-identity
+
+      # ----------------------------------------------------------
+      # TERRAFORM
+      # ----------------------------------------------------------
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: Create S3 Bucket if not exists
+        run: |
+         BUCKET_NAME="${{ env.BUCKET_NAME }}"
+            AWS_REGION="${{ env.AWS_REGION }}"
+
+             if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+            echo "Bucket already exists. Skipping creation."
+          else
+            echo "Bucket does not exist. Creating..."
+
+            aws s3api create-bucket \
+              --bucket "$BUCKET_NAME" \
+              --region "$AWS_REGION" \
+  
+
+            echo "Bucket created successfully."
+          fi
+
+      - name: Verify S3 Bucket
+        run: |
+          aws s3api head-bucket \
+            --bucket "${{ env.BUCKET_NAME }}"
+
+          echo "S3 bucket is available."
+      
+      - name: Terraform Version
+        run: terraform version
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init
+
+      - name: Terraform Validate
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform plan -out=tfplan
+
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: EKS-Terraform/tfplan
+          retention-days: 5
+
+
+  # ============================================================
+  # TERRAFORM APPLY
+  # ============================================================
+  terraform-apply:
+    name: Terraform Apply
+    needs: terraform-plan
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+
+    steps:
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------------
+      # AWS AUTHENTICATION
+      # ----------------------------------------------------------
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Verify AWS Identity
+        run: |
+          aws sts get-caller-identity
+
+      # ----------------------------------------------------------
+      # TERRAFORM
+      # ----------------------------------------------------------
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: Terraform Version
+        run: terraform version
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform init
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan
+          path: EKS-Terraform
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform apply -auto-approve tfplan
+
+      # ----------------------------------------------------------
+      # TERRAFORM OUTPUTS
+      # ----------------------------------------------------------
+      - name: Terraform Outputs
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform output

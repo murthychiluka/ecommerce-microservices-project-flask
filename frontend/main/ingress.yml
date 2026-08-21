@@ -1,0 +1,162 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: shop-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - host:
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: main-service
+                port:
+                  number: 80
+
+          - path: /appliances
+            pathType: Prefix
+            backend:
+              service:
+                name: appliances-service
+                port:
+                  number: 80
+
+          - path: /auto
+            pathType: Prefix
+            backend:
+              service:
+                name: auto-service
+                port:
+                  number: 80
+
+          - path: /beauty
+            pathType: Prefix
+            backend:
+              service:
+                name: beauty-service
+                port:
+                  number: 80
+
+          - path: /books
+            pathType: Prefix
+            backend:
+              service:
+                name: books-service
+                port:
+                  number: 80
+
+          - path: /computers
+            pathType: Prefix
+            backend:
+              service:
+                name: computers-service
+                port:
+                  number: 80
+
+          - path: /earphones
+            pathType: Prefix
+            backend:
+              service:
+                name: earphones-service
+                port:
+                  number: 80
+
+          - path: /electronics
+            pathType: Prefix
+            backend:
+              service:
+                name: electronics-service
+                port:
+                  number: 80
+
+          - path: /fashion
+            pathType: Prefix
+            backend:
+              service:
+                name: fashion-service
+                port:
+                  number: 80
+
+          - path: /food
+            pathType: Prefix
+            backend:
+              service:
+                name: food-service
+                port:
+                  number: 80
+
+          - path: /furniture
+            pathType: Prefix
+            backend:
+              service:
+                name: furniture-service
+                port:
+                  number: 80
+
+          - path: /googlegrocery
+            pathType: Prefix
+            backend:
+              service:
+                name: googlegrocery-service
+                port:
+                  number: 80
+
+          - path: /googlemusic
+            pathType: Prefix
+            backend:
+              service:
+                name: googlemusic-service
+                port:
+                  number: 80
+
+          - path: /googlepay
+            pathType: Prefix
+            backend:
+              service:
+                name: googlepay-service
+                port:
+                  number: 80
+
+          - path: /home
+            pathType: Prefix
+            backend:
+              service:
+                name: home-service
+                port:
+                  number: 80
+
+          - path: /mobiles
+            pathType: Prefix
+            backend:
+              service:
+                name: mobiles-service
+                port:
+                  number: 80
+
+          - path: /sports
+            pathType: Prefix
+            backend:
+              service:
+                name: sports-service
+                port:
+                  number: 80
+
+          - path: /toys
+            pathType: Prefix
+            backend:
+              service:
+                name: toys-service
+                port:
+                  number: 80
+
+          - path: /two-wheelers
+            pathType: Prefix
+            backend:
+              service:
+                name: two-wheelers-service
+                port:
+                  number: 80

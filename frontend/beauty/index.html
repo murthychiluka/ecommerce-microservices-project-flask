@@ -1,0 +1,1548 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service | Google Services Store</title>
+  <meta name="description" content="Separate Google-style shopping service with catalog, cart, checkout, and payment flow.">
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700;800&display=swap">
+  <style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #2874f0;
+  --ink: #172337;
+  --muted: #64748b;
+  --line: #e5e7eb;
+  --surface: #ffffff;
+  --soft: #f1f5f9;
+  --green: #16a34a;
+  --red: #dc2626;
+  --shadow: 0 18px 44px rgba(15, 23, 42, 0.12);
+  font-family: "Google Sans", Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: #f5f7fb;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.topbar {
+  position: relative;
+z-index: 20;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.05);
+}
+
+.topbar-inner {
+  width: min(1240px, calc(100% - 28px));
+  min-height: 72px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: max-content;
+  font-weight: 800;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--blue), #6aa8ff);
+  color: #fff;
+  font-weight: 800;
+}
+
+.search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 180px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 4px;
+  background: #eef3ff;
+}
+
+.search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-link,
+.cart-button {
+  border: 1px solid var(--line);
+  background: #fff;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.cart-count {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: var(--blue);
+  color: #fff;
+  font-size: 12px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #ffffff 0%, #eaf2ff 100%);
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-inner {
+  width: min(1240px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 36px 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+  gap: 28px;
+  align-items: center;
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-weight: 800;
+  margin: 0 0 10px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(34px, 6vw, 62px);
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+}
+
+.lead {
+  max-width: 62ch;
+  margin: 16px 0 22px;
+  color: #334155;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.btn {
+  border: 0;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 800;
+}
+
+.btn.primary {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(40, 116, 240, 0.22);
+}
+
+.btn.ghost {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.hero-card {
+  min-height: 280px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  padding: 22px;
+  display: grid;
+  place-items: center;
+}
+
+.hero-card img {
+  width: min(100%, 360px);
+  height: 230px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 26px rgba(15, 23, 42, 0.16));
+}
+
+.catalog-shell {
+  width: min(1240px, calc(100% - 28px));
+  margin: 24px auto 46px;
+}
+
+.controls {
+  margin-bottom: 18px;
+  padding: 14px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.controls select {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  padding: 0 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.thumb {
+  height: 210px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #f8fbff, #fff);
+  padding: 14px;
+}
+
+.thumb img {
+  max-width: 100%;
+  max-height: 178px;
+  object-fit: contain;
+}
+
+.product-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.product-title {
+  margin: 0;
+  font-size: 17px;
+}
+
+.product-desc {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.price {
+  font-weight: 900;
+  color: #111827;
+}
+
+.rating {
+  color: var(--green);
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.empty {
+  grid-column: 1 / -1;
+  padding: 36px;
+  text-align: center;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+}
+
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(420px, 100vw);
+  z-index: 50;
+  background: #fff;
+  box-shadow: -20px 0 44px rgba(15, 23, 42, 0.2);
+  transform: translateX(110%);
+  transition: transform 0.22s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header,
+.drawer-footer {
+  padding: 16px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawer-footer {
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.cart-list {
+  padding: 12px 16px;
+  overflow: auto;
+  flex: 1;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-item img {
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: var(--soft);
+}
+
+.qty-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.qty-row button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.58);
+}
+
+.modal.open {
+  display: grid;
+}
+
+.checkout-card {
+  width: min(560px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.checkout-card h2 {
+  margin: 0 0 14px;
+}
+
+.field-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.field-grid input,
+.field-grid textarea,
+.field-grid select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 9px 10px;
+}
+
+.field-grid textarea {
+  resize: vertical;
+  min-height: 82px;
+}
+
+
+.payment-panel {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 14px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+.payment-panel img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+}
+
+.payment-panel input {
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 700;
+}
+
+@media (max-width: 560px) {
+  .payment-panel {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .payment-panel img {
+    margin: 0 auto;
+  }
+}
+.payment-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+
+.receipt-panel {
+  display: none;
+  margin-top: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #f8fafc;
+}
+
+.receipt-panel.open {
+  display: block;
+}
+
+.receipt-panel h3 {
+  margin: 0 0 8px;
+  color: #166534;
+}
+
+.receipt-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 13px;
+}
+
+.receipt-panel th,
+.receipt-panel td {
+  padding: 7px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.receipt-panel .receipt-total {
+  margin-top: 12px;
+  font-weight: 900;
+  text-align: right;
+}
+.notice {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f0fdf4;
+  color: #166534;
+  display: none;
+}
+
+.notice.error {
+  background: #fef2f2;
+  color: var(--red);
+}
+
+@media (max-width: 980px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .topbar-inner {
+    flex-wrap: wrap;
+    padding: 12px 0;
+  }
+
+  .search {
+    order: 3;
+    flex-basis: 100%;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+  
+.service-toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 9999;
+  max-width: min(340px, calc(100vw - 32px));
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: #16a34a;
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.24);
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.service-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.service-toast.error {
+  background: #dc2626;
+}
+</style>
+  <link rel="stylesheet" href="/mobile.css">
+</head>
+<body data-category="beauty">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/" class="brand">
+        <span class="brand-mark">G</span>
+        <span id="brandText">Service</span>
+      </a>
+      <label class="search">
+        <span>Search</span>
+        <input id="searchInput" type="search" placeholder="Search products in this service">
+      </label>
+      <div class="header-actions">
+        <a class="home-link" href="/">Home</a>
+        <button class="cart-button" id="cartButton">Cart <span class="cart-count" id="cartCount">0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="eyebrow" id="serviceEyebrow">Service</p>
+          <h1 id="serviceTitle">Service</h1>
+          <p class="lead" id="serviceIntro">Explore products, add to cart, and checkout.</p>
+          <div class="hero-actions">
+            <button class="btn primary" id="browseButton">Browse products</button>
+            <button class="btn ghost" id="cartButtonHero" onclick="document.getElementById('cartButton').click()">Open cart</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img id="heroImage" src="" alt="Service products" loading="eager">
+        </div>
+      </div>
+    </section>
+
+    <section class="catalog-shell" id="catalog">
+      <div class="controls">
+        <strong>Featured products</strong>
+        <label>
+          Sort
+          <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Top rated</option>
+          </select>
+        </label>
+      </div>
+      <div class="grid" id="productGrid"></div>
+    </section>
+  </main>
+
+  <aside class="drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="drawer-header">
+      <strong>Your Cart</strong>
+      <button class="btn ghost" id="closeCart">Close</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="drawer-footer">
+      <div class="total-row">
+        <span>Total</span>
+        <span id="cartTotal">Rs. 0</span>
+      </div>
+      <button class="btn primary" id="checkoutButton">Checkout</button>
+    </div>
+  </aside>
+
+  <div class="modal" id="checkoutModal">
+    <div class="checkout-card">
+      <div class="drawer-header" style="padding:0 0 14px;border-bottom:0;">
+        <h2>Checkout</h2>
+        <button class="btn ghost" id="closeCheckout">Close</button>
+      </div>
+      <form id="checkoutForm" class="field-grid">
+        <input id="customerName" name="name" type="text" placeholder="Full name" required>
+        <input id="customerEmail" name="email" type="email" placeholder="Email" required>
+        <input name="phone" type="tel" placeholder="Mobile number" required>
+        <textarea name="address" placeholder="Shipping address" required></textarea>
+        <select name="payment">
+          <option>UPI</option>
+          <option>Card</option>
+          <option>Net Banking</option>
+          <option>Cash on Delivery</option>
+        </select>
+        <div class="payment-panel">
+          <img src="/googlepay/scan.jpg" alt="UPI payment QR scanner">
+          <div>
+            <strong>Scan and pay with UPI</strong>
+            <p style="margin:6px 0 0;color:#64748b;line-height:1.45;">Use any UPI app to scan the code, or copy the UPI ID before placing the order.</p>
+            <input type="text" value="multicloud-veera-sir@kotak811" readonly onclick="this.select()">
+          </div>
+        </div>
+        <button class="btn primary" type="submit">Place order</button>
+      </form>
+      <div class="notice" id="notice"></div>
+      <div class="receipt-panel" id="receiptPanel"></div>
+    </div>
+  </div>
+
+  <script>
+const SERVICE_API_QUEUE_KEY = "googleStoreApiQueue";
+const SERVICE_CART_CACHE_KEY = "googleStoreServiceCart";
+const USER_KEY = "googleStoreUser";
+
+const catalogs = {
+  fashion: {
+    title: "Fashion",
+    eyebrow: "Style service",
+    intro: "Shop fresh outfits, shoes, bags, and daily wear through a full catalog, cart, checkout, and receipt flow.",
+    accent: "#db2777",
+    hero: "https://loremflickr.com/760/520/fashion,clothes,shopping?lock=1101",
+    products: [
+      ["f1", "Cotton Casual Shirt", 1299, "Breathable daily shirt with a clean office-ready fit.", "shirt,clothing"],
+      ["f2", "Denim Jacket", 2499, "Layered streetwear jacket for college and weekend looks.", "denim,jacket"],
+      ["f3", "Running Sneakers", 3299, "Lightweight sneakers with a cushioned walking sole.", "sneakers,shoes"],
+      ["f4", "Women Kurti Set", 1899, "Soft printed kurti set for festive and daily wear.", "kurti,fashion"],
+      ["f5", "Travel Backpack", 1599, "Laptop-ready backpack with padded storage.", "backpack,bags"],
+      ["f6", "Smart Watch Strap", 799, "Comfortable silicone strap in a modern color finish.", "watch,strap"],
+      ["f7", "Formal Trousers", 1699, "Stretch formal trousers for work and interviews.", "trousers,pants"],
+      ["f8", "Classic Sunglasses", 999, "UV-protected sunglasses with a lightweight frame.", "sunglasses,accessory"]
+    ]
+  },
+  mobiles: {
+    title: "Mobiles",
+    eyebrow: "Mobile service",
+    intro: "Compare phones, watches, and mobile accessories with the same protected shopping flow used by the full platform.",
+    accent: "#2563eb",
+    hero: "https://loremflickr.com/760/520/smartphone,mobile?lock=1201",
+    products: [
+      ["m1", "Pixel 10", 99800, "AI camera phone with bright display and fast charging.", "pixel,smartphone"],
+      ["m2", "Pixel Fold", 129999, "Foldable display phone for work, media, and multitasking.", "foldable,smartphone"],
+      ["m3", "Pixel 9a", 29999, "Value phone with clean Android and reliable camera.", "android,phone"],
+      ["m4", "Pixel Watch", 19999, "Smart wearable for fitness, calls, and daily reminders.", "smartwatch"],
+      ["m5", "Fast Charger 45W", 1799, "Compact USB-C charger for phones and tablets.", "phone,charger"],
+      ["m6", "Clear Case", 899, "Shock-resistant transparent case for daily protection.", "phone,case"],
+      ["m7", "Screen Guard Pack", 499, "Tempered glass protection with easy installation.", "screen,protector"],
+      ["m8", "Wireless Power Stand", 3499, "Desk charging stand for phones and earbuds.", "wireless,charger"]
+    ]
+  },
+  beauty: {
+    title: "Beauty",
+    eyebrow: "Beauty service",
+    intro: "Build a polished beauty storefront with skincare, grooming, makeup, personal care, cart, and checkout.",
+    accent: "#be185d",
+    hero: "https://tse1.mm.bing.net/th?q=beauty%20skincare%20products&w=760&h=520&c=7&rs=1&p=0&o=5&pid=1.7",
+    products: [
+      ["b1", "Vitamin C Serum", 699, "Brightening serum for daily skincare routine.", "skincare,serum"],
+      ["b2", "Matte Lip Color", 499, "Long-wear lipstick with smooth matte finish.", "lipstick,makeup"],
+      ["b3", "Aloe Face Wash", 299, "Gentle cleanser for fresh morning use.", "facewash,skincare"],
+      ["b4", "Hair Styling Kit", 1499, "Compact grooming kit for quick styling.", "hair,styling"],
+      ["b5", "Sunscreen SPF 50", 599, "Lightweight sunscreen for daily protection.", "sunscreen,skincare"],
+      ["b6", "Perfume Mist", 899, "Fresh fragrance mist for everyday wear.", "perfume,beauty"],
+      ["b7", "Makeup Brush Set", 799, "Soft brush set for base and eye makeup.", "makeup,brush"],
+      ["b8", "Beard Grooming Oil", 449, "Nourishing grooming oil with clean finish.", "beard,grooming"]
+    ]
+  },
+  electronics: {
+    title: "Electronics",
+    eyebrow: "Electronics service",
+    intro: "Explore smart devices, streaming gear, cameras, routers, and connected home products.",
+    accent: "#0284c7",
+    hero: "https://loremflickr.com/760/520/electronics,gadgets?lock=1401",
+    products: [
+      ["e1", "Pixel Home Hub", 6999, "Smart display and speaker for connected rooms.", "smart,display"],
+      ["e2", "Nest Cam", 9999, "Security camera with mobile alerts and clear video.", "security,camera"],
+      ["e3", "Chromecast Ultra", 3499, "4K streaming device for movies and classes.", "streaming,device"],
+      ["e4", "Google Router", 5499, "Fast mesh Wi-Fi router for home and lab networks.", "wifi,router"],
+      ["e5", "Nest Doorbell", 8499, "Smart video doorbell with visitor notifications.", "doorbell,camera"],
+      ["e6", "Smart Lamp", 2899, "Voice-ready ambient light for desks.", "smart,lamp"],
+      ["e7", "TV Stick", 3999, "Portable smart TV streaming stick.", "tv,stick"],
+      ["e8", "Bluetooth Speaker", 2299, "Compact speaker with rich room audio.", "bluetooth,speaker"]
+    ]
+  },
+  home: {
+    title: "Home",
+    eyebrow: "Home service",
+    intro: "Create a separate home living service for decor, kitchen tools, lighting, bedding, and storage.",
+    accent: "#ca8a04",
+    hero: "https://loremflickr.com/760/520/home,decor,furniture?lock=1501",
+    products: [
+      ["h1", "Floor Lamp", 2499, "Warm corner lamp for living rooms and study spaces.", "floor,lamp"],
+      ["h2", "Cookware Set", 3299, "Non-stick cookware kit for everyday meals.", "cookware,kitchen"],
+      ["h3", "Cotton Bedsheet", 1199, "Soft bedsheet set with pillow covers.", "bedsheet,home"],
+      ["h4", "Storage Organizer", 899, "Stackable organizer for shelves and wardrobes.", "storage,organizer"],
+      ["h5", "Wall Clock", 749, "Minimal wall clock for clean interiors.", "wall,clock"],
+      ["h6", "Dinner Set", 1799, "Ceramic dinner set for family serving.", "dinner,set"],
+      ["h7", "Curtain Pair", 1299, "Blackout curtains with smooth fabric.", "curtains,home"],
+      ["h8", "Bath Towel Pack", 999, "Absorbent towels for daily use.", "bath,towel"]
+    ]
+  },
+  appliances: {
+    title: "Appliances",
+    eyebrow: "Appliances service",
+    intro: "A full service for useful home appliances, from kitchen machines to cooling and cleaning products.",
+    accent: "#7c3aed",
+    hero: "https://loremflickr.com/760/520/home,appliances?lock=1601",
+    products: [
+      ["a1", "Mixer Grinder", 2799, "Powerful kitchen mixer with three jars.", "mixer,grinder"],
+      ["a2", "Air Fryer", 5999, "Oil-light cooking appliance with digital controls.", "air,fryer"],
+      ["a3", "Water Purifier", 10999, "RO purifier for clean drinking water.", "water,purifier"],
+      ["a4", "Washing Machine", 22999, "Efficient washing machine for family laundry.", "washing,machine"],
+      ["a5", "Microwave Oven", 8999, "Convection microwave for quick cooking.", "microwave,oven"],
+      ["a6", "Ceiling Fan", 2499, "Energy-saving fan with quiet motor.", "ceiling,fan"],
+      ["a7", "Vacuum Cleaner", 7499, "Compact vacuum for floor and sofa cleaning.", "vacuum,cleaner"],
+      ["a8", "Refrigerator", 28999, "Double-door refrigerator with spacious storage.", "refrigerator"]
+    ]
+  },
+  toys: {
+    title: "Toys, Baby & Kids",
+    eyebrow: "Kids service",
+    intro: "Shop toys, baby care, learning kits, and kids essentials in a dedicated separate service.",
+    accent: "#dc2626",
+    hero: "https://loremflickr.com/760/520/toys,kids,baby?lock=1701",
+    products: [
+      ["t1", "Building Blocks", 899, "Creative block set for learning and play.", "building,blocks"],
+      ["t2", "Remote Car", 1299, "Rechargeable toy car with smooth controls.", "remote,car,toy"],
+      ["t3", "Baby Stroller", 5999, "Foldable stroller with safety harness.", "baby,stroller"],
+      ["t4", "Soft Teddy", 699, "Soft plush toy for gifting.", "teddy,toy"],
+      ["t5", "Learning Tablet", 1499, "Kids learning tablet with activity modes.", "learning,toy"],
+      ["t6", "Cradle Set", 3499, "Comfortable cradle set for infants.", "baby,cradle"],
+      ["t7", "Puzzle Pack", 399, "Brain puzzle set for kids.", "puzzle,toy"],
+      ["t8", "Art Kit", 799, "Coloring and craft kit for projects.", "kids,art"]
+    ]
+  },
+  food: {
+    title: "Food & Health",
+    eyebrow: "Food and health service",
+    intro: "A dedicated catalog for groceries, snacks, nutrition, beverages, and health essentials.",
+    accent: "#16a34a",
+    hero: "https://loremflickr.com/760/520/grocery,healthy,food?lock=1801",
+    products: [
+      ["g1", "Organic Rice 5kg", 699, "Daily staple rice pack for family cooking.", "rice,grocery"],
+      ["g2", "Protein Mix", 1199, "Nutrition mix for fitness and recovery.", "protein,health"],
+      ["g3", "Dry Fruit Box", 999, "Almonds, cashews, and raisins gift pack.", "dry,fruits"],
+      ["g4", "Fresh Juice Pack", 349, "Assorted juice bottles for quick refreshment.", "juice,drink"],
+      ["g5", "Health Check Kit", 1499, "Basic digital health monitoring kit.", "health,kit"],
+      ["g6", "Breakfast Cereal", 449, "Crunchy cereal for daily breakfast.", "cereal,food"],
+      ["g7", "Green Tea Pack", 299, "Refreshing green tea for daily wellness.", "green,tea"],
+      ["g8", "Snack Combo", 599, "Mixed snacks pack for family evenings.", "snacks,food"]
+    ]
+  },
+  auto: {
+    title: "Auto Accessories",
+    eyebrow: "Auto service",
+    intro: "Browse car care, helmets, chargers, organizers, cleaning tools, and useful travel accessories.",
+    accent: "#0891b2",
+    hero: "https://loremflickr.com/760/520/car,accessories?lock=1901",
+    products: [
+      ["au1", "Car Vacuum", 1899, "Portable vacuum cleaner for car interiors.", "car,vacuum"],
+      ["au2", "Dash Camera", 4999, "Wide-angle dashboard camera for trips.", "dash,camera"],
+      ["au3", "Phone Mount", 599, "Stable phone holder for navigation.", "phone,mount,car"],
+      ["au4", "Seat Organizer", 899, "Back-seat organizer for bottles and gadgets.", "car,organizer"],
+      ["au5", "Tyre Inflator", 2299, "Digital inflator for emergency use.", "tyre,inflator"],
+      ["au6", "Car Charger", 699, "Dual USB fast charger for vehicles.", "car,charger"],
+      ["au7", "Helmet Visor", 499, "Scratch-resistant visor accessory.", "helmet,visor"],
+      ["au8", "Cleaning Kit", 999, "Complete car cleaning and polish set.", "car,cleaning"]
+    ]
+  },
+  "two-wheelers": {
+    title: "2 Wheelers",
+    eyebrow: "Two wheeler service",
+    intro: "A separate service for scooters, bikes, EV accessories, helmets, and riding essentials.",
+    accent: "#ea580c",
+    hero: "https://loremflickr.com/760/520/scooter,bike?lock=2001",
+    products: [
+      ["tw1", "Electric Scooter", 84999, "City scooter with smooth electric ride.", "electric,scooter"],
+      ["tw2", "Riding Helmet", 1499, "ISI-style helmet for daily commuting.", "riding,helmet"],
+      ["tw3", "Bike Cover", 799, "Water-resistant cover for outdoor parking.", "bike,cover"],
+      ["tw4", "Riding Gloves", 899, "Comfort grip gloves for safer rides.", "riding,gloves"],
+      ["tw5", "Scooter Charger", 2999, "Portable charger for EV scooter use.", "ev,charger"],
+      ["tw6", "Bike Lock", 699, "Heavy-duty lock for bikes and scooters.", "bike,lock"],
+      ["tw7", "LED Headlight", 1299, "Bright replacement headlight kit.", "bike,headlight"],
+      ["tw8", "Raincoat Set", 999, "Rider raincoat with compact storage pouch.", "rider,raincoat"]
+    ]
+  },
+  sports: {
+    title: "Sports & Fitness",
+    eyebrow: "Sports service",
+    intro: "A sports storefront for cricket, gym, yoga, running, outdoor, and fitness essentials.",
+    accent: "#15803d",
+    hero: "https://loremflickr.com/760/520/sports,fitness?lock=2101",
+    products: [
+      ["s1", "Cricket Bat", 2499, "Balanced bat for tennis and leather ball practice.", "cricket,bat"],
+      ["s2", "Yoga Mat", 799, "Non-slip yoga mat for home workouts.", "yoga,mat"],
+      ["s3", "Dumbbell Pair", 1999, "Adjustable dumbbell pair for strength training.", "dumbbells,fitness"],
+      ["s4", "Running Shoes", 2999, "Cushioned shoes for daily runs.", "running,shoes"],
+      ["s5", "Football", 899, "Durable training football.", "football,sports"],
+      ["s6", "Badminton Kit", 1599, "Two rackets with shuttle pack.", "badminton,racket"],
+      ["s7", "Fitness Band", 2499, "Activity tracker for steps and workouts.", "fitness,band"],
+      ["s8", "Gym Bag", 999, "Spacious bag with shoe compartment.", "gym,bag"]
+    ]
+  },
+  books: {
+    title: "Books & Stationery",
+    eyebrow: "Books service",
+    intro: "Open a student-friendly service for books, notebooks, exam prep, office supplies, and stationery.",
+    accent: "#9333ea",
+    hero: "https://loremflickr.com/760/520/books,stationery?lock=2201",
+    products: [
+      ["bk1", "Cloud Computing Book", 699, "Practical cloud basics and deployment notes.", "cloud,book"],
+      ["bk2", "DevOps Handbook", 899, "CI/CD and infrastructure practice guide.", "devops,book"],
+      ["bk3", "Notebook Pack", 299, "Ruled notebooks for classroom notes.", "notebook,stationery"],
+      ["bk4", "Pen Set", 199, "Smooth writing pen combo.", "pens,stationery"],
+      ["bk5", "Exam Prep Guide", 549, "Practice questions for technical interviews.", "exam,book"],
+      ["bk6", "Desk Organizer", 499, "Organizer for pens, notes, and clips.", "desk,organizer"],
+      ["bk7", "Sticky Notes", 149, "Color notes for planning and reminders.", "sticky,notes"],
+      ["bk8", "Drawing Kit", 799, "Sketching pencils and drawing sheets.", "drawing,stationery"]
+    ]
+  },
+  furniture: {
+    title: "Furniture",
+    eyebrow: "Furniture service",
+    intro: "A separate furniture module for chairs, desks, storage, beds, tables, and compact home setup items.",
+    accent: "#b45309",
+    hero: "https://loremflickr.com/760/520/furniture,chair,desk?lock=2301",
+    products: [
+      ["fu1", "Study Chair", 3999, "Comfortable chair for long study sessions.", "study,chair"],
+      ["fu2", "Computer Desk", 5999, "Compact desk for laptop and monitor setup.", "computer,desk"],
+      ["fu3", "Bookshelf", 3499, "Five-shelf unit for books and decor.", "bookshelf,furniture"],
+      ["fu4", "Coffee Table", 2499, "Minimal living-room table with storage shelf.", "coffee,table"],
+      ["fu5", "Sofa Bed", 14999, "Space-saving sofa bed for compact rooms.", "sofa,bed"],
+      ["fu6", "Wardrobe", 11999, "Two-door wardrobe with hanging section.", "wardrobe,furniture"],
+      ["fu7", "TV Unit", 6999, "Media console for TV and accessories.", "tv,unit"],
+      ["fu8", "Dining Chair Pair", 2999, "Pair of sturdy dining chairs.", "dining,chair"]
+    ]
+  }
+};
+
+const categoryKey = document.body.dataset.category || "fashion";
+const service = catalogs[categoryKey] || catalogs.fashion;
+let products = service.products.map((item, index) => ({
+  id: item[0],
+  name: item[1],
+  price: item[2],
+  desc: item[3],
+  image: buildProductImage(categoryKey, item[1], item[4], index),
+  rating: (4 + ((index % 5) * 0.15)).toFixed(1)
+}));
+let filteredProducts = products.slice();
+let cart = {};
+let cartItems = [];
+let latestReceiptOrder = null;
+
+const searchInput = document.getElementById("searchInput");
+const sortSelect = document.getElementById("sortSelect");
+const grid = document.getElementById("productGrid");
+const cartDrawer = document.getElementById("cartDrawer");
+const cartList = document.getElementById("cartList");
+const cartCount = document.getElementById("cartCount");
+const cartTotal = document.getElementById("cartTotal");
+const checkoutModal = document.getElementById("checkoutModal");
+const checkoutForm = document.getElementById("checkoutForm");
+const notice = document.getElementById("notice");
+
+function buildProductImage(categoryKey, productName, keywords, index) {
+  const exactName = String(productName || "").trim();
+  const keywordText = String(keywords || "").trim();
+  const searchTerms = [exactName, keywordText, categoryKey, "product"].filter(Boolean).join(",");
+  if (categoryKey === "beauty") {
+    const beautyTerms = [exactName, keywordText, "beauty skincare product"].filter(Boolean).join(",");
+    return `https://tse1.mm.bing.net/th?q=${encodeURIComponent(beautyTerms)}&w=520&h=380&c=7&rs=1&p=0&o=5&pid=1.7`;
+  }
+  return `https://loremflickr.com/520/380/${encodeURIComponent(searchTerms)}?lock=${stableLock(`${categoryKey}-${index}-${exactName}`)}`;
+}
+function stableLock(value) {
+  return Array.from(String(value)).reduce((hash, char) => (hash * 33 + char.charCodeAt(0)) % 100000, 11) + 1;
+}
+
+function formatPrice(value) {
+  return "Rs. " + Number(value || 0).toLocaleString("en-IN");
+}
+
+function readCurrentUser() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(USER_KEY) || "null");
+    return parsed && parsed.email ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function requireLoggedIn(action) {
+  const user = readCurrentUser();
+  if (user?.email) return user.email;
+  alert(`Please login on the home page before you ${action}.`);
+  return "";
+}
+
+function getServiceName() {
+  if (typeof categoryKey !== "undefined") return categoryKey;
+  if (typeof category !== "undefined") return category;
+  return "service";
+}
+
+function getServiceCartKey(email) {
+  return `${email || "guest"}:${getServiceName()}`;
+}
+
+function readServiceCart(email) {
+  try {
+    const allCarts = JSON.parse(localStorage.getItem(SERVICE_CART_CACHE_KEY) || "{}");
+    return allCarts[getServiceCartKey(email)] || [];
+  } catch {
+    return [];
+  }
+}
+
+function writeServiceCart(email, items) {
+  let allCarts = {};
+  try {
+    allCarts = JSON.parse(localStorage.getItem(SERVICE_CART_CACHE_KEY) || "{}");
+  } catch {
+    allCarts = {};
+  }
+  allCarts[getServiceCartKey(email)] = items;
+  localStorage.setItem(SERVICE_CART_CACHE_KEY, JSON.stringify(allCarts));
+}
+
+function queueMainIndexRequest(path, options = {}) {
+  let queue = [];
+  try {
+    queue = JSON.parse(localStorage.getItem(SERVICE_API_QUEUE_KEY) || "[]");
+  } catch {
+    queue = [];
+  }
+  const rawBody = options.body || "{}";
+  const body = typeof rawBody === "string" ? JSON.parse(rawBody || "{}") : rawBody;
+  queue.push({
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    path,
+    method: options.method || "POST",
+    body,
+    source: getServiceName()
+  });
+  localStorage.setItem(SERVICE_API_QUEUE_KEY, JSON.stringify(queue));
+}
+
+function clearSyncedServiceQueue(email = "") {
+  let queue = [];
+  try {
+    queue = JSON.parse(localStorage.getItem(SERVICE_API_QUEUE_KEY) || "[]");
+  } catch {
+    return;
+  }
+  const serviceName = getServiceName();
+  const normalizedEmail = String(email || "").trim().toLowerCase();
+  const filteredQueue = queue.filter((request) => {
+    if (request.source !== serviceName) return true;
+    const requestEmail = String(request.body?.email || "").trim().toLowerCase();
+    return normalizedEmail && requestEmail && requestEmail !== normalizedEmail;
+  });
+  localStorage.setItem(SERVICE_API_QUEUE_KEY, JSON.stringify(filteredQueue));
+}
+
+function readEmailFromCartPath(path) {
+  try {
+    const query = String(path).split("?")[1] || "";
+    return new URLSearchParams(query).get("email") || "";
+  } catch {
+    return "";
+  }
+}
+
+function currentServiceEmail() {
+  if (typeof getCurrentUserEmail !== "undefined") return getCurrentUserEmail() || "";
+  if (typeof readCurrentUser !== "undefined") return readCurrentUser()?.email || "";
+  return "";
+}
+
+async function apiRequest(path, options = {}) {
+  const method = String(options.method || "GET").toUpperCase();
+  const rawBody = options.body || "{}";
+  const body = typeof rawBody === "string" ? JSON.parse(rawBody || "{}") : rawBody;
+  const email = body.email || readEmailFromCartPath(path) || currentServiceEmail();
+
+  if (method === "GET") {
+    if (String(path).startsWith("/cart")) return { items: readServiceCart(email) };
+    if (String(path).startsWith("/users/")) return { user: typeof readCurrentUser !== "undefined" ? readCurrentUser() : null };
+    return {};
+  }
+
+  if (String(path).startsWith("/cart/items")) {
+    const items = readServiceCart(email);
+    const index = items.findIndex((item) => item.product_id === body.product_id);
+    if (method === "DELETE" || (method === "PUT" && Number(body.quantity || 0) <= 0)) {
+      if (index >= 0) items.splice(index, 1);
+    } else if (index >= 0) {
+      const quantity = method === "POST" ? Number(items[index].quantity || 0) + Number(body.quantity || 1) : Number(body.quantity || 1);
+      const price = Number(body.price || items[index].price || 0);
+      items[index] = { ...items[index], ...body, quantity, subtotal: price * quantity };
+    } else {
+      const quantity = Number(body.quantity || 1);
+      items.push({ ...body, quantity, subtotal: Number(body.price || 0) * quantity });
+    }
+    writeServiceCart(email, items);
+  }
+
+  const syncBody = String(path).startsWith("/orders") && !Array.isArray(body.items)
+    ? { ...body, items: readServiceCart(email) }
+    : body;
+  let backendResult = null;
+  try {
+    const response = await fetch(`/api${path}`, {
+      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+      ...options,
+      method,
+      body: JSON.stringify(syncBody)
+    });
+    const responseData = await response.json().catch(() => ({}));
+    if (response.ok) {
+      backendResult = responseData;
+    } else {
+      console.warn("Backend sync failed", responseData.error || response.statusText);
+    }
+  } catch (error) {
+    console.warn("Backend sync unavailable", error);
+  }
+
+  if (backendResult && String(path).startsWith("/orders")) {
+    clearSyncedServiceQueue(email);
+  }
+
+  if (!backendResult) {
+    queueMainIndexRequest(path, { ...options, method, body: syncBody });
+  }
+
+  if (String(path).startsWith("/orders")) {
+    writeServiceCart(email, []);
+  }
+
+  return backendResult || { message: "Queued for main index backend sync" };
+}
+function syncCartState(items) {
+  cartItems = items || [];
+  cart = {};
+  cartItems.forEach((item) => {
+    cart[item.product_id] = Number(item.quantity || 0);
+  });
+}
+
+function getCartRows() {
+  return cartItems
+    .map((item) => {
+      const product = products.find((product) => product.id === item.product_id) || {};
+      const price = Number(item.price || product.price || 0);
+      const quantity = Number(item.quantity || 0);
+      return {
+        id: item.product_id,
+        name: item.product_name || product.name || "Product",
+        price,
+        desc: item.product_description || product.desc || "",
+        image: item.product_image || product.image || service.hero,
+        quantity,
+        subtotal: Number(item.subtotal || price * quantity)
+      };
+    })
+    .filter((item) => item.quantity > 0);
+}
+
+async function refreshCartFromServer() {
+  const user = readCurrentUser();
+  if (!user?.email) {
+    syncCartState([]);
+    renderCart();
+    return;
+  }
+  try {
+    const data = await apiRequest(`/cart?email=${encodeURIComponent(user.email)}`);
+    syncCartState(data.items || []);
+    renderCart();
+  } catch (error) {
+    console.error("Cart load failed", error);
+  }
+}
+
+function setTheme() {
+  document.documentElement.style.setProperty("--blue", service.accent);
+  document.title = `${service.title} | Google Services Store`;
+  document.getElementById("serviceTitle").textContent = service.title;
+  document.getElementById("serviceEyebrow").textContent = service.eyebrow;
+  document.getElementById("serviceIntro").textContent = service.intro;
+  document.getElementById("brandText").textContent = service.title;
+  document.getElementById("heroImage").src = service.hero;
+  document.getElementById("heroImage").onerror = function() {
+    this.onerror = null;
+    this.src = "https://tse1.mm.bing.net/th?q=beauty%20product&w=760&h=520&c=7&rs=1&p=0&o=5&pid=1.7";
+  };
+}
+
+function renderProducts() {
+  grid.innerHTML = "";
+  if (!filteredProducts.length) {
+    grid.innerHTML = `<div class="empty">No products found. Try another search.</div>`;
+    return;
+  }
+
+  filteredProducts.forEach((product) => {
+    const card = document.createElement("article");
+    card.className = "product-card";
+    card.innerHTML = `
+      <div class="thumb"><img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null;this.src='${service.hero}'"></div>
+      <div class="product-body">
+        <h3 class="product-title">${product.name}</h3>
+        <p class="product-desc">${product.desc}</p>
+        <div class="product-meta">
+          <span class="price">${formatPrice(product.price)}</span>
+          <span class="rating">${product.rating} rating</span>
+        </div>
+        <button class="btn primary" data-add="${product.id}">Add to cart</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll("[data-add]").forEach((button) => {
+    button.addEventListener("click", () => addToCart(button.dataset.add));
+  });
+}
+
+function renderCart() {
+  const rows = getCartRows();
+  const total = rows.reduce((sum, row) => sum + row.subtotal, 0);
+  const count = rows.reduce((sum, row) => sum + row.quantity, 0);
+  cartCount.textContent = String(count);
+  cartTotal.textContent = formatPrice(total);
+  cartList.innerHTML = rows.length ? "" : `<p class="empty">Your cart is empty.</p>`;
+
+  rows.forEach((row) => {
+    const item = document.createElement("div");
+    item.className = "cart-item";
+    item.innerHTML = `
+      <img src="${row.image}" alt="${row.name}" onerror="this.onerror=null;this.src='${service.hero}'">
+      <div>
+        <strong>${row.name}</strong>
+        <div class="price">${formatPrice(row.subtotal)}</div>
+        <div class="qty-row">
+          <button data-dec="${row.id}">-</button>
+          <span>${row.quantity}</span>
+          <button data-inc="${row.id}">+</button>
+          <button data-remove="${row.id}">Remove</button>
+        </div>
+      </div>
+    `;
+    cartList.appendChild(item);
+  });
+
+  cartList.querySelectorAll("[data-inc]").forEach((button) => button.addEventListener("click", () => addToCart(button.dataset.inc)));
+  cartList.querySelectorAll("[data-dec]").forEach((button) => button.addEventListener("click", () => changeQty(button.dataset.dec, -1)));
+  cartList.querySelectorAll("[data-remove]").forEach((button) => button.addEventListener("click", () => removeFromCart(button.dataset.remove)));
+}
+
+
+let serviceToastTimer;
+function showServiceToast(message, type = "success") {
+  let toast = document.getElementById("serviceToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "serviceToast";
+    toast.className = "service-toast";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = type === "error" ? message : `☁ ${message}`;
+  toast.className = `service-toast show ${type === "error" ? "error" : ""}`;
+  clearTimeout(serviceToastTimer);
+  serviceToastTimer = setTimeout(() => {
+    toast.className = "service-toast";
+  }, 2200);
+}
+async function addToCart(id) {
+  const email = requireLoggedIn("add items to cart");
+  if (!email) return;
+  const product = products.find((item) => item.id === id);
+  if (!product) return;
+  try {
+    await apiRequest("/cart/items", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        product_id: product.id,
+        product_name: product.name,
+        product_image: product.image,
+        product_description: product.desc,
+        price: product.price,
+        quantity: 1
+      })
+    });
+    await refreshCartFromServer();
+    showServiceToast(`${product.name} added to cart`);
+  } catch (error) {
+    showServiceToast(error.message || "Unable to add item to cart", "error");
+  }
+}
+
+async function changeQty(id, delta) {
+  const user = readCurrentUser();
+  if (!user?.email) return;
+  const nextQuantity = (cart[id] || 0) + delta;
+  try {
+    if (nextQuantity <= 0) {
+      await removeFromCart(id);
+      return;
+    }
+    await apiRequest("/cart/items", {
+      method: "PUT",
+      body: JSON.stringify({ email: user.email, product_id: id, quantity: nextQuantity })
+    });
+    await refreshCartFromServer();
+    showServiceToast("Cart updated");
+  } catch (error) {
+    showServiceToast(error.message || "Unable to update cart", "error");
+  }
+}
+
+async function removeFromCart(id) {
+  const user = readCurrentUser();
+  if (!user?.email) return;
+  try {
+    await apiRequest("/cart/items", {
+      method: "DELETE",
+      body: JSON.stringify({ email: user.email, product_id: id })
+    });
+    await refreshCartFromServer();
+    showServiceToast("Item removed from cart");
+  } catch (error) {
+    showServiceToast(error.message || "Unable to remove item", "error");
+  }
+}
+
+function applyFilters() {
+  const query = searchInput.value.trim().toLowerCase();
+  filteredProducts = products.filter((product) => `${product.name} ${product.desc}`.toLowerCase().includes(query));
+  if (sortSelect.value === "price-asc") filteredProducts.sort((a, b) => a.price - b.price);
+  if (sortSelect.value === "price-desc") filteredProducts.sort((a, b) => b.price - a.price);
+  if (sortSelect.value === "rating") filteredProducts.sort((a, b) => Number(b.rating) - Number(a.rating));
+  renderProducts();
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;"
+  }[char]));
+}
+
+function getReceiptText(order) {
+  if (!order) return "";
+  const lines = [
+    `Google Store Receipt - Order #${order.id}`,
+    "-------------------------------------",
+    `Date: ${order.created_at || new Date().toLocaleString()}`,
+    `Name: ${order.shipping_name || "Customer"}`,
+    `Email: ${order.shipping_email || ""}`,
+    `Mobile: ${order.shipping_phone || "Not provided"}`,
+    `Address: ${order.shipping_address || ""}`,
+    "",
+    "Products Purchased:"
+  ];
+  (order.items || []).forEach((item) => {
+    lines.push(`- ${item.product_name || "Product"} | Qty: ${item.quantity || 0} | Price: Rs. ${Number(item.price || 0).toLocaleString("en-IN")} | Subtotal: Rs. ${Number(item.subtotal || 0).toLocaleString("en-IN")}`);
+  });
+  if (!(order.items || []).length) lines.push("- No item details found");
+  lines.push("-------------------------------------");
+  lines.push(`Total Paid: Rs. ${Number(order.total_amount || 0).toLocaleString("en-IN")}`);
+  lines.push(`Status: ${order.status || "placed"}`);
+  lines.push("Payment Successful");
+  return lines.join("\n");
+}
+
+function viewReceipt() {
+  if (!latestReceiptOrder) return;
+  const receiptWindow = window.open("", "_blank", "width=760,height=760");
+  if (!receiptWindow) return;
+  receiptWindow.document.write(`
+    <title>Google Store Receipt</title>
+    <pre style="font-family:Arial,sans-serif;white-space:pre-wrap;max-width:720px;margin:24px auto;padding:24px;border:1px solid #e5e7eb;border-radius:12px;line-height:1.6;">${escapeHtml(getReceiptText(latestReceiptOrder))}</pre>
+  `);
+  receiptWindow.document.close();
+}
+
+function downloadReceipt() {
+  if (!latestReceiptOrder) return;
+  const blob = new Blob([getReceiptText(latestReceiptOrder)], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `GoogleStore_Receipt_${latestReceiptOrder.id || Date.now()}.txt`;
+  document.body.appendChild(link);
+  link.click();
+  setTimeout(() => {
+    URL.revokeObjectURL(link.href);
+    link.remove();
+  }, 100);
+}
+function renderReceipt(order, response = {}) {
+  const receiptPanel = document.getElementById("receiptPanel");
+  if (!receiptPanel || !order) return;
+  const itemRows = (order.items || []).map((item) => `
+    <tr>
+      <td>${escapeHtml(item.product_name)}</td>
+      <td>${Number(item.quantity || 0)}</td>
+      <td>Rs. ${Number(item.price || 0).toLocaleString("en-IN")}</td>
+      <td>Rs. ${Number(item.subtotal || 0).toLocaleString("en-IN")}</td>
+    </tr>
+  `).join("");
+  receiptPanel.innerHTML = `
+    <h3>Payment Successful</h3>
+    <p><strong>Order:</strong> #${escapeHtml(order.id)}<br>
+    <strong>Date:</strong> ${escapeHtml(order.created_at)}<br>
+    <strong>Email:</strong> ${escapeHtml(order.shipping_email)}<br>
+    <strong>Mobile:</strong> ${escapeHtml(order.shipping_phone || "")}</p>
+    <table>
+      <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+      <tbody>${itemRows || '<tr><td colspan="4">No items found</td></tr>'}</tbody>
+    </table>
+    <div class="receipt-total">Total Paid: Rs. ${Number(order.total_amount || 0).toLocaleString("en-IN")}</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px;">
+      <button class="btn primary" type="button" onclick="viewReceipt()">View Details / Receipt</button>
+      <button class="btn ghost" type="button" onclick="downloadReceipt()">Download Receipt</button>
+    </div>
+    <p style="margin-bottom:0;color:#64748b;">${escapeHtml(response.email_message || "Receipt email is being sent.")}</p>
+  `;
+  receiptPanel.classList.add("open");
+}
+function showNotice(message, isError = false) {
+  notice.textContent = message;
+  notice.className = isError ? "notice error" : "notice";
+  notice.style.display = "block";
+}
+
+function openCheckout() {
+  if (!getCartRows().length) {
+    alert("Your cart is empty.");
+    return;
+  }
+  const user = readCurrentUser();
+  if (user?.email) {
+    document.getElementById("customerEmail").value = user.email;
+    document.getElementById("customerName").value = user.username || "";
+  }
+  notice.style.display = "none";
+  checkoutModal.classList.add("open");
+}
+
+async function submitCheckout(event) {
+  event.preventDefault();
+  const rows = getCartRows();
+  const form = new FormData(checkoutForm);
+  const customer = {
+    shipping_name: String(form.get("name") || "").trim(),
+    email: String(form.get("email") || "").trim(),
+    shipping_phone: String(form.get("phone") || "").trim(),
+    shipping_address: String(form.get("address") || "").trim(),
+    payment_method: String(form.get("payment") || "UPI"),
+    payment_status: "paid",
+    status: "placed"
+  };
+
+  if (!customer.shipping_name || !customer.email || !customer.shipping_phone || !customer.shipping_address) {
+    showNotice("Please fill all checkout fields.", true);
+    return;
+  }
+
+  try {
+    const user = readCurrentUser();
+    if (!user?.email || customer.email !== user.email) {
+      throw new Error("Please checkout with the same email you used to login.");
+    }
+    if (!rows.length) {
+      throw new Error("Your cart is empty.");
+    }
+    const localOrder = {
+      id: `LOCAL-${Date.now()}`,
+      shipping_name: customer.shipping_name,
+      shipping_email: customer.email,
+      shipping_phone: customer.shipping_phone,
+      shipping_address: customer.shipping_address,
+      payment_method: customer.payment_method,
+      payment_status: customer.payment_status,
+      status: customer.status,
+      created_at: new Date().toLocaleString(),
+      total_amount: rows.reduce((sum, row) => sum + Number(row.subtotal || 0), 0),
+      items: rows.map((row) => ({
+        product_id: row.id,
+        product_name: row.name,
+        product_image: row.image,
+        price: row.price,
+        quantity: row.quantity,
+        subtotal: row.subtotal
+      }))
+    };
+    latestReceiptOrder = localOrder;
+    const orderResponse = await apiRequest("/orders", {
+      method: "POST",
+      body: JSON.stringify(customer)
+    });
+    if (orderResponse.order) {
+      latestReceiptOrder = orderResponse.order;
+    }
+    await refreshCartFromServer();
+    renderReceipt(latestReceiptOrder, orderResponse);
+    showNotice("Order placed successfully. Receipt is ready below.");
+    checkoutForm.reset();
+  } catch (error) {
+    showNotice(error.message || "Order saved locally, but backend order sync failed.", true);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTheme();
+  renderProducts();
+  renderCart();
+  refreshCartFromServer();
+
+  searchInput.addEventListener("input", applyFilters);
+  sortSelect.addEventListener("change", applyFilters);
+  document.getElementById("cartButton").addEventListener("click", () => cartDrawer.classList.add("open"));
+  document.getElementById("closeCart").addEventListener("click", () => cartDrawer.classList.remove("open"));
+  document.getElementById("checkoutButton").addEventListener("click", openCheckout);
+  document.getElementById("closeCheckout").addEventListener("click", () => checkoutModal.classList.remove("open"));
+  document.getElementById("browseButton").addEventListener("click", () => document.getElementById("catalog").scrollIntoView({ behavior: "smooth" }));
+  checkoutForm.addEventListener("submit", submitCheckout);
+  checkoutModal.addEventListener("click", (event) => {
+    if (event.target === checkoutModal) checkoutModal.classList.remove("open");
+  });
+});
+
+  </script>
+  <script src="/image-fallback.js" defer></script>
+  <script src="/session-watchdog.js" defer></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
