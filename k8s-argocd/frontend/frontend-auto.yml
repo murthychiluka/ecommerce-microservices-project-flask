@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/kashifsayyad09/ecommerce-microservice-project-flask.git
+    repoURL: https://github.com/murthychiluka/ecommerce-microservices-project-flask.git
     path: frontend/auto
     targetRevision: main
   destination:
