@@ -18,7 +18,7 @@ data:
 
   MAIL_SERVER: "smtp.gmail.com"
   MAIL_PORT: "587"
-  MAIL_USERNAME: "kashifsayyad09@gmail.com" 
-  MAIL_PASSWORD: "acba xkyf ppen xjwt"
+  MAIL_USERNAME: "chilukamurthy@gmail.com" 
+  MAIL_PASSWORD: "qvsqacwajtlraljh"
   MAIL_USE_TLS: "true"
   MAIL_USE_SSL: "false"
