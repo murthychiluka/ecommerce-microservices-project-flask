@@ -290,7 +290,7 @@ resource "aws_eks_node_group" "node_group" {
     Name        = "eks-node"
     Environment = "dev"
     Project     = "eks-project"
-    Owner       = "ali"
+    Owner       = "murthy"
   }
 }
 
